@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 70" fill="none">
+  <!-- Green Arabic Calligraphy Icon -->
+  <g transform="translate(10, 8)">
+    <!-- Crescent & Calligraphy curve in Lime Green -->
+    <path d="M 28 4 C 14 4 4 15 4 28 C 4 41 15 52 28 52 C 34 52 40 50 44 46 C 36 48 24 44 20 36 C 16 28 20 16 30 10 C 35 7 41 7 46 8 C 41 5 35 4 28 4 Z" fill="#84cc16"/>
+    <!-- Inner Calligraphy letters -->
+    <path d="M 24 16 C 21 22 23 32 30 36 C 35 39 42 38 46 33 C 44 38 38 42 32 41 C 25 40 20 33 22 25 C 23 21 26 18 24 16 Z" fill="#65a30d"/>
+    <circle cx="16" cy="26" r="2.5" fill="#84cc16"/>
+    <circle cx="34" cy="22" r="2.5" fill="#84cc16"/>
+  </g>
+  <!-- Text: Bank Muamalat -->
+  <g transform="translate(68, 12)">
+    <text x="0" y="20" font-family="'Trebuchet MS', 'Arial', sans-serif" font-weight="bold" font-size="22" fill="#581c87" letter-spacing="-0.5">Bank</text>
+    <text x="0" y="44" font-family="'Trebuchet MS', 'Arial', sans-serif" font-weight="900" font-size="24" fill="#581c87" letter-spacing="-0.5">Muamalat</text>
+  </g>
+</svg>

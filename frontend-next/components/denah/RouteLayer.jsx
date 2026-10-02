@@ -1,111 +1,66 @@
-"use client";
+/** Titik rute (persen 0-100 dari backend) menjadi atribut d SVG. */
+export const toPathD = (points) =>
+  points.length ? points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ") : "";
+
+/** Potongan rute milik satu langkah petunjuk arah (dari path_index langkah itu sampai langkah berikutnya). */
+export function stepSegment(points, steps, index) {
+  const step = steps[index];
+  if (!step || step.type === "arrive") return [];
+  const end = steps[index + 1]?.path_index ?? points.length - 1;
+  return points.slice(step.path_index, Math.max(step.path_index, end) + 1);
+}
 
 /**
- * Builds clean orthogonal corridor navigation path without cutting through walls or jumping over rooms.
+ * Garis rute di atas denah. Jalurnya sudah ortogonal mengikuti koridor (dihitung backend),
+ * jadi tinggal digambar. Panah putih bergerak menunjukkan arah jalan; potongan langkah
+ * yang sedang dipilih disorot oranye.
  */
-export function buildPreciseSvgPath(points) {
-  if (!points || points.length === 0) return { d: "", cleanPoints: [] };
-  if (points.length === 1) return { d: `M ${points[0].x} ${points[0].y}`, cleanPoints: points };
-
-  const cleanPoints = [points[0]];
-
-  for (let i = 1; i < points.length; i++) {
-    const prev = cleanPoints[cleanPoints.length - 1];
-    const curr = points[i];
-
-    const isFirstStep = i === 1;
-    const isLastStep = i === points.length - 1;
-
-    // Transition from/to room center to hallway corridor
-    if (isFirstStep || isLastStep) {
-      const dx = Math.abs(curr.x - prev.x);
-      const dy = Math.abs(curr.y - prev.y);
-
-      // If diagonal, step orthogonally to prevent slicing through neighboring classrooms
-      if (dx > 0.8 && dy > 0.8) {
-        if (isFirstStep) {
-          // Major vertical hallway corridors in SMKN 2 campus:
-          // x = 14 (Parkir), 23 (BKK), 28.5 (DKV/LPS), 39 (Kantor/Barat), 46.5 (Tengah), 51.5 (Gerbang), 57 (Aula/Lab), 69/75 (Timur), 88.5 (Lapangan)
-          const isVerticalCorridor = [14, 23, 28.5, 39, 46.5, 51.5, 57, 69, 75, 88.5].some(
-            (cx) => Math.abs(curr.x - cx) < 2.0
-          );
-          if (isVerticalCorridor) {
-            cleanPoints.push({ x: curr.x, y: prev.y });
-          } else {
-            cleanPoints.push({ x: prev.x, y: curr.y });
-          }
-        } else {
-          // Entering destination room from hallway corridor
-          const fromVerticalCorridor = [14, 23, 28.5, 39, 46.5, 51.5, 57, 69, 75, 88.5].some(
-            (cx) => Math.abs(prev.x - cx) < 2.0
-          );
-          if (fromVerticalCorridor) {
-            cleanPoints.push({ x: prev.x, y: curr.y });
-          } else {
-            cleanPoints.push({ x: curr.x, y: prev.y });
-          }
-        }
-      }
-    }
-
-    cleanPoints.push(curr);
-  }
-
-  // Draw clean straight corridor segments
-  let d = `M ${cleanPoints[0].x} ${cleanPoints[0].y}`;
-  for (let i = 1; i < cleanPoints.length; i++) {
-    d += ` L ${cleanPoints[i].x} ${cleanPoints[i].y}`;
-  }
-
-  return { d, cleanPoints };
-}
-
-// Backward compatibility helper
-export function buildCurvedSvgPath(points) {
-  return buildPreciseSvgPath(points).d;
-}
-
-export default function RouteLayer({ svgPathD, showRoute }) {
-  if (!showRoute || !svgPathD) return null;
+export default function RouteLayer({ points, activeSegment = [] }) {
+  if (!points?.length) return null;
+  const d = toPathD(points);
+  const activeD = toPathD(activeSegment);
+  const dimmed = activeSegment.length > 1;
 
   return (
-    <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      className="route-layer absolute inset-0 w-full h-full pointer-events-none z-20 transition-all duration-300"
-    >
-      {/* Route Outer Halo / Glow */}
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 z-10 h-full w-full" aria-hidden="true">
+      <path d={d} fill="none" stroke="#ffffff" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" opacity="0.85" vectorEffect="non-scaling-stroke" />
       <path
-        d={svgPathD}
+        d={d}
         fill="none"
-        stroke="#38bdf8"
-        strokeWidth="3.2"
+        stroke="#2563eb"
+        strokeWidth="6"
         strokeLinecap="round"
         strokeLinejoin="round"
-        opacity="0.5"
+        opacity={dimmed ? 0.45 : 1}
+        vectorEffect="non-scaling-stroke"
+        className="transition-opacity duration-300"
       />
-
-      {/* Main Solid Corridor Navigation Line */}
       <path
-        d={svgPathD}
-        fill="none"
-        stroke="#0284c7"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      {/* Animated Walking Direction Dashes */}
-      <path
-        d={svgPathD}
+        d={d}
         fill="none"
         stroke="#ffffff"
-        strokeWidth="0.8"
-        strokeDasharray="2, 2"
+        strokeWidth="2"
         strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.9"
+        strokeDasharray="1 11"
+        vectorEffect="non-scaling-stroke"
+        className="denah-route-flow"
       />
+      {dimmed ? (
+        <>
+          <path d={activeD} fill="none" stroke="#fdba74" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" vectorEffect="non-scaling-stroke" />
+          <path d={activeD} fill="none" stroke="#ea580c" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          <path
+            d={activeD}
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray="1 11"
+            vectorEffect="non-scaling-stroke"
+            className="denah-route-flow"
+          />
+        </>
+      ) : null}
     </svg>
   );
 }

@@ -1,0 +1,154 @@
+/*
+ * Button — diadaptasi dari dealtech-ui-for-public-component
+ * (elements/Button/ButtonV1). Warna dan font mengikuti Figma JHIC.
+ */
+
+.btn {
+  --btn-bg: var(--color-primary);
+  --btn-bg-hover: var(--color-primary-dark);
+  --btn-fg: #ffffff;
+  --btn-border: var(--btn-bg);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 28px;
+  border: 1px solid var(--btn-border);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+  border-color: var(--btn-bg-hover);
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.btn svg {
+  flex-shrink: 0;
+}
+
+.btn--sm {
+  min-height: 40px;
+  padding: 0 20px;
+  font-size: 0.875rem;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--outline {
+  --btn-bg: #ffffff;
+  --btn-fg: var(--color-primary);
+  --btn-border: var(--color-primary);
+  --btn-bg-hover: rgba(0, 100, 148, 0.08);
+}
+
+.btn--outline:hover {
+  border-color: var(--color-primary);
+}
+
+/* Tombol lime dengan bulatan panah (navbar & hero) */
+.btn--accent {
+  --btn-bg: var(--color-lime);
+  --btn-bg-hover: #c3dc6c;
+  --btn-fg: var(--color-lime-ink);
+
+  gap: 10px;
+  min-height: 0;
+  padding: 4px 4px 4px 22px;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.btn--accent.btn--block {
+  justify-content: space-between;
+}
+
+.btn--accent.btn--sm {
+  padding-left: 16px;
+  font-size: 0.75rem;
+}
+
+.btn__bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #0c1821;
+  color: #ffffff;
+}
+
+.btn--sm .btn__bubble {
+  width: 32px;
+  height: 32px;
+}
+
+/* Tautan teks dengan panah ("Lihat semua ...") */
+.btn--link {
+  --btn-bg: transparent;
+  --btn-bg-hover: transparent;
+  --btn-fg: var(--color-accent);
+  --btn-border: transparent;
+
+  min-height: 0;
+  padding: 4px 0;
+  font-size: 0.984rem;
+  letter-spacing: 0.01em;
+}
+
+.btn--link:hover {
+  color: var(--color-primary);
+  transform: none;
+}
+
+.btn--link svg {
+  transition: transform 0.2s ease;
+}
+
+.btn--link:hover svg {
+  transform: translateX(3px);
+}
+
+@media (max-width: 640px) {
+  .btn:where(:not(.btn--accent, .btn--link)) {
+    min-height: 46px;
+    padding: 0 22px;
+    font-size: 0.9375rem;
+  }
+
+  .btn--sm:where(:not(.btn--accent, .btn--link)) {
+    min-height: 40px;
+    padding: 0 18px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn--link svg {
+    transition: none;
+  }
+}

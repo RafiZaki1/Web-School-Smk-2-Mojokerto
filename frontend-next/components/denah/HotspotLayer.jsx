@@ -1,44 +1,45 @@
 "use client";
 
-export default function HotspotLayer({ rooms = [], selectedRoom = null, onSelectRoom }) {
+import { roomKey } from "@/lib/denah/meta";
+
+/**
+ * Area klik tiap ruangan di atas gambar denah. Ruangan pada kategori aktif
+ * diberi warna tipis; ruangan terpilih disorot biru, ruangan asal rute hijau.
+ */
+export default function HotspotLayer({ rooms, highlightKeys, selectedKey, originKey, onSelect }) {
   return (
-    <div className="hotspot-layer absolute inset-0 z-15 pointer-events-auto">
+    <div className="absolute inset-0 z-20">
       {rooms.map((room) => {
-        if (!room.hotspot || typeof room.hotspot.x === "undefined") return null;
-
-        const isSelected =
-          selectedRoom &&
-          (selectedRoom.id === room.id || selectedRoom.slug === room.slug);
-
-        const style = {
-          left: `${room.hotspot.x}%`,
-          top: `${room.hotspot.y}%`,
-          width: `${room.hotspot.width}%`,
-          height: `${room.hotspot.height}%`,
-        };
-
-        const className = isSelected
-          ? "absolute border-2 border-blue-700 bg-blue-600/35 ring-2 ring-blue-400/60 rounded-[3px] shadow-md z-30 cursor-pointer group transition-all duration-150"
-          : "absolute border border-blue-500/20 hover:border-2 hover:border-sky-500 hover:bg-sky-400/30 rounded-[3px] transition-all duration-150 cursor-pointer group z-10";
+        const spot = room.hotspot;
+        if (!spot || spot.x == null) return null;
+        const key = roomKey(room);
+        const isSelected = key === selectedKey;
+        const isOrigin = !isSelected && key === originKey;
+        const isHighlighted = highlightKeys?.has(key);
 
         return (
-          <div
+          <button
             key={room.id}
-            onClick={() => onSelectRoom(room)}
-            style={style}
-            className={className}
+            type="button"
+            onClick={() => onSelect(room)}
+            aria-label={room.name}
+            aria-pressed={isSelected}
             title={room.name}
+            style={{ left: `${spot.x}%`, top: `${spot.y}%`, width: `${spot.width}%`, height: `${spot.height}%` }}
+            className={`group absolute cursor-pointer rounded-[3px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue ${
+              isSelected
+                ? "z-10 border-2 border-[#1d4ed8] bg-[#2563eb]/30"
+                : isOrigin
+                  ? "border-2 border-dashed border-[#16a34a] bg-[#16a34a]/15 hover:bg-[#16a34a]/25"
+                  : isHighlighted
+                  ? "border border-[#2563eb]/60 bg-[#2563eb]/15 hover:bg-[#2563eb]/25"
+                  : "border border-transparent hover:border-[#2563eb]/70 hover:bg-[#2563eb]/15"
+            }`}
           >
-            {/* Tooltip on Hover */}
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:flex flex-col items-center whitespace-nowrap rounded-lg bg-slate-900/95 backdrop-blur-xs px-2.5 py-1 text-[11px] font-semibold text-white shadow-xl z-40 pointer-events-none">
-              <span>{room.name}</span>
-              {room.building_name && (
-                <span className="text-[9px] text-slate-300 font-normal">
-                  {room.building_name}
-                </span>
-              )}
-            </div>
-          </div>
+            <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-1.5 hidden -translate-x-1/2 rounded-md bg-[#0f172a] px-2 py-1 text-[11px] font-semibold whitespace-nowrap text-white group-hover:block group-focus-visible:block">
+              {room.name}
+            </span>
+          </button>
         );
       })}
     </div>

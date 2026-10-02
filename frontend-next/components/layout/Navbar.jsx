@@ -1,248 +1,205 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { ChevronDown, TextAlignEnd, X } from "lucide-react";
+import Button from "@/components/ui/Button";
+import { MAIN_NAV, PPDB_HREF } from "@/lib/data/navigation";
 
-export default function Navbar({ variant = "transparent", schoolName = "SMK NEGERI 2 KOTA MOJOKERTO" }) {
+const EMBLEM_SRC = "/images/brand/emblem-smkn2.png";
+
+function Brand({ schoolName }) {
+  return (
+    <Link href="/" className="site-header__brand" aria-label={schoolName}>
+      <img src={EMBLEM_SRC} alt="" width={52} height={52} />
+      <span className="site-header__brand-text">
+        <strong>SMK NEGERI 2</strong>
+        <span>KOTA MOJOKERTO</span>
+      </span>
+    </Link>
+  );
+}
+
+function MegaLink({ item, onNavigate, className }) {
+  const Icon = item.icon;
+  return (
+    <Link href={item.href} className={className} onClick={onNavigate}>
+      <span className="site-header__mega-icon">
+        <Icon size={20} aria-hidden="true" />
+      </span>
+      <span className="site-header__mega-copy">
+        <strong>{item.label}</strong>
+        <small>{item.description}</small>
+      </span>
+    </Link>
+  );
+}
+
+export default function Navbar({ variant = "transparent", schoolName = "SMK Negeri 2 Kota Mojokerto" }) {
+  const headerRef = useRef(null);
+  const id = useId();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [infoDropdownOpen, setInfoDropdownOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(null);
 
   useEffect(() => {
-    if (variant === "solid") {
-      setIsScrolled(true);
-      return;
-    }
-
-    const handleScroll = () => {
-      if (window.scrollY > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    if (variant !== "transparent") return;
+    const onScroll = () => setIsScrolled(window.scrollY > 30);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [variant]);
 
-  const navBackgroundClass =
-    variant === "solid"
-      ? "bg-[#05529E] text-white shadow-md"
-      : isScrolled
-      ? "bg-slate-950/85 backdrop-blur-md border-b border-white/10 text-white shadow-lg"
-      : "bg-transparent text-white";
+  useEffect(() => {
+    const onPointerDown = (event) => {
+      if (!headerRef.current?.contains(event.target)) setOpenMenu(null);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpenMenu(null);
+        setDrawerOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [drawerOpen]);
+
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+    setMobileMenu(null);
+  };
+
+  const isLight = variant === "light" || isScrolled;
 
   return (
-    <header
-      id="main-header"
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${navBackgroundClass}`}
-    >
-      <nav className="mx-auto flex w-full max-w-[1280px] items-center justify-between px-6 lg:px-8 py-3.5 sm:py-4">
-        {/* Left: School Brand Logo */}
-        <Link href="/" className="flex items-center transition hover:opacity-90">
-          <img
-            src="/smk2.png"
-            alt={schoolName}
-            className="h-9 sm:h-11 w-auto max-w-[220px] sm:max-w-[280px] object-contain drop-shadow-md"
-          />
-        </Link>
+    <>
+      <header ref={headerRef} className={`site-header ${isLight ? "site-header--light" : "site-header--transparent"}`}>
+        <div className="page-container site-header__inner">
+          <Brand schoolName={schoolName} />
 
-        {/* Center: Desktop Navigation Links */}
-        <div className="hidden items-center gap-6 lg:gap-10 text-xs sm:text-[13px] font-bold tracking-widest text-white md:flex">
-          <Link href="/#beranda" className="transition hover:text-cyan-300 uppercase">
-            HOME
-          </Link>
-          <Link href="/#profil" className="transition hover:text-cyan-300 uppercase">
-            PROFIL
-          </Link>
-          <Link href="/#jurusan" className="transition hover:text-cyan-300 uppercase">
-            JURUSAN
-          </Link>
-
-          {/* Dropdown Menu: INFORMASI */}
-          <div
-            className="relative flex items-center py-2 select-none"
-            onMouseEnter={() => setInfoDropdownOpen(true)}
-            onMouseLeave={() => setInfoDropdownOpen(false)}
-          >
-            <button
-              type="button"
-              onClick={() => setInfoDropdownOpen(!infoDropdownOpen)}
-              className={`flex items-center gap-1.5 uppercase font-bold tracking-widest transition cursor-pointer focus:outline-none ${
-                infoDropdownOpen ? "text-cyan-300" : "text-white hover:text-cyan-300"
-              }`}
-            >
-              <span>INFORMASI</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className={`h-4 w-4 transition duration-200 pointer-events-none ${
-                  infoDropdownOpen ? "rotate-180" : ""
-                }`}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-
-            {infoDropdownOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 min-w-[210px] z-50">
-                <div className="rounded-2xl bg-white p-2 shadow-2xl ring-1 ring-slate-900/10 text-slate-800 tracking-normal normal-case font-medium">
-                  <Link
-                    href="/#informasi"
-                    onClick={() => setInfoDropdownOpen(false)}
-                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-sky-50 hover:text-blue-700 transition"
+          <nav className="site-header__nav" aria-label="Menu utama">
+            {MAIN_NAV.map((item, index) =>
+              item.children ? (
+                <div
+                  key={item.label}
+                  className={`site-header__group${openMenu === item.label ? " is-open" : ""}`}
+                  onMouseEnter={() => setOpenMenu(item.label)}
+                  onMouseLeave={() => setOpenMenu(null)}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget)) setOpenMenu(null);
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="site-header__link"
+                    aria-expanded={openMenu === item.label}
+                    aria-controls={`${id}-mega-${index}`}
+                    onClick={() => setOpenMenu(openMenu === item.label ? null : item.label)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-blue-600 shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                    {item.label}
+                    <ChevronDown size={16} strokeWidth={2.5} aria-hidden="true" />
+                  </button>
+                  <div className="site-header__mega" id={`${id}-mega-${index}`}>
+                    {item.children.map((child) => (
+                      <MegaLink
+                        key={child.label}
+                        item={child}
+                        className="site-header__mega-link"
+                        onNavigate={() => setOpenMenu(null)}
                       />
-                    </svg>
-                    <span>Berita & Informasi</span>
-                  </Link>
-                  <Link
-                    href="/#denah"
-                    onClick={() => setInfoDropdownOpen(false)}
-                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-sky-50 hover:text-blue-700 transition"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-emerald-600 shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                      />
-                    </svg>
-                    <span>Denah Interaktif</span>
-                  </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <Link key={item.label} href={item.href} className="site-header__link">
+                  {item.label}
+                </Link>
+              )
             )}
+          </nav>
+
+          <div className="site-header__actions">
+            <Button href={PPDB_HREF} variant="accent">
+              Informasi PPDB
+            </Button>
           </div>
 
-          <Link href="/#kesiswaan" className="transition hover:text-cyan-300 uppercase">
-            KESISWAAN
-          </Link>
-        </div>
-
-        {/* Right: Informasi PPDB Button */}
-        <div className="hidden sm:flex items-center gap-3">
           <button
             type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent("open-ppdb-modal"))}
-            className="group inline-flex items-center gap-2.5 rounded-full bg-[#a3e635] hover:bg-[#bef264] py-1.5 pl-4 pr-1.5 text-xs font-black text-slate-950 shadow-lg shadow-lime-400/20 transition-all hover:scale-105 cursor-pointer"
+            className="site-header__menu-button"
+            aria-label="Buka menu"
+            aria-expanded={drawerOpen}
+            aria-controls={`${id}-drawer`}
+            onClick={() => setDrawerOpen(true)}
           >
-            <span>Informasi PPDB</span>
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-950 text-white transition group-hover:scale-105">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
-                <path
-                  fillRule="evenodd"
-                  d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
+            <TextAlignEnd size={24} aria-hidden="true" />
+          </button>
+        </div>
+      </header>
+
+      <div className={`site-header__overlay${drawerOpen ? " is-open" : ""}`} onClick={closeDrawer} aria-hidden="true" />
+      <aside
+        id={`${id}-drawer`}
+        className={`site-header__drawer${drawerOpen ? " is-open" : ""}`}
+        aria-hidden={!drawerOpen}
+        inert={!drawerOpen}
+        aria-label="Menu seluler"
+      >
+        <div className="site-header__drawer-head">
+          <img src={EMBLEM_SRC} alt={schoolName} width={40} height={40} />
+          <button type="button" className="site-header__drawer-close" onClick={closeDrawer} aria-label="Tutup menu">
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
 
-        {/* Mobile Menu Hamburger Button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden flex items-center justify-center p-2 rounded-xl text-white hover:bg-white/10"
-          aria-label="Menu"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {mobileMenuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        <nav className="site-header__drawer-nav">
+          {MAIN_NAV.map((item, index) =>
+            item.children ? (
+              <div key={item.label}>
+                <button
+                  type="button"
+                  className="site-header__drawer-link"
+                  aria-expanded={mobileMenu === item.label}
+                  aria-controls={`${id}-mobile-${index}`}
+                  onClick={() => setMobileMenu(mobileMenu === item.label ? null : item.label)}
+                >
+                  {item.label}
+                  <ChevronDown size={18} aria-hidden="true" />
+                </button>
+                {mobileMenu === item.label && (
+                  <div className="site-header__drawer-sub" id={`${id}-mobile-${index}`}>
+                    {item.children.map((child) => (
+                      <MegaLink key={child.label} item={child} className="site-header__drawer-sublink" onNavigate={closeDrawer} />
+                    ))}
+                  </div>
+                )}
+              </div>
             ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
-      </nav>
+              <Link key={item.label} href={item.href} className="site-header__drawer-link" onClick={closeDrawer}>
+                {item.label}
+              </Link>
+            )
+          )}
+        </nav>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-950/95 backdrop-blur-xl border-b border-white/10 px-6 py-4 space-y-3 text-white">
-          <Link
-            href="/#beranda"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-bold tracking-wider hover:text-cyan-300"
-          >
-            HOME
-          </Link>
-          <Link
-            href="/#profil"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-bold tracking-wider hover:text-cyan-300"
-          >
-            PROFIL
-          </Link>
-          <Link
-            href="/#jurusan"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-bold tracking-wider hover:text-cyan-300"
-          >
-            JURUSAN
-          </Link>
-          <Link
-            href="/#denah"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-bold tracking-wider text-cyan-300 hover:text-white"
-          >
-            DENAH INTERAKTIF
-          </Link>
-          <Link
-            href="/#informasi"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-bold tracking-wider hover:text-cyan-300"
-          >
-            BERITA & INFORMASI
-          </Link>
-          <Link
-            href="/#kesiswaan"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm font-bold tracking-wider hover:text-cyan-300"
-          >
-            KESISWAAN
-          </Link>
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.dispatchEvent(new CustomEvent("open-ppdb-modal"));
-              }}
-              className="inline-flex items-center gap-2 rounded-full bg-[#a3e635] text-slate-950 px-5 py-2 text-xs font-black w-full justify-center shadow-md cursor-pointer"
-            >
-              <span>INFORMASI PPDB</span>
-              <span>↗</span>
-            </button>
-          </div>
-        </div>
-      )}
-    </header>
+        <Button href={PPDB_HREF} variant="accent" block className="site-header__drawer-cta" onClick={closeDrawer}>
+          Informasi PPDB
+        </Button>
+      </aside>
+    </>
   );
 }

@@ -29,9 +29,9 @@ export default function ArcCarousel() {
       const isTablet = containerWidth < 1024;
       const absP = Math.abs(p);
 
-      const baseW = isMobile ? (containerWidth < 390 ? 114 : 122) : isTablet ? 152 : 177.78;
-      const baseH = isMobile ? (containerWidth < 390 ? 120 : 128) : isTablet ? 160 : 186.67;
-      const gap = isMobile ? 8 : isTablet ? 13 : 17;
+      const baseW = isMobile ? (containerWidth < 390 ? 114 : 122) : isTablet ? 160 : 200;
+      const baseH = isMobile ? (containerWidth < 390 ? 120 : 128) : isTablet ? 168 : 210;
+      const gap = isMobile ? 8 : 12;
       const slotDistance = baseW + gap;
 
       const containerCenterX = containerWidth / 2;
@@ -153,16 +153,11 @@ export default function ArcCarousel() {
   }, []);
 
   return (
-    <div id="arc-carousel-section" className="relative w-full mt-8 sm:mt-11 pb-10 sm:pb-14 min-h-[340px]">
-      {/* Soft Edge Fade Masks */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 z-30 bg-gradient-to-r from-[#022140]/90 via-[#022140]/40 to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 z-30 bg-gradient-to-l from-[#022140]/90 via-[#022140]/40 to-transparent" />
-
-      {/* Main 3D Canvas */}
+    <div id="arc-carousel-section" className="relative mt-8 w-full pb-8 sm:mt-10 sm:pb-12">
       <div
         id="arc-carousel"
         ref={containerRef}
-        className="relative w-full overflow-visible h-[280px] sm:h-[295px]"
+        className="relative h-[190px] w-full overflow-visible sm:h-[270px] lg:h-[320px]"
       />
     </div>
   );

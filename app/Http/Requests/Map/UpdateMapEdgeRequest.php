@@ -16,7 +16,9 @@ class UpdateMapEdgeRequest extends FormRequest
         return [
             'from_node_id' => ['sometimes', 'required', 'integer', 'exists:map_nodes,id'],
             'to_node_id' => ['sometimes', 'required', 'integer', 'exists:map_nodes,id', 'different:from_node_id'],
-            'distance' => ['sometimes', 'required', 'numeric', 'min:0'],
+            'name' => ['nullable', 'string', 'max:255'],
+            // Kosong/0 = dihitung otomatis dari koordinat node saat merute
+            'distance' => ['nullable', 'numeric', 'min:0'],
             'is_walkable' => ['nullable', 'boolean'],
         ];
     }

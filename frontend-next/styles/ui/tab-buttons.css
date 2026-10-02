@@ -1,0 +1,134 @@
+/*
+ * TabButtons — diadaptasi dari dealtech-ui-for-public-component
+ * (elements/TabButtons/StyleV1). Tampilan pil mengikuti filter
+ * kategori "Berita & Artikel" di Figma JHIC.
+ */
+
+.tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tab-buttons__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 46px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 999px;
+  background: #9a9191;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tab-buttons__button:hover {
+  background: #857b7b;
+}
+
+.tab-buttons__button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.tab-buttons__button--active,
+.tab-buttons__button--active:hover {
+  background: var(--color-primary);
+}
+
+/* Mobile: satu baris yang bisa digeser, bukan menumpuk */
+@media (max-width: 640px) {
+  .tab-buttons {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-inline: -16px;
+    padding-inline: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-buttons::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-buttons__button {
+    flex-shrink: 0;
+    height: 40px;
+    padding: 0 18px;
+    font-size: 0.875rem;
+  }
+}
+
+/* Varian outline: putih bergaris, aktif berwarna (Berita, BKK, SPMB, Aspirasi) */
+.tab-buttons--outline,
+.tab-buttons--outline-dark {
+  --tab-active: var(--color-blue);
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.tab-buttons--outline-dark {
+  --tab-active: #0b2135;
+}
+
+.tab-buttons--outline .tab-buttons__button,
+.tab-buttons--outline-dark .tab-buttons__button {
+  height: 42px;
+  padding: 0 22px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.tab-buttons--outline .tab-buttons__button:hover,
+.tab-buttons--outline-dark .tab-buttons__button:hover {
+  background: #f8fafc;
+}
+
+.tab-buttons--outline .tab-buttons__button--active,
+.tab-buttons--outline .tab-buttons__button--active:hover,
+.tab-buttons--outline-dark .tab-buttons__button--active,
+.tab-buttons--outline-dark .tab-buttons__button--active:hover {
+  border-color: var(--tab-active);
+  background: var(--tab-active);
+  color: #ffffff;
+}
+
+.tab-buttons--outline-dark .tab-buttons__button {
+  height: 44px;
+  padding: 0 26px;
+  font-size: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .tab-buttons--outline-dark {
+    gap: 16px;
+  }
+
+  .tab-buttons--outline-dark .tab-buttons__button {
+    height: 60px;
+    padding: 0 34px;
+    font-size: 1.375rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tab-buttons--outline .tab-buttons__button {
+    height: 52px;
+    padding: 0 28px;
+    font-size: 1.125rem;
+  }
+}

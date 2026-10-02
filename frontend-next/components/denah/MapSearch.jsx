@@ -1,104 +1,133 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { Search, X } from "lucide-react";
+import { categoryMeta } from "@/lib/denah/meta";
 
-export default function MapSearch({ onSearch, searchResults = [], onSelectResult }) {
+/** Pencarian ruangan dengan saran otomatis (debounce 250ms, navigasi keyboard). */
+export default function MapSearch({ onSearch, onSelect }) {
+  const listId = useId();
   const [query, setQuery] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [results, setResults] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [highlight, setHighlight] = useState(0);
   const containerRef = useRef(null);
 
-  // Debounced search
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onSearch(query);
-      if (query.trim().length > 0) {
-        setShowDropdown(true);
-      } else {
-        setShowDropdown(false);
-      }
-    }, 300);
-
+    if (!query.trim()) return undefined;
+    const timer = setTimeout(async () => {
+      const found = await onSearch(query);
+      setResults(found.slice(0, 8));
+      setHighlight(0);
+      setOpen(true);
+    }, 250);
     return () => clearTimeout(timer);
   }, [query, onSearch]);
 
-  // Click outside to close dropdown
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setShowDropdown(false);
-      }
+    const onPointerDown = (event) => {
+      if (!containerRef.current?.contains(event.target)) setOpen(false);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
   }, []);
 
-  const handleClear = () => {
+  const choose = (room) => {
+    onSelect(room);
     setQuery("");
-    setShowDropdown(false);
-    onSearch("");
+    setResults([]);
+    setOpen(false);
   };
 
+  const onKeyDown = (event) => {
+    if (!open || !results.length) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setHighlight((index) => (index + 1) % results.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setHighlight((index) => (index - 1 + results.length) % results.length);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      choose(results[highlight]);
+    } else if (event.key === "Escape") {
+      setOpen(false);
+    }
+  };
+
+  const showList = open && query.trim().length > 0;
+
   return (
-    <div ref={containerRef} className="relative w-full md:w-80">
-      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </div>
-
+    <div ref={containerRef} className="relative w-full sm:max-w-[320px]">
+      <Search size={16} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[#94a3b8]" aria-hidden="true" />
       <input
-        type="text"
+        type="search"
+        role="combobox"
+        aria-expanded={showList}
+        aria-controls={listId}
+        aria-autocomplete="list"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onFocus={() => {
-          if (searchResults.length > 0) setShowDropdown(true);
+        onChange={(event) => {
+          setQuery(event.target.value);
+          if (!event.target.value.trim()) {
+            setResults([]);
+            setOpen(false);
+          }
         }}
+        onFocus={() => results.length && setOpen(true)}
+        onKeyDown={onKeyDown}
         placeholder="Cari ruangan atau fasilitas..."
-        className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-9 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 focus:border-[#05529E] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#05529E]/15 shadow-xs transition"
+        aria-label="Cari ruangan atau fasilitas"
+        className="h-11 w-full rounded-xl border border-[#e2e8f0] bg-white pr-10 pl-10 text-sm text-ink outline-none placeholder:text-[#94a3b8] focus:border-blue focus:ring-2 focus:ring-blue/15 [&::-webkit-search-cancel-button]:hidden"
       />
-
-      {query.length > 0 && (
+      {query ? (
         <button
           type="button"
-          onClick={handleClear}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+          onClick={() => {
+            setQuery("");
+            setResults([]);
+            setOpen(false);
+          }}
+          aria-label="Hapus pencarian"
+          className="absolute top-1/2 right-2 flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-[#94a3b8] hover:bg-[#f1f5f9] hover:text-ink"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X size={15} aria-hidden="true" />
         </button>
-      )}
+      ) : null}
 
-      {/* Autocomplete Dropdown */}
-      {showDropdown && searchResults.length > 0 && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 max-h-64 overflow-y-auto rounded-2xl bg-white p-2 shadow-2xl border border-slate-200 divide-y divide-slate-100 text-xs">
-          {searchResults.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => {
-                onSelectResult(item);
-                setShowDropdown(false);
-              }}
-              className="flex items-center justify-between p-2.5 rounded-xl hover:bg-sky-50 cursor-pointer transition"
-            >
-              <div>
-                <p className="font-bold text-slate-900">{item.name}</p>
-                <p className="text-[11px] text-slate-500">
-                  {item.building_name || (item.category ? item.category.name : "")}
-                </p>
-              </div>
-              <span className="text-[10px] font-semibold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-full">
-                {item.category ? item.category.name : "Ruangan"}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
+      {showList ? (
+        <ul
+          id={listId}
+          role="listbox"
+          className="absolute top-full right-0 left-0 z-40 mt-2 max-h-72 overflow-y-auto rounded-xl border border-[#e2e8f0] bg-white p-1.5 shadow-[0_16px_32px_rgba(15,23,42,0.12)]"
+        >
+          {results.length ? (
+            results.map((room, index) => (
+              <li
+                key={room.id}
+                role="option"
+                aria-selected={index === highlight}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  choose(room);
+                }}
+                onMouseEnter={() => setHighlight(index)}
+                className={`flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 ${index === highlight ? "bg-[#eff6ff]" : ""}`}
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold text-ink">{room.name}</span>
+                  <span className="block truncate text-xs text-[#64748b]">{room.building_name}</span>
+                </span>
+                <span className="shrink-0 rounded-full bg-[#eff6ff] px-2 py-0.5 text-[11px] font-semibold text-blue">
+                  {categoryMeta(room.category?.slug).label}
+                </span>
+              </li>
+            ))
+          ) : (
+            <li className="px-3 py-3 text-sm text-[#64748b]">Ruangan tidak ditemukan.</li>
+          )}
+        </ul>
+      ) : null}
     </div>
   );
 }

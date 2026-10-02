@@ -25,6 +25,19 @@ trait FormatsImageUrl
             return $path;
         }
 
+        // Aset bawaan FE (mis. "/images/jurusan/rpl.jpg") dilayani langsung oleh Next.js
+        if (str_starts_with($path, '/')) {
+            return $path;
+        }
+
         return url(Storage::url($path));
+    }
+
+    /**
+     * Format a list of stored paths (gallery) into public URLs.
+     */
+    protected function formatImageUrls(?array $paths): array
+    {
+        return array_values(array_filter(array_map(fn ($path) => $this->formatImageUrl($path), $paths ?? [])));
     }
 }

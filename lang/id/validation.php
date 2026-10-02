@@ -1,0 +1,45 @@
+<?php
+
+return [
+    'accepted' => ':Attribute harus diterima.',
+    'after_or_equal' => ':Attribute harus tanggal setelah atau sama dengan :date.',
+    'array' => ':Attribute harus berupa daftar.',
+    'boolean' => ':Attribute harus bernilai ya atau tidak.',
+    'date' => ':Attribute bukan tanggal yang valid.',
+    'different' => ':Attribute dan :other harus berbeda.',
+    'email' => ':Attribute harus berupa alamat email yang valid.',
+    'exists' => ':Attribute yang dipilih tidak ditemukan.',
+    'image' => ':Attribute harus berupa gambar.',
+    'in' => ':Attribute yang dipilih tidak valid.',
+    'integer' => ':Attribute harus berupa bilangan bulat.',
+    'max' => [
+        'array' => ':Attribute maksimal berisi :max item.',
+        'file' => ':Attribute maksimal berukuran :max kilobyte.',
+        'numeric' => ':Attribute maksimal bernilai :max.',
+        'string' => ':Attribute maksimal :max karakter.',
+    ],
+    'mimes' => ':Attribute harus berformat: :values.',
+    'min' => [
+        'array' => ':Attribute minimal berisi :min item.',
+        'file' => ':Attribute minimal berukuran :min kilobyte.',
+        'numeric' => ':Attribute minimal bernilai :min.',
+        'string' => ':Attribute minimal :min karakter.',
+    ],
+    'numeric' => ':Attribute harus berupa angka.',
+    'required' => ':Attribute wajib diisi.',
+    'required_if' => ':Attribute wajib diisi bila :other adalah :value.',
+    'string' => ':Attribute harus berupa teks.',
+    'unique' => ':Attribute sudah digunakan.',
+    'uploaded' => ':Attribute gagal diunggah.',
+
+    'attributes' => [
+        'title' => 'judul',
+        'name' => 'nama',
+        'category' => 'kategori',
+        'detail' => 'detail',
+        'login' => 'username atau email',
+        'password' => 'password',
+        'from' => 'lokasi asal',
+        'to' => 'lokasi tujuan',
+    ],
+];

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 70" fill="none">
+  <!-- Coffee Cup Silhouette & Bean -->
+  <g transform="translate(10, 8)">
+    <!-- Steam -->
+    <path d="M 28 0 C 26 5 30 7 28 12" stroke="#71717a" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M 32 2 C 34 6 30 9 33 13" stroke="#71717a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <!-- Coffee Bean -->
+    <ellipse cx="30" cy="18" rx="10" ry="7" fill="#854d0e"/>
+    <path d="M 24 18 Q 30 14 36 18" stroke="#fef08a" stroke-width="1.5" fill="none"/>
+    <!-- Cup Rim & Body -->
+    <path d="M 12 18 C 16 12 44 12 48 18 C 48 24 44 26 30 26 C 16 26 12 24 12 18 Z" stroke="#3b1706" stroke-width="3" fill="none"/>
+    <path d="M 12 20 C 14 36 20 48 42 48 C 50 48 54 42 54 36" stroke="#3b1706" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  </g>
+  <!-- Text Block -->
+  <g transform="translate(74, 12)">
+    <text x="0" y="30" font-family="'Arial', 'Segoe UI', sans-serif" font-size="30" letter-spacing="-0.5">
+      <tspan font-weight="900" fill="#261005">Koffie</tspan>
+      <tspan font-weight="300" fill="#71717a">Soft</tspan>
+    </text>
+    <!-- Underline -->
+    <line x1="0" y1="36" x2="190" y2="36" stroke="#261005" stroke-width="1.5"/>
+    <!-- Subtitle -->
+    <text x="0" y="47" font-family="'Arial', sans-serif" font-weight="bold" font-size="8.5" fill="#18181b" letter-spacing="0.5">Dapur Software &amp; Konsultan Sistem</text>
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Dark Brown Square Card -->
+  <rect width="120" height="120" rx="10" fill="#3b1706"/>
+  <!-- Gold Sunburst / Wings Ornament -->
+  <g transform="translate(60, 48)">
+    <path d="M 0 -32 L 6 -12 L 26 -26 L 16 -6 L 34 0 L 16 6 L 26 26 L 6 12 L 0 32 L -6 12 L -26 26 L -16 6 L -34 0 L -16 -6 L -26 -26 L -6 -12 Z" fill="#eab308" stroke="#ca8a04" stroke-width="1"/>
+    <!-- Outer Ring -->
+    <circle cx="0" cy="0" r="19" fill="#260e04" stroke="#facc15" stroke-width="2"/>
+    <!-- Cocoa Pod in Center -->
+    <ellipse cx="0" cy="1" rx="9" ry="13" fill="#854d0e"/>
+    <path d="M -6 1 Q 0 -11 6 1 Q 0 13 -6 1" fill="#ca8a04" opacity="0.6"/>
+    <!-- Cokelat Arc text -->
+    <text x="0" y="-7" font-family="'Arial Black', sans-serif" font-weight="900" font-size="5" fill="#fef08a" text-anchor="middle" letter-spacing="1">COKELAT</text>
+  </g>
+  <!-- Text: Mojopahit (Javanese ethnic font style) -->
+  <text x="60" y="104" font-family="'Papyrus', 'Copperplate', 'Georgia', serif" font-weight="bold" font-size="16" fill="#eab308" text-anchor="middle" letter-spacing="1.5">Mojopahit</text>
+</svg>

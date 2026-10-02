@@ -38,7 +38,7 @@ class ChatbotController extends Controller
         $lastRequestKey = 'chatbot_last_req:' . $ip;
         if (Cache::has($lastRequestKey)) {
             return ApiResponse::error(
-                'Mohon tunggu sejenak sebelum mengirim pesan berikutnya.',
+                'Mohon tunggu beberapa saat lagi ya, SADA sedang memproses pesan Anda...',
                 ['retry_after' => 3],
                 Response::HTTP_TOO_MANY_REQUESTS
             );
@@ -49,7 +49,7 @@ class ChatbotController extends Controller
         if (RateLimiter::tooManyAttempts($shortLimitKey, 5)) {
             $seconds = RateLimiter::availableIn($shortLimitKey);
             return ApiResponse::error(
-                "Aktivitas terlalu cepat. Harap tunggu {$seconds} detik.",
+                "Mohon tunggu beberapa saat lagi ({$seconds} detik), SADA sedang menyiapkan jawaban untuk Anda...",
                 ['retry_after' => $seconds],
                 Response::HTTP_TOO_MANY_REQUESTS
             );
@@ -59,7 +59,7 @@ class ChatbotController extends Controller
         if (RateLimiter::tooManyAttempts($hourlyLimitKey, 40)) {
             $seconds = RateLimiter::availableIn($hourlyLimitKey);
             return ApiResponse::error(
-                "Batas interaksi wajar tercapai. Harap tunggu beberapa saat lagi.",
+                "Batas interaksi wajar tercapai. Mohon tunggu beberapa saat lagi ya agar SADA dapat melayani kembali.",
                 ['retry_after' => $seconds],
                 Response::HTTP_TOO_MANY_REQUESTS
             );

@@ -1,39 +1,50 @@
-export default function MarkerLayer({ originPoint, destPoint, showRoute }) {
-  if (!showRoute) return null;
+import { MapPin } from "lucide-react";
+
+/**
+ * Penanda rute: titik awal (lingkaran), tujuan (pin), dan nomor tiap belokan.
+ * Belokan yang dipilih di panel petunjuk arah diperbesar & berdenyut.
+ */
+export default function MarkerLayer({ origin, dest, steps = [], activeStep = null, onStepClick }) {
+  if (!origin && !dest) return null;
 
   return (
-    <div className="marker-layer absolute inset-0 pointer-events-none z-25">
-      {/* Origin Start Marker */}
-      {originPoint && (
-        <div
-          style={{ left: `${originPoint.x}%`, top: `${originPoint.y}%` }}
-          className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none"
-        >
-          <div className="h-6 w-6 rounded-full bg-blue-500/30 animate-ping absolute" />
-          <div className="h-4 w-4 rounded-full bg-white border-2 border-[#05529E] shadow-xl relative z-10 flex items-center justify-center">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#05529E]" />
-          </div>
-        </div>
-      )}
+    <div className="pointer-events-none absolute inset-0 z-30">
+      {steps.map((step, index) => {
+        if (step.type === "depart" || step.type === "arrive") return null;
+        const isActive = index === activeStep;
+        return (
+          <button
+            key={step.index}
+            type="button"
+            onClick={() => onStepClick?.(index)}
+            aria-label={`Langkah ${step.index}: ${step.title}`}
+            style={{ left: `${step.point.x}%`, top: `${step.point.y}%` }}
+            className={`pointer-events-auto absolute flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-2 border-white font-bold text-white shadow-[0_2px_6px_rgba(15,23,42,0.35)] transition-all ${
+              isActive ? "z-10 h-7 w-7 bg-[#ea580c] text-[12px] ring-4 ring-[#ea580c]/30 motion-safe:animate-pulse" : "h-5 w-5 bg-[#1d4ed8] text-[10px] hover:scale-110"
+            }`}
+          >
+            {step.index}
+          </button>
+        );
+      })}
 
-      {/* Destination Target Marker (Location Pin) */}
-      {destPoint && (
-        <div
-          style={{ left: `${destPoint.x}%`, top: `${destPoint.y}%` }}
-          className="absolute -translate-x-1/2 -translate-y-full flex flex-col items-center pointer-events-none"
-        >
-          <div className="h-8 w-8 rounded-full bg-[#05529E] text-white shadow-2xl flex items-center justify-center border-2 border-white animate-bounce">
-            <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-          <div className="w-2 h-1 bg-slate-900/30 rounded-full blur-2xs mt-0.5" />
-        </div>
-      )}
+      {origin ? (
+        <span
+          style={{ left: `${origin.x}%`, top: `${origin.y}%` }}
+          className={`absolute flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] bg-white shadow-[0_2px_6px_rgba(22,163,74,0.45)] ${
+            activeStep === 0 ? "border-[#ea580c] ring-4 ring-[#ea580c]/30" : "border-[#16a34a]"
+          }`}
+        />
+      ) : null}
+
+      {dest ? (
+        <span style={{ left: `${dest.x}%`, top: `${dest.y}%` }} className="absolute -translate-x-1/2 -translate-y-full">
+          <span className="relative flex flex-col items-center">
+            <MapPin size={30} strokeWidth={2.2} className="fill-[#dc2626] text-white drop-shadow-[0_3px_4px_rgba(15,23,42,0.35)]" aria-hidden="true" />
+            <span className="absolute top-[30px] h-2 w-2 rounded-full bg-[#dc2626]/40 motion-safe:animate-ping" />
+          </span>
+        </span>
+      ) : null}
     </div>
   );
 }

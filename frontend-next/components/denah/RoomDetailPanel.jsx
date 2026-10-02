@@ -1,168 +1,85 @@
 "use client";
 
-import { getAssetUrl } from "@/lib/api/client";
+import { useState } from "react";
+import { ArrowRight, Box, Clock3, MapPin, MousePointerClick } from "lucide-react";
+import { ROOM_FALLBACK_IMAGE, categoryMeta } from "@/lib/denah/meta";
 
-export default function RoomDetailPanel({
-  selectedRoom = null,
-  onNavigateToSelected,
-  onSetAsOrigin,
-  onOpenChatbot,
-}) {
-  const roomImageUrl = selectedRoom?.image
-    ? getAssetUrl(selectedRoom.image)
-    : "/hero-bg.jpg";
+function MetaRow({ icon: Icon, label, value }) {
+  return (
+    <div className="grid grid-cols-[130px_1fr] items-start gap-3 py-1.5 text-sm">
+      <dt className="flex items-center gap-2 text-[#475569]">
+        <Icon size={14} className="shrink-0 text-[#94a3b8]" aria-hidden="true" />
+        {label}
+      </dt>
+      <dd className="font-medium text-ink">{value}</dd>
+    </div>
+  );
+}
+
+/** Panel kanan "Tujuan Anda": detail ruangan terpilih (sesuai Figma). */
+export default function RoomDetailPanel({ room }) {
+  const [showFacilities, setShowFacilities] = useState(false);
+  const [imageFailed, setImageFailed] = useState(null);
+
+  if (!room) {
+    return (
+      <aside className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl bg-white p-6 text-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#eff6ff] text-blue">
+          <MousePointerClick size={22} aria-hidden="true" />
+        </span>
+        <p className="mt-3 font-semibold text-ink">Pilih ruangan</p>
+        <p className="mt-1 text-sm text-[#64748b]">Ketuk ruangan pada denah atau gunakan pencarian.</p>
+      </aside>
+    );
+  }
+
+  const facilities = room.facilities ?? [];
+  const image = imageFailed === room.slug || !room.image ? ROOM_FALLBACK_IMAGE : room.image;
 
   return (
-    <div className="lg:col-span-4 flex flex-col h-full space-y-3 justify-between">
-      {/* Room Detail Card */}
-      <div className="bg-white rounded-3xl border border-slate-200/80 p-5 space-y-4 flex flex-col justify-between flex-1 shadow-sm">
-        {selectedRoom ? (
-          <div className="space-y-3.5">
-            {/* Top Pill Badge */}
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center rounded-full bg-[#05529E] text-white px-3 py-1 text-[11px] font-bold tracking-wide shadow-xs">
-                Tujuan Anda
-              </span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800">
-                {selectedRoom.category ? selectedRoom.category.name : "Ruangan"}
-              </span>
-            </div>
+    <aside className="flex flex-col rounded-2xl bg-white p-5 sm:p-6" aria-live="polite">
+      <span className="w-fit rounded-full bg-[#0b2a5b] px-3 py-1 text-xs font-semibold text-white">Tujuan Anda</span>
+      <h3 className="mt-3 text-2xl leading-tight font-bold text-ink">{room.name}</h3>
+      <p className="mt-1 text-base font-semibold text-blue">{room.building_name}</p>
 
-            {/* Room Title & Subtitle */}
-            <div>
-              <h3 className="text-xl font-black text-slate-900 tracking-tight leading-snug">
-                {selectedRoom.name}
-              </h3>
-              <p className="text-xs font-bold text-[#05529E] mt-0.5">
-                {selectedRoom.building_name || "SMKN 2 Mojokerto"}
-              </p>
-            </div>
+      <img
+        key={room.slug}
+        src={image}
+        alt={room.name}
+        onError={() => setImageFailed(room.slug)}
+        className="mt-4 aspect-[16/9] w-full rounded-xl bg-[#eef4fb] object-cover"
+      />
 
-            {/* Photo / Visual Preview Card */}
-            <div className="relative w-full h-32 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-inner group">
-              <img
-                src={roomImageUrl}
-                alt={selectedRoom.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                onError={(e) => {
-                  e.currentTarget.src = "/hero-bg.jpg";
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-white text-[10px] font-bold">
-                <span>{selectedRoom.building_name || "Gedung Sekolah"}</span>
-                <span className="bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded-full">SKANEDA</span>
-              </div>
-            </div>
+      {room.description ? <p className="mt-4 text-sm leading-relaxed text-[#475569]">{room.description}</p> : null}
 
-            {/* Short Description */}
-            <p className="text-xs text-slate-600 leading-relaxed font-normal">
-              {selectedRoom.description ||
-                "Fasilitas pembelajaran resmi pada lingkungan SMK Negeri 2 Kota Mojokerto."}
-            </p>
+      <dl className="mt-4 rounded-xl bg-[#f8fafc] px-4 py-2.5">
+        <MetaRow icon={MapPin} label="Lokasi" value={room.building_name || "-"} />
+        <MetaRow icon={Box} label="Fungsi" value={room.category?.name || categoryMeta(room.category?.slug).label} />
+        <MetaRow icon={Clock3} label="Jam Operasional" value={room.open_hours || "07.00 - 16.00 WIB"} />
+      </dl>
 
-            {/* Meta Details */}
-            <div className="border-t border-slate-100 pt-3 space-y-2 text-xs">
-              <div className="flex items-start justify-between gap-2">
-                <span className="text-slate-500 font-medium shrink-0 flex items-center gap-1.5">
-                  <span>❖</span> Lokasi
-                </span>
-                <span className="text-slate-800 font-semibold text-right">
-                  {selectedRoom.building_name || "-"}
-                </span>
-              </div>
-              <div className="flex items-start justify-between gap-2">
-                <span className="text-slate-500 font-medium shrink-0 flex items-center gap-1.5">
-                  <span>▣</span> Kategori
-                </span>
-                <span className="text-slate-800 font-semibold text-right">
-                  {selectedRoom.category ? selectedRoom.category.name : "Ruangan"}
-                </span>
-              </div>
-              <div className="flex items-start justify-between gap-2">
-                <span className="text-slate-500 font-medium shrink-0 flex items-center gap-1.5">
-                  <span>🕒</span> Jam Operasional
-                </span>
-                <span className="text-slate-800 font-semibold text-right">
-                  {selectedRoom.open_hours || "07.00 - 16.00 WIB"}
-                </span>
-              </div>
-            </div>
+      {showFacilities && facilities.length > 0 ? (
+        <ul className="mt-4 space-y-1.5 text-sm text-ink">
+          {facilities.map((facility) => (
+            <li key={facility.id} className="flex items-center justify-between gap-3 rounded-lg border border-[#e2e8f0] px-3 py-2">
+              <span>{facility.name}</span>
+              {facility.quantity ? <span className="shrink-0 text-xs text-[#64748b]">{facility.quantity} unit</span> : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
-            {/* Facilities Chips */}
-            {selectedRoom.facilities && selectedRoom.facilities.length > 0 && (
-              <div className="pt-1">
-                <p className="text-[11px] font-bold text-slate-700 mb-1.5">Fasilitas:</p>
-                <div className="flex flex-wrap gap-1">
-                  {selectedRoom.facilities.map((fac) => (
-                    <span
-                      key={fac.id}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-medium border border-slate-200"
-                    >
-                      <span>{fac.name}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          /* Empty State */
-          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-3">
-            <div className="h-12 w-12 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
-              🗺️
-            </div>
-            <p className="font-bold text-slate-800 text-sm">Pilih Ruangan</p>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Silakan klik ruangan pada denah atau gunakan pencarian untuk melihat detail informasi.
-            </p>
-          </div>
-        )}
-
-        {/* Dynamic Routing Action Buttons */}
-        <div className="pt-2 space-y-2">
-          {selectedRoom && (
-            <>
-              <button
-                type="button"
-                onClick={() => onNavigateToSelected(selectedRoom)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-[#05529E] hover:bg-[#0766c6] text-white py-2.5 px-4 text-xs font-bold shadow-md hover:shadow-lg transition-all cursor-pointer"
-              >
-                <span>Arahkan Rute ke Sini</span>
-                <span>→</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => onSetAsOrigin(selectedRoom.slug || selectedRoom.id)}
-                className="w-full inline-flex items-center justify-center gap-1.5 rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-700 py-1.5 px-3 text-[11px] font-semibold transition cursor-pointer"
-              >
-                <span>● Mulai Rute dari Sini</span>
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Chatbot Promo Card */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-4 text-xs text-slate-800 flex items-center justify-between gap-3 shadow-sm">
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 font-bold text-slate-900">
-            <span className="text-[#05529E]">💬</span>
-            <span>Butuh bantuan navigasi?</span>
-          </div>
-          <p className="text-[11px] text-slate-600">
-            Tanyakan ruangan atau rute langsung kepada SADA AI.
-          </p>
-        </div>
+      {facilities.length > 0 ? (
         <button
           type="button"
-          onClick={onOpenChatbot}
-          className="shrink-0 text-center py-2 px-3.5 rounded-2xl bg-[#05529E] hover:bg-[#0766c6] text-white font-bold text-xs transition shadow-sm cursor-pointer"
+          onClick={() => setShowFacilities((value) => !value)}
+          aria-expanded={showFacilities}
+          className="mt-4 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#0b3b8c] text-sm font-semibold text-white transition-colors hover:bg-[#0a3278]"
         >
-          Tanya Chatbot
+          {showFacilities ? "Sembunyikan Fasilitas" : "Lihat Fasilitas Lengkap"}
+          <ArrowRight size={16} className={`transition-transform ${showFacilities ? "-rotate-90" : ""}`} aria-hidden="true" />
         </button>
-      </div>
-    </div>
+      ) : null}
+    </aside>
   );
 }

@@ -63,6 +63,8 @@ class MapService implements MapServiceInterface
 
     public function createEdge(array $data): MapEdge
     {
+        $data['distance'] ??= 0;
+
         return $this->mapRepository->createEdge($data);
     }
 

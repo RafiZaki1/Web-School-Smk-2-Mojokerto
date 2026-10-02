@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 70" fill="none">
+  <!-- Blue Circular Monogram Badge -->
+  <g transform="translate(20, 5)">
+    <circle cx="30" cy="30" r="28" stroke="#0084ff" stroke-width="4" fill="none"/>
+    <!-- Stylized U / M Hairpin Line-art -->
+    <path d="M 21 44 L 21 22 C 21 16 26 16 26 22 L 26 40 C 26 44 34 44 34 40 L 34 22 C 34 16 39 16 39 22 L 39 44" stroke="#0084ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Bottom Hook & Dot -->
+    <path d="M 21 44 C 21 48 39 48 39 44" stroke="#0084ff" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <circle cx="21" cy="49" r="2" fill="#0084ff"/>
+  </g>
+</svg>

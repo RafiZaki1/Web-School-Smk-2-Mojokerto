@@ -14,6 +14,7 @@ class MapEdge extends Model
     protected $fillable = [
         'from_node_id',
         'to_node_id',
+        'name',
         'distance',
         'is_walkable',
     ];

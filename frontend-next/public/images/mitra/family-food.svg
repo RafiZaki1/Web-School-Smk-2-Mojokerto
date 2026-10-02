@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" fill="none" className="w-auto h-12">
+  <!-- Green Badge with FF -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="70" height="70" rx="10" fill="#bef264" stroke="#4d7c0f" stroke-width="2.5"/>
+    <rect x="3" y="3" width="64" height="64" rx="8" fill="#d9f99d"/>
+    <text x="35" y="44" font-family="'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#0f172a" text-anchor="middle">FF</text>
+    <rect x="7" y="52" width="56" height="12" rx="3" fill="#ffffff" fill-opacity="0.8"/>
+    <text x="35" y="61" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#15803d" text-anchor="middle">PT. Family Food</text>
+  </g>
+  <!-- Text: Family Food -->
+  <text x="96" y="55" font-family="'Arial Black', 'Trebuchet MS', sans-serif" font-weight="900" font-size="34" fill="#09090b" letter-spacing="-0.5">Family Food</text>
+</svg>

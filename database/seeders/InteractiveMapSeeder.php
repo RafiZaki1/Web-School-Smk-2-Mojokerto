@@ -13,6 +13,37 @@ use Illuminate\Support\Facades\Schema;
 
 class InteractiveMapSeeder extends Seeder
 {
+    /** Koreksi kotak hotspot agar pas dengan gambar denah. */
+    private const HOTSPOT_FIXES = [
+        'parkiran' => ['map_x' => 6.5, 'map_y' => 8.0, 'map_width' => 9.3, 'map_height' => 64.0],
+        'gerbang-utama' => ['map_x' => 50.5, 'map_y' => 80.0, 'map_width' => 3.0, 'map_height' => 8.5],
+        'musholla' => ['map_x' => 59.5, 'map_y' => 62.0, 'map_width' => 9.0, 'map_height' => 24.0],
+        'xi-kul-3' => ['map_y' => 2.0, 'map_height' => 7.6],
+        'xi-kul-2-utara' => ['map_y' => 2.0, 'map_height' => 7.6],
+        'xi-kul-1' => ['map_y' => 2.0, 'map_height' => 7.6],
+        'xi-rpl-3' => ['map_y' => 2.0, 'map_height' => 7.6],
+        'xi-rpl-2' => ['map_y' => 2.0, 'map_height' => 7.6],
+        'xi-rpl-1' => ['map_y' => 2.0, 'map_height' => 7.6],
+        'uks' => ['map_x' => 76.6, 'map_width' => 7.5],
+        'lab-dkv' => ['map_x' => 76.6, 'map_width' => 7.5],
+    ];
+
+    /** Foto ruangan memakai aset yang tersedia di Next.js (public/images). */
+    private const ROOM_IMAGES = [
+        'laboratorium-rpl' => '/images/fasilitas/rpl-1.jpg',
+        'laboratorium-rpl-2' => '/images/fasilitas/rpl-2.jpg',
+        'lab-dkv' => '/images/fasilitas/dkv-1.jpg',
+        'lab-dkv-atas' => '/images/fasilitas/dkv-2.jpg',
+        'lab-aphp' => '/images/fasilitas/aphp-1.jpg',
+        'lab-tefa-bakery-aphp' => '/images/fasilitas/aphp-2.jpg',
+        'lab-pastri-kuliner' => '/images/fasilitas/tb-3.jpg',
+        'lab-kuliner' => '/images/fasilitas/tb-2.jpg',
+        'praktik-r' => '/images/fasilitas/tb-1.jpg',
+        'bank' => '/images/fasilitas/lps-1.jpg',
+        'kantor-pusat' => '/images/sejarah/gedung.jpg',
+        'gerbang-utama' => '/images/sejarah/gedung.jpg',
+    ];
+
     /**
      * Run the database seeds.
      */
@@ -42,108 +73,9 @@ class InteractiveMapSeeder extends Seeder
             $categories[$cat['slug']] = RoomCategory::create($cat);
         }
 
-        // 2. Realistic Human Walkway Nodes (30 waypoints along all real physical corridors)
-        $nodesData = [
-            1  => ['id' => 1,  'name' => 'Pos Satpam & Gerbang Utama', 'x' => 52.0, 'y' => 84.0, 'is_walkable' => true],
-            2  => ['id' => 2,  'name' => 'Trotoar Depan Gerbang Barat', 'x' => 39.0, 'y' => 89.0, 'is_walkable' => true],
-            3  => ['id' => 3,  'name' => 'Lorong Sisi Barat Kantor', 'x' => 39.0, 'y' => 80.0, 'is_walkable' => true],
-            4  => ['id' => 4,  'name' => 'Plaza Air Mancur Barat', 'x' => 38.5, 'y' => 69.5, 'is_walkable' => true],
-            5  => ['id' => 5,  'name' => 'Plaza Air Mancur Timur', 'x' => 58.5, 'y' => 69.5, 'is_walkable' => true],
-            6  => ['id' => 6,  'name' => 'Pintu Masuk Musholla', 'x' => 64.0, 'y' => 78.0, 'is_walkable' => true],
-            7  => ['id' => 7,  'name' => 'Depan BKK / Koperasi / Bank', 'x' => 23.0, 'y' => 89.0, 'is_walkable' => true],
-            8  => ['id' => 8,  'name' => 'Jalur Parkiran Barat (Selatan)', 'x' => 14.0, 'y' => 89.0, 'is_walkable' => true],
-            9  => ['id' => 9,  'name' => 'Jalur Parkiran Barat (Tengah)', 'x' => 14.0, 'y' => 50.0, 'is_walkable' => true],
-            10 => ['id' => 10, 'name' => 'Jalur Parkiran Barat (Utara)', 'x' => 14.0, 'y' => 32.0, 'is_walkable' => true],
-
-            11 => ['id' => 11, 'name' => 'Lorong DKV / LPS (Selatan)', 'x' => 28.5, 'y' => 69.5, 'is_walkable' => true],
-            12 => ['id' => 12, 'name' => 'Lorong DKV / LPS (Tengah)', 'x' => 28.5, 'y' => 50.0, 'is_walkable' => true],
-            13 => ['id' => 13, 'name' => 'Lorong DKV / LPS (Utara)', 'x' => 28.5, 'y' => 32.0, 'is_walkable' => true],
-
-            14 => ['id' => 14, 'name' => 'Persimpangan Lapangan Tengah (Selatan)', 'x' => 46.5, 'y' => 69.5, 'is_walkable' => true],
-            15 => ['id' => 15, 'name' => 'Persimpangan Tengah Utara (APHP)', 'x' => 46.5, 'y' => 32.0, 'is_walkable' => true],
-
-            16 => ['id' => 16, 'name' => 'Jalan Depan Aula & Lab RPL', 'x' => 58.5, 'y' => 32.0, 'is_walkable' => true],
-            17 => ['id' => 17, 'name' => 'Lorong Timur RPL (Sisi Barat Musholla)', 'x' => 58.5, 'y' => 50.0, 'is_walkable' => true],
-
-            18 => ['id' => 18, 'name' => 'Depan Ruang UKS & BK (Selatan)', 'x' => 70.5, 'y' => 69.5, 'is_walkable' => true],
-            19 => ['id' => 19, 'name' => 'Lorong Gedung Timur Depan UKS', 'x' => 70.5, 'y' => 50.0, 'is_walkable' => true],
-            20 => ['id' => 20, 'name' => 'Depan Percetakan & Lab Kuliner', 'x' => 70.5, 'y' => 32.0, 'is_walkable' => true],
-            21 => ['id' => 21, 'name' => 'Jalur Masuk Lapangan Olahraga', 'x' => 88.5, 'y' => 32.0, 'is_walkable' => true],
-            22 => ['id' => 22, 'name' => 'Area Lapangan Olahraga', 'x' => 94.0, 'y' => 18.0, 'is_walkable' => true],
-
-            23 => ['id' => 23, 'name' => 'Lorong Masuk Lab RPL 1 & 2', 'x' => 58.5, 'y' => 17.5, 'is_walkable' => true],
-            24 => ['id' => 24, 'name' => 'Pintu Masuk Lab RPL 1', 'x' => 65.5, 'y' => 17.5, 'is_walkable' => true],
-            25 => ['id' => 25, 'name' => 'Pintu Masuk Lab RPL 2', 'x' => 76.0, 'y' => 17.5, 'is_walkable' => true],
-
-            26 => ['id' => 26, 'name' => 'Koridor Depan Kantin & Kolam', 'x' => 28.5, 'y' => 10.0, 'is_walkable' => true],
-            27 => ['id' => 27, 'name' => 'Jalur Antara APHP & Bakery', 'x' => 46.5, 'y' => 10.0, 'is_walkable' => true],
-            28 => ['id' => 28, 'name' => 'Koridor Depan Lab RPL Atas', 'x' => 58.5, 'y' => 10.0, 'is_walkable' => true],
-            29 => ['id' => 29, 'name' => 'Koridor Kelas XI & XII Utara', 'x' => 75.0, 'y' => 10.0, 'is_walkable' => true],
-            30 => ['id' => 30, 'name' => 'Pojok Timur Laut Lapangan', 'x' => 88.5, 'y' => 10.0, 'is_walkable' => true],
-        ];
-
-        foreach ($nodesData as $n) {
-            MapNode::create($n);
-        }
-
-        // 3. Map Edges (Physical Walkway Network)
-        $edgesData = [
-            // Jalur Depan / Kantor
-            ['from_node_id' => 1, 'to_node_id' => 2, 'distance' => 13.0, 'is_walkable' => true],
-            ['from_node_id' => 2, 'to_node_id' => 3, 'distance' => 9.0, 'is_walkable' => true],
-            ['from_node_id' => 2, 'to_node_id' => 7, 'distance' => 16.0, 'is_walkable' => true],
-            ['from_node_id' => 7, 'to_node_id' => 8, 'distance' => 9.0, 'is_walkable' => true],
-            ['from_node_id' => 8, 'to_node_id' => 9, 'distance' => 39.0, 'is_walkable' => true],
-            ['from_node_id' => 9, 'to_node_id' => 10, 'distance' => 18.0, 'is_walkable' => true],
-            ['from_node_id' => 3, 'to_node_id' => 4, 'distance' => 11.0, 'is_walkable' => true],
-
-            // Plaza Air Mancur & Lapangan Tengah
-            ['from_node_id' => 4, 'to_node_id' => 11, 'distance' => 10.0, 'is_walkable' => true],
-            ['from_node_id' => 4, 'to_node_id' => 14, 'distance' => 8.0, 'is_walkable' => true],
-            ['from_node_id' => 14, 'to_node_id' => 5, 'distance' => 12.0, 'is_walkable' => true],
-            ['from_node_id' => 4, 'to_node_id' => 5, 'distance' => 20.0, 'is_walkable' => true],
-
-            // Lorong DKV / LPS (Barat)
-            ['from_node_id' => 11, 'to_node_id' => 12, 'distance' => 19.5, 'is_walkable' => true],
-            ['from_node_id' => 12, 'to_node_id' => 13, 'distance' => 18.0, 'is_walkable' => true],
-            ['from_node_id' => 9, 'to_node_id' => 12, 'distance' => 14.5, 'is_walkable' => true],
-            ['from_node_id' => 10, 'to_node_id' => 13, 'distance' => 14.5, 'is_walkable' => true],
-
-            // Jalan Tengah Utara (Depan Aula / Lab RPL)
-            ['from_node_id' => 13, 'to_node_id' => 15, 'distance' => 18.0, 'is_walkable' => true],
-            ['from_node_id' => 15, 'to_node_id' => 16, 'distance' => 12.0, 'is_walkable' => true],
-            ['from_node_id' => 16, 'to_node_id' => 20, 'distance' => 12.0, 'is_walkable' => true],
-            ['from_node_id' => 20, 'to_node_id' => 21, 'distance' => 18.0, 'is_walkable' => true],
-            ['from_node_id' => 21, 'to_node_id' => 22, 'distance' => 15.0, 'is_walkable' => true],
-
-            // Jalur Timur RPL (Menuju Aula & Lab RPL dari Selatan) - JALAN PAVING ASLI
-            ['from_node_id' => 5, 'to_node_id' => 17, 'distance' => 19.5, 'is_walkable' => true],
-            ['from_node_id' => 17, 'to_node_id' => 16, 'distance' => 18.0, 'is_walkable' => true],
-
-            // Jalur Musholla & UKS / Percetakan
-            ['from_node_id' => 5, 'to_node_id' => 6, 'distance' => 10.0, 'is_walkable' => true],
-            ['from_node_id' => 5, 'to_node_id' => 18, 'distance' => 12.0, 'is_walkable' => true],
-            ['from_node_id' => 18, 'to_node_id' => 19, 'distance' => 19.5, 'is_walkable' => true],
-            ['from_node_id' => 19, 'to_node_id' => 20, 'distance' => 18.0, 'is_walkable' => true],
-
-            // Akses Lab RPL 1 & 2
-            ['from_node_id' => 16, 'to_node_id' => 23, 'distance' => 14.5, 'is_walkable' => true],
-            ['from_node_id' => 23, 'to_node_id' => 24, 'distance' => 7.0, 'is_walkable' => true],
-            ['from_node_id' => 24, 'to_node_id' => 25, 'distance' => 10.5, 'is_walkable' => true],
-
-            // Jalur Utara (Kantin, Kolam, APHP, Kelas Atas)
-            ['from_node_id' => 13, 'to_node_id' => 26, 'distance' => 22.0, 'is_walkable' => true],
-            ['from_node_id' => 26, 'to_node_id' => 27, 'distance' => 18.0, 'is_walkable' => true],
-            ['from_node_id' => 27, 'to_node_id' => 28, 'distance' => 12.0, 'is_walkable' => true],
-            ['from_node_id' => 28, 'to_node_id' => 23, 'distance' => 7.5, 'is_walkable' => true],
-            ['from_node_id' => 28, 'to_node_id' => 29, 'distance' => 16.5, 'is_walkable' => true],
-            ['from_node_id' => 29, 'to_node_id' => 30, 'distance' => 13.5, 'is_walkable' => true],
-            ['from_node_id' => 30, 'to_node_id' => 21, 'distance' => 22.0, 'is_walkable' => true],
-        ];
-
-        foreach ($edgesData as $edge) {
-            MapEdge::create($edge);
-        }
+        // 2. Jaringan jalur pejalan kaki (node & ruas koridor bernama)
+        $walkway = new CampusWalkwaySeeder;
+        $walkway->run();
 
         // 4. PRECISE ROOM DATA MATCHING EVERY BOX ON THE REAL FLOORPLAN
         $rooms = [
@@ -157,7 +89,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/parkiran.jpg',
                 'open_hours' => '06.00 - 18.00 WIB',
                 'is_active' => true,
-                'map_x' => 3.5, 'map_y' => 7.0, 'map_width' => 12.0, 'map_height' => 72.0, 'map_node_id' => 8,
+                'map_x' => 3.5, 'map_y' => 7.0, 'map_width' => 12.0, 'map_height' => 72.0,
                 'facilities' => [
                     ['name' => 'Kapasitas 500+ Motor', 'quantity' => 500],
                     ['name' => 'CCTV 24 Jam', 'quantity' => 4],
@@ -174,7 +106,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kantor.jpg',
                 'open_hours' => '07.30 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 18.2, 'map_y' => 80.5, 'map_width' => 2.8, 'map_height' => 7.5, 'map_node_id' => 7,
+                'map_x' => 18.2, 'map_y' => 80.5, 'map_width' => 2.8, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Meja Konseling Karir', 'quantity' => 3]],
             ],
             [
@@ -186,7 +118,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kantin.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 21.0, 'map_y' => 80.5, 'map_width' => 2.8, 'map_height' => 7.5, 'map_node_id' => 7,
+                'map_x' => 21.0, 'map_y' => 80.5, 'map_width' => 2.8, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Etalase Toko', 'quantity' => 4]],
             ],
             [
@@ -198,7 +130,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kantor.jpg',
                 'open_hours' => '07.30 - 14.30 WIB',
                 'is_active' => true,
-                'map_x' => 23.8, 'map_y' => 80.5, 'map_width' => 2.8, 'map_height' => 7.5, 'map_node_id' => 7,
+                'map_x' => 23.8, 'map_y' => 80.5, 'map_width' => 2.8, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Teller Counter', 'quantity' => 2]],
             ],
             [
@@ -210,7 +142,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kantor.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 28.5, 'map_y' => 72.0, 'map_width' => 18.5, 'map_height' => 14.5, 'map_node_id' => 3,
+                'map_x' => 28.5, 'map_y' => 72.0, 'map_width' => 18.5, 'map_height' => 14.5,
                 'facilities' => [
                     ['name' => 'Meja Layanan Tata Usaha', 'quantity' => 8],
                     ['name' => 'Ruang Kepala Sekolah', 'quantity' => 1],
@@ -225,7 +157,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'images/hero-bg.jpg',
                 'open_hours' => '24 Jam',
                 'is_active' => true,
-                'map_x' => 50.0, 'map_y' => 79.5, 'map_width' => 4.0, 'map_height' => 8.5, 'map_node_id' => 1,
+                'map_x' => 50.0, 'map_y' => 79.5, 'map_width' => 4.0, 'map_height' => 8.5,
                 'facilities' => [
                     ['name' => 'Pos Keamanan', 'quantity' => 1],
                     ['name' => 'Palang Gerbang Otomatis', 'quantity' => 2],
@@ -240,7 +172,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/mushola.jpg',
                 'open_hours' => '05.00 - 18.30 WIB',
                 'is_active' => true,
-                'map_x' => 59.5, 'map_y' => 62.0, 'map_width' => 9.5, 'map_height' => 22.0, 'map_node_id' => 6,
+                'map_x' => 59.5, 'map_y' => 62.0, 'map_width' => 9.5, 'map_height' => 22.0,
                 'facilities' => [
                     ['name' => 'Tempat Wudhu Pria & Wanita', 'quantity' => 2],
                     ['name' => 'Karpet Sajadah', 'quantity' => 12],
@@ -257,7 +189,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 19.0, 'map_y' => 34.0, 'map_width' => 4.4, 'map_height' => 8.0, 'map_node_id' => 9,
+                'map_x' => 19.0, 'map_y' => 34.0, 'map_width' => 4.4, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Smart Display & Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -269,7 +201,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 23.4, 'map_y' => 34.0, 'map_width' => 4.4, 'map_height' => 8.0, 'map_node_id' => 9,
+                'map_x' => 23.4, 'map_y' => 34.0, 'map_width' => 4.4, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Smart TV 55"', 'quantity' => 1]],
             ],
             [
@@ -281,7 +213,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 19.0, 'map_y' => 42.0, 'map_width' => 4.4, 'map_height' => 8.0, 'map_node_id' => 9,
+                'map_x' => 19.0, 'map_y' => 42.0, 'map_width' => 4.4, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -293,7 +225,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 23.4, 'map_y' => 42.0, 'map_width' => 4.4, 'map_height' => 8.0, 'map_node_id' => 9,
+                'map_x' => 23.4, 'map_y' => 42.0, 'map_width' => 4.4, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -305,7 +237,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 19.0, 'map_y' => 53.0, 'map_width' => 4.4, 'map_height' => 9.0, 'map_node_id' => 9,
+                'map_x' => 19.0, 'map_y' => 53.0, 'map_width' => 4.4, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Proyektor & Whiteboard', 'quantity' => 1]],
             ],
             [
@@ -317,7 +249,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 23.4, 'map_y' => 53.0, 'map_width' => 4.4, 'map_height' => 9.0, 'map_node_id' => 9,
+                'map_x' => 23.4, 'map_y' => 53.0, 'map_width' => 4.4, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Proyektor & Whiteboard', 'quantity' => 1]],
             ],
             [
@@ -329,7 +261,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 19.0, 'map_y' => 62.0, 'map_width' => 4.4, 'map_height' => 9.0, 'map_node_id' => 9,
+                'map_x' => 19.0, 'map_y' => 62.0, 'map_width' => 4.4, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Meja Belajar Siswa', 'quantity' => 36]],
             ],
             [
@@ -341,7 +273,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 23.4, 'map_y' => 62.0, 'map_width' => 4.4, 'map_height' => 9.0, 'map_node_id' => 9,
+                'map_x' => 23.4, 'map_y' => 62.0, 'map_width' => 4.4, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Meja Belajar Siswa', 'quantity' => 36]],
             ],
 
@@ -355,7 +287,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-aphp.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 20.0, 'map_y' => 2.5, 'map_width' => 7.2, 'map_height' => 7.5, 'map_node_id' => 20,
+                'map_x' => 20.0, 'map_y' => 2.5, 'map_width' => 7.2, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Mesin Vacuum Sealer', 'quantity' => 4]],
             ],
             [
@@ -367,7 +299,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kantin.jpg',
                 'open_hours' => '06.30 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 27.8, 'map_y' => 2.5, 'map_width' => 8.5, 'map_height' => 7.5, 'map_node_id' => 20,
+                'map_x' => 27.8, 'map_y' => 2.5, 'map_width' => 8.5, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Stand Makanan & Meja Makan', 'quantity' => 20]],
             ],
             [
@@ -379,7 +311,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-kuliner.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 37.0, 'map_y' => 2.5, 'map_width' => 11.2, 'map_height' => 7.5, 'map_node_id' => 20,
+                'map_x' => 37.0, 'map_y' => 2.5, 'map_width' => 11.2, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Oven Convection & Mixer Besar', 'quantity' => 3]],
             ],
             [
@@ -391,7 +323,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lapangan.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 24.5, 'map_y' => 12.0, 'map_width' => 12.0, 'map_height' => 6.8, 'map_node_id' => 20,
+                'map_x' => 24.5, 'map_y' => 12.0, 'map_width' => 12.0, 'map_height' => 6.8,
                 'facilities' => [['name' => 'Kolam Ikan & Taman Hijau', 'quantity' => 1]],
             ],
             [
@@ -403,7 +335,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-aphp.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 37.5, 'map_y' => 11.5, 'map_width' => 5.8, 'map_height' => 7.5, 'map_node_id' => 20,
+                'map_x' => 37.5, 'map_y' => 11.5, 'map_width' => 5.8, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Lini Produksi Bakery Standar DUDI', 'quantity' => 1]],
             ],
             [
@@ -415,7 +347,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 43.3, 'map_y' => 11.5, 'map_width' => 5.8, 'map_height' => 7.5, 'map_node_id' => 20,
+                'map_x' => 43.3, 'map_y' => 11.5, 'map_width' => 5.8, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -427,7 +359,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 26.5, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5, 'map_node_id' => 14,
+                'map_x' => 26.5, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5,
                 'facilities' => [['name' => 'Meja Belajar Siswa', 'quantity' => 36]],
             ],
             [
@@ -439,7 +371,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 32.1, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5, 'map_node_id' => 14,
+                'map_x' => 32.1, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5,
                 'facilities' => [['name' => 'Smart Display', 'quantity' => 1]],
             ],
             [
@@ -451,7 +383,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 37.7, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5, 'map_node_id' => 14,
+                'map_x' => 37.7, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -463,7 +395,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 43.3, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5, 'map_node_id' => 14,
+                'map_x' => 43.3, 'map_y' => 20.0, 'map_width' => 5.6, 'map_height' => 5.5,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -475,7 +407,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 26.5, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0, 'map_node_id' => 14,
+                'map_x' => 26.5, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0,
                 'facilities' => [['name' => 'Meja & Kursi', 'quantity' => 36]],
             ],
             [
@@ -487,7 +419,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 32.1, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0, 'map_node_id' => 14,
+                'map_x' => 32.1, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0,
                 'facilities' => [['name' => 'Meja & Kursi', 'quantity' => 36]],
             ],
             [
@@ -499,7 +431,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 37.7, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0, 'map_node_id' => 14,
+                'map_x' => 37.7, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0,
                 'facilities' => [['name' => 'Whiteboard & Proyektor', 'quantity' => 1]],
             ],
             [
@@ -511,7 +443,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 43.3, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0, 'map_node_id' => 14,
+                'map_x' => 43.3, 'map_y' => 25.5, 'map_width' => 5.6, 'map_height' => 6.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
 
@@ -525,7 +457,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 48.2, 'map_y' => 34.0, 'map_width' => 4.2, 'map_height' => 8.5, 'map_node_id' => 15,
+                'map_x' => 48.2, 'map_y' => 34.0, 'map_width' => 4.2, 'map_height' => 8.5,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -537,7 +469,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 52.4, 'map_y' => 34.0, 'map_width' => 4.2, 'map_height' => 8.5, 'map_node_id' => 15,
+                'map_x' => 52.4, 'map_y' => 34.0, 'map_width' => 4.2, 'map_height' => 8.5,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -549,7 +481,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 48.2, 'map_y' => 43.0, 'map_width' => 4.2, 'map_height' => 9.0, 'map_node_id' => 10,
+                'map_x' => 48.2, 'map_y' => 43.0, 'map_width' => 4.2, 'map_height' => 9.0,
                 'facilities' => [
                     ['name' => 'Smart Display 55"', 'quantity' => 1],
                     ['name' => 'Meja Siswa', 'quantity' => 36],
@@ -564,7 +496,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 52.4, 'map_y' => 43.0, 'map_width' => 4.2, 'map_height' => 9.0, 'map_node_id' => 10,
+                'map_x' => 52.4, 'map_y' => 43.0, 'map_width' => 4.2, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -576,7 +508,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 48.2, 'map_y' => 53.0, 'map_width' => 4.2, 'map_height' => 9.0, 'map_node_id' => 10,
+                'map_x' => 48.2, 'map_y' => 53.0, 'map_width' => 4.2, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Proyektor LCD', 'quantity' => 1]],
             ],
             [
@@ -588,7 +520,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 52.4, 'map_y' => 53.0, 'map_width' => 4.2, 'map_height' => 9.0, 'map_node_id' => 10,
+                'map_x' => 52.4, 'map_y' => 53.0, 'map_width' => 4.2, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -600,7 +532,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 48.2, 'map_y' => 62.5, 'map_width' => 4.2, 'map_height' => 9.0, 'map_node_id' => 10,
+                'map_x' => 48.2, 'map_y' => 62.5, 'map_width' => 4.2, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Whiteboard & Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -612,7 +544,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 52.4, 'map_y' => 62.5, 'map_width' => 4.2, 'map_height' => 9.0, 'map_node_id' => 10,
+                'map_x' => 52.4, 'map_y' => 62.5, 'map_width' => 4.2, 'map_height' => 9.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
 
@@ -626,7 +558,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 58.0, 'map_y' => 2.5, 'map_width' => 5.5, 'map_height' => 8.0, 'map_node_id' => 23,
+                'map_x' => 58.0, 'map_y' => 2.5, 'map_width' => 5.5, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -638,7 +570,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 63.5, 'map_y' => 2.5, 'map_width' => 5.5, 'map_height' => 8.0, 'map_node_id' => 23,
+                'map_x' => 63.5, 'map_y' => 2.5, 'map_width' => 5.5, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -650,7 +582,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 69.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0, 'map_node_id' => 23,
+                'map_x' => 69.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -662,7 +594,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 74.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0, 'map_node_id' => 23,
+                'map_x' => 74.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Smart Display', 'quantity' => 1]],
             ],
             [
@@ -674,7 +606,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 79.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0, 'map_node_id' => 23,
+                'map_x' => 79.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja & Kursi Siswa', 'quantity' => 36]],
             ],
             [
@@ -686,7 +618,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 84.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0, 'map_node_id' => 23,
+                'map_x' => 84.0, 'map_y' => 2.5, 'map_width' => 5.0, 'map_height' => 8.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -698,7 +630,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 58.0, 'map_y' => 11.5, 'map_width' => 5.5, 'map_height' => 7.5, 'map_node_id' => 23,
+                'map_x' => 58.0, 'map_y' => 11.5, 'map_width' => 5.5, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -710,7 +642,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 63.5, 'map_y' => 11.5, 'map_width' => 6.5, 'map_height' => 7.5, 'map_node_id' => 23,
+                'map_x' => 63.5, 'map_y' => 11.5, 'map_width' => 6.5, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -722,7 +654,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 70.0, 'map_y' => 11.5, 'map_width' => 6.0, 'map_height' => 7.5, 'map_node_id' => 23,
+                'map_x' => 70.0, 'map_y' => 11.5, 'map_width' => 6.0, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
 
@@ -736,7 +668,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/laboratorium-rpl.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 60.0, 'map_y' => 20.5, 'map_width' => 11.5, 'map_height' => 5.5, 'map_node_id' => 24,
+                'map_x' => 60.0, 'map_y' => 20.5, 'map_width' => 11.5, 'map_height' => 5.5,
                 'facilities' => [
                     ['name' => '36 PC Core i7 High End', 'quantity' => 36],
                     ['name' => 'Smart Screen & Proyektor', 'quantity' => 1],
@@ -753,7 +685,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/laboratorium-rpl.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 72.0, 'map_y' => 20.5, 'map_width' => 8.8, 'map_height' => 5.5, 'map_node_id' => 25,
+                'map_x' => 72.0, 'map_y' => 20.5, 'map_width' => 8.8, 'map_height' => 5.5,
                 'facilities' => [
                     ['name' => 'Workstation Developer', 'quantity' => 36],
                     ['name' => 'Server Mini & Switch', 'quantity' => 2],
@@ -768,7 +700,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/aula.jpg',
                 'open_hours' => '07.00 - 17.00 WIB',
                 'is_active' => true,
-                'map_x' => 60.0, 'map_y' => 26.0, 'map_width' => 10.4, 'map_height' => 6.5, 'map_node_id' => 16,
+                'map_x' => 60.0, 'map_y' => 26.0, 'map_width' => 10.4, 'map_height' => 6.5,
                 'facilities' => [
                     ['name' => 'Panggung & Videotron', 'quantity' => 1],
                     ['name' => 'Kursi Tamu 150 Unit', 'quantity' => 150],
@@ -783,7 +715,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/aula.jpg',
                 'open_hours' => '07.00 - 17.00 WIB',
                 'is_active' => true,
-                'map_x' => 70.4, 'map_y' => 26.0, 'map_width' => 10.4, 'map_height' => 6.5, 'map_node_id' => 16,
+                'map_x' => 70.4, 'map_y' => 26.0, 'map_width' => 10.4, 'map_height' => 6.5,
                 'facilities' => [
                     ['name' => 'Kursi Tamu 150 Unit', 'quantity' => 150],
                 ],
@@ -799,7 +731,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/perpustakaan.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 75.2, 'map_y' => 34.0, 'map_width' => 5.8, 'map_height' => 16.5, 'map_node_id' => 11,
+                'map_x' => 75.2, 'map_y' => 34.0, 'map_width' => 5.8, 'map_height' => 16.5,
                 'facilities' => [
                     ['name' => 'Koleksi 5000+ Buku', 'quantity' => 5000],
                     ['name' => 'Mesin Cetak Offset', 'quantity' => 2],
@@ -814,7 +746,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-kuliner.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 81.0, 'map_y' => 34.0, 'map_width' => 3.8, 'map_height' => 16.5, 'map_node_id' => 17,
+                'map_x' => 81.0, 'map_y' => 34.0, 'map_width' => 3.8, 'map_height' => 16.5,
                 'facilities' => [
                     ['name' => 'Kompor Heavy Duty Stainless', 'quantity' => 8],
                     ['name' => 'Chiller & Freezer 4 Pintu', 'quantity' => 2],
@@ -829,7 +761,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-dkv.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 84.8, 'map_y' => 34.0, 'map_width' => 3.2, 'map_height' => 16.5, 'map_node_id' => 17,
+                'map_x' => 84.8, 'map_y' => 34.0, 'map_width' => 3.2, 'map_height' => 16.5,
                 'facilities' => [['name' => 'PC Editing GPU RTX 4060', 'quantity' => 15]],
             ],
             [
@@ -841,7 +773,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 81.0, 'map_y' => 51.0, 'map_width' => 3.8, 'map_height' => 9.5, 'map_node_id' => 12,
+                'map_x' => 81.0, 'map_y' => 51.0, 'map_width' => 3.8, 'map_height' => 9.5,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -853,7 +785,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kelas-rpl.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 71.2, 'map_y' => 60.5, 'map_width' => 5.5, 'map_height' => 7.0, 'map_node_id' => 12,
+                'map_x' => 71.2, 'map_y' => 60.5, 'map_width' => 5.5, 'map_height' => 7.0,
                 'facilities' => [['name' => 'Meja Siswa', 'quantity' => 36]],
             ],
             [
@@ -865,7 +797,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/uks.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 76.7, 'map_y' => 60.5, 'map_width' => 7.8, 'map_height' => 7.0, 'map_node_id' => 12,
+                'map_x' => 76.7, 'map_y' => 60.5, 'map_width' => 7.8, 'map_height' => 7.0,
                 'facilities' => [
                     ['name' => 'Tempat Tidur Medis Bersekat', 'quantity' => 3],
                     ['name' => 'Kotak P3K & Obat Darurat', 'quantity' => 2],
@@ -881,7 +813,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-kuliner.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 71.2, 'map_y' => 67.5, 'map_width' => 5.5, 'map_height' => 7.5, 'map_node_id' => 12,
+                'map_x' => 71.2, 'map_y' => 67.5, 'map_width' => 5.5, 'map_height' => 7.5,
                 'facilities' => [['name' => 'Table Dining Setup & Bar Counter', 'quantity' => 1]],
             ],
             [
@@ -893,7 +825,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lab-dkv.jpg',
                 'open_hours' => '07.00 - 16.00 WIB',
                 'is_active' => true,
-                'map_x' => 76.7, 'map_y' => 67.5, 'map_width' => 7.8, 'map_height' => 7.5, 'map_node_id' => 12,
+                'map_x' => 76.7, 'map_y' => 67.5, 'map_width' => 7.8, 'map_height' => 7.5,
                 'facilities' => [
                     ['name' => 'Kamera DSLR & Mirrorless 4K', 'quantity' => 6],
                     ['name' => 'Lighting Studio & Softbox', 'quantity' => 8],
@@ -908,7 +840,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/kantor.jpg',
                 'open_hours' => '07.00 - 15.30 WIB',
                 'is_active' => true,
-                'map_x' => 84.8, 'map_y' => 60.5, 'map_width' => 3.5, 'map_height' => 15.0, 'map_node_id' => 13,
+                'map_x' => 84.8, 'map_y' => 60.5, 'map_width' => 3.5, 'map_height' => 15.0,
                 'facilities' => [['name' => 'Ruang Konseling Privat', 'quantity' => 2]],
             ],
 
@@ -922,7 +854,7 @@ class InteractiveMapSeeder extends Seeder
                 'image' => 'rooms/lapangan.jpg',
                 'open_hours' => '06.00 - 18.00 WIB',
                 'is_active' => true,
-                'map_x' => 89.2, 'map_y' => 3.0, 'map_width' => 9.8, 'map_height' => 31.0, 'map_node_id' => 19,
+                'map_x' => 89.2, 'map_y' => 3.0, 'map_width' => 9.8, 'map_height' => 31.0,
                 'facilities' => [
                     ['name' => 'Lapangan Futsal & Voli', 'quantity' => 1],
                     ['name' => 'Ring Basket Interlock', 'quantity' => 2],
@@ -934,6 +866,12 @@ class InteractiveMapSeeder extends Seeder
         foreach ($rooms as $roomData) {
             $facilities = $roomData['facilities'] ?? [];
             unset($roomData['facilities']);
+
+            $slug = $roomData['slug'];
+            $roomData = array_merge($roomData, self::HOTSPOT_FIXES[$slug] ?? []);
+            $roomData['image'] = self::ROOM_IMAGES[$slug] ?? null;
+            $door = CampusWalkwaySeeder::DOORS[$slug] ?? null;
+            $roomData['map_node_id'] = $door ? $walkway->nodeIds[$door] : null;
 
             $room = Room::create($roomData);
 

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" fill="none">
+  <!-- Yellow Ribbon Wave on Upper Right -->
+  <g transform="translate(10, 5)">
+    <!-- Mandiri Yellow Ribbon Wave -->
+    <path d="M 130 18 Q 155 0 180 12 Q 200 24 220 8 L 220 18 Q 200 32 180 20 Q 155 10 130 26 Z" fill="#facc15"/>
+    
+    <!-- Text: mandiri taspen -->
+    <text x="5" y="36" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#0f2b48" letter-spacing="-1">mandiri</text>
+    <text x="5" y="60" font-family="'Trebuchet MS', 'Arial Black', sans-serif" font-weight="900" font-size="26" fill="#0f2b48" letter-spacing="-0.5">taspen</text>
+  </g>
+</svg>

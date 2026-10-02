@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 70" fill="none">
+  <!-- BPJS Abstract Emblem -->
+  <g transform="translate(10, 10)">
+    <!-- Green Organic Leaf -->
+    <path d="M 12 36 C 4 30 2 18 10 10 C 18 2 30 4 36 12 C 40 18 42 28 32 36 C 24 42 16 40 12 36 Z" fill="#4ade80"/>
+    <!-- Yellow/Lime Wave -->
+    <path d="M 28 4 C 34 2 38 12 34 28 C 30 42 22 46 14 46 C 24 44 30 36 32 24 C 34 14 30 6 28 4 Z" fill="#a3e635"/>
+    <!-- Blue Swoosh Arc -->
+    <path d="M 32 20 C 44 26 48 38 42 46 C 36 52 26 50 18 46 C 30 48 40 44 42 34 C 44 26 38 22 32 20 Z" fill="#0284c7"/>
+  </g>
+  <!-- Text Block -->
+  <g transform="translate(68, 14)">
+    <text x="0" y="24" font-family="'Arial Black', sans-serif" font-weight="900" font-size="24" fill="#16a34a" letter-spacing="-0.5">BPJS</text>
+    <text x="0" y="44" font-family="'Arial', sans-serif" font-weight="bold" font-size="14" fill="#0369a1" letter-spacing="-0.3">Ketenagakerjaan</text>
+  </g>
+</svg>

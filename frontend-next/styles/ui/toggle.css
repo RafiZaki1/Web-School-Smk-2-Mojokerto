@@ -1,0 +1,61 @@
+/*
+ * Toggle — diadaptasi dari dealtech-ui (components/ui/toggleonoff).
+ * Warna mengikuti token --app-* di area admin, dengan cadangan untuk halaman publik.
+ */
+.toggleonoff {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: var(--app-fill-strong, #d1d5db);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.toggleonoff.is-on {
+  background: var(--app-primary, var(--color-blue-deep));
+}
+
+.toggleonoff:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggleonoff:focus-visible {
+  outline: 2px solid var(--app-primary, var(--color-blue-deep));
+  outline-offset: 2px;
+}
+
+.toggleonoff__knob {
+  position: absolute;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(19, 38, 58, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.toggleonoff.is-on .toggleonoff__knob {
+  transform: translateX(20px);
+}
+
+.toggleonoff--lg {
+  width: 56px;
+  height: 30px;
+}
+
+.toggleonoff--lg .toggleonoff__knob {
+  width: 22px;
+  height: 22px;
+}
+
+.toggleonoff--lg.is-on .toggleonoff__knob {
+  transform: translateX(26px);
+}

@@ -1,4 +1,13 @@
 import { homeApi } from "@/lib/api/homeApi";
+import {
+  getBeritaKategori,
+  getBeritaList,
+  getEkstraList,
+  getJurusanList,
+  getLulusanTerbaik,
+  getMitraLanding,
+  getPrestasiList,
+} from "@/lib/api/contentApi";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
@@ -7,9 +16,9 @@ import VisiMisiSection from "@/components/home/VisiMisiSection";
 import JurusanSection from "@/components/home/JurusanSection";
 import MitraSection from "@/components/home/MitraSection";
 import EkstrakurikulerSection from "@/components/home/EkstrakurikulerSection";
+import LulusanSection from "@/components/home/LulusanSection";
 import PrestasiSection from "@/components/home/PrestasiSection";
 import BeritaSection from "@/components/home/BeritaSection";
-import PpdbModal from "@/components/home/PpdbModal";
 import DenahInteraktif from "@/components/denah/DenahInteraktif";
 
 export const revalidate = 60; // Revalidate every 60 seconds (ISR)
@@ -30,51 +39,37 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage() {
-  const homeData = await homeApi.getHomeData();
-
-  const hero = homeData?.hero || null;
+  const [homeData, jurusan, mitra, ekstra, lulusan, prestasi, berita, beritaKategori] = await Promise.all([
+    homeApi.getHomeData(),
+    getJurusanList(),
+    getMitraLanding(),
+    getEkstraList(),
+    getLulusanTerbaik(),
+    getPrestasiList(),
+    getBeritaList(6),
+    getBeritaKategori(),
+  ]);
   const schoolProfile = homeData?.school_profile || null;
-  const statistics = homeData?.statistics || {};
-  const schoolName =
-    schoolProfile?.school_name || hero?.school_name || "SMK NEGERI 2 KOTA MOJOKERTO";
+  const schoolName = schoolProfile?.school_name || homeData?.hero?.school_name || "SMK Negeri 2 Kota Mojokerto";
 
+  // Urutan section mengikuti landing page di Figma
   return (
     <>
       <Navbar variant="transparent" schoolName={schoolName} />
 
       <main className="flex-1">
-        {/* 1. Hero Section + Arc Carousel */}
-        <HeroSection hero={hero} schoolProfile={schoolProfile} />
-
-        {/* 2. Sambutan Kepala Sekolah + Stats Bar */}
-        <SambutanSection statistics={statistics} />
-
-        {/* 3. Visi, Misi, Tujuan */}
+        <HeroSection />
+        <SambutanSection statistics={homeData?.statistics || {}} />
         <VisiMisiSection />
-
-        {/* 4. Program Keahlian / Jurusan */}
-        <JurusanSection />
-
-        {/* 5. Denah Interaktif Sekolah */}
         <DenahInteraktif />
-
-        {/* 6. Mitra Industri Kami */}
-        <MitraSection />
-
-        {/* 7. Ekstrakurikuler */}
-        <EkstrakurikulerSection />
-
-        {/* 8. Prestasi & Kejuaraan */}
-        <PrestasiSection />
-
-        {/* 9. Berita Terbaru */}
-        <BeritaSection />
+        <JurusanSection items={jurusan} />
+        <MitraSection partners={mitra} />
+        <EkstrakurikulerSection items={ekstra} />
+        <LulusanSection items={lulusan} />
+        <PrestasiSection items={prestasi} />
+        <BeritaSection items={berita} categories={beritaKategori} />
       </main>
 
-      {/* 10. Interactive PPDB News & Info Modal (Opens upon user click) */}
-      <PpdbModal />
-
-      {/* 11. Footer */}
       <Footer />
     </>
   );

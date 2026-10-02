@@ -1,38 +1,47 @@
 "use client";
 
-export default function QuickLocations({
-  popularRooms = [],
-  selectedRoom = null,
-  onSelectRoom,
-  onResetCategory,
-}) {
+import { ArrowRight, Cross, Ellipsis, Laptop, Building2, Store, Trees, Church } from "lucide-react";
+import { roomKey } from "@/lib/denah/meta";
+
+const ICONS = {
+  "laboratorium-rpl": Laptop,
+  kantin: Store,
+  "lapangan-olahraga": Trees,
+  musholla: Church,
+  uks: Cross,
+};
+
+/** Deret lokasi cepat di bawah peta + tombol "Lainnya" (reset kategori ke semua). */
+export default function QuickLocations({ rooms, selectedKey, onSelect, onShowAll }) {
+  const item =
+    "flex min-h-[60px] shrink-0 cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition-colors";
+
   return (
-    <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-      {popularRooms.map((r) => {
-        const isSelected = selectedRoom && selectedRoom.id === r.id;
+    <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-7">
+      {rooms.map((room) => {
+        const Icon = ICONS[room.slug] ?? Building2;
+        const isActive = roomKey(room) === selectedKey;
         return (
           <button
-            key={`chip-${r.id}`}
+            key={room.id}
             type="button"
-            onClick={() => onSelectRoom(r)}
-            className={`inline-flex items-center px-4 py-2 rounded-2xl border text-xs shadow-2xs transition whitespace-nowrap cursor-pointer ${
-              isSelected
-                ? "bg-[#ebf4fd] border-[#b9d9f9] text-[#05529E] font-bold ring-1 ring-sky-300"
-                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold"
-            }`}
+            onClick={() => onSelect(room)}
+            aria-pressed={isActive}
+            className={`${item} w-[170px] sm:w-auto ${isActive ? "border-[#bfdbfe] bg-[#eff6ff] text-[#0b2a5b]" : "border-transparent bg-white text-ink hover:border-[#e2e8f0]"}`}
           >
-            <span>{r.name}</span>
+            <Icon size={18} className="shrink-0 text-[#0b3b8c]" aria-hidden="true" />
+            <span className="line-clamp-2">{room.name}</span>
           </button>
         );
       })}
-
       <button
         type="button"
-        onClick={onResetCategory}
-        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold text-[#05529E] hover:text-[#0766c6] transition whitespace-nowrap cursor-pointer"
+        onClick={onShowAll}
+        className={`${item} w-[140px] border-transparent bg-white text-ink hover:border-[#e2e8f0] sm:w-auto`}
       >
-        <span>Lainnya</span>
-        <span>→</span>
+        <Ellipsis size={18} className="shrink-0 text-[#0b3b8c]" aria-hidden="true" />
+        Lainnya
+        <ArrowRight size={15} className="ml-auto" aria-hidden="true" />
       </button>
     </div>
   );

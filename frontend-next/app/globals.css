@@ -1,12 +1,91 @@
 @import "tailwindcss";
+@import "../styles/ui/button.css";
+@import "../styles/ui/tab-buttons.css";
+@import "../styles/ui/section-header.css";
+@import "../styles/ui/header.css";
+@import "../styles/ui/toggle.css";
+@import "../styles/ui/select.css";
+
+/* Design tokens (Figma JHIC) */
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-ui: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #006494;
+  --color-primary-dark: #004f75;
+  --color-accent: #009be3;
+  --color-navy: #05529e;
+  --color-ink: #1f2937;
+  --color-body: #3f4851;
+  --color-muted: #64748b;
+  --color-line: #e3e9ef;
+  --color-surface: #eef4f8;
+  --color-surface-alt: #f8f9ff;
+  --color-lime: #b5d255;
+  --color-lime-ink: #153b4d;
+  --color-lime-soft: #b7f568;
+  --color-green: #416900;
+  --color-gold: #ffc107;
+  --color-gold-ink: #5e4100;
+  --color-footer: #003354;
+  --color-footer-deep: #001d33;
+  --color-teal: #0aa6a8;
+
+  /* Halaman dalam (berita, BKK, SPMB, dll.) */
+  --color-blue: #2563eb;
+  --color-blue-dark: #1d4ed8;
+  --color-blue-deep: #004ac6;
+  --color-navy-deep: #0b224e;
+  --color-heading: #131b2e;
+  --color-page: #f8f9ff;
+  --color-soft: #f2f3ff;
+}
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 88px;
   }
+
   body {
-    background-color: #f8fafc;
-    color: #1e293b;
+    background-color: #ffffff;
+    color: var(--color-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  /* Lebar konten halaman: 1350px di desktop, mengikuti Figma */
+  .page-container {
+    width: min(1350px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  .section {
+    padding-block: 96px;
+  }
+
+  @media (max-width: 1024px) {
+    .section {
+      padding-block: 72px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-container {
+      width: calc(100% - 32px);
+    }
+
+    .section {
+      padding-block: 56px;
+    }
   }
 }
 
@@ -16,7 +95,7 @@
   top: 0;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.16);
   background: #0a2540;
   cursor: pointer;
   will-change: transform, left, opacity;
@@ -25,8 +104,7 @@
   backface-visibility: hidden;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: box-shadow 0.25s ease;
 }
 
 .arc-slide img {
@@ -37,7 +115,6 @@
   display: block;
   pointer-events: none;
   user-select: none;
-  border-radius: 15px;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: high-quality;
   -webkit-backface-visibility: hidden;
@@ -46,8 +123,7 @@
 }
 
 .arc-slide:hover {
-  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.65), 0 0 0 2.5px rgba(255, 255, 255, 0.75);
-  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.24);
 }
 
 /* Custom Scrollbar Utilities */
@@ -69,4 +145,48 @@ div[data-nextjs-dev-indicator] {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* Infinite Marquee Animation for Partner Logos */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Arah jalan pada garis rute denah (titik putih bergerak dari asal ke tujuan) */
+@keyframes denah-route-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.denah-route-flow {
+  animation: denah-route-flow 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .denah-route-flow {
+    animation: none;
+  }
 }

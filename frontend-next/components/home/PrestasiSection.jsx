@@ -1,117 +1,72 @@
-"use client";
-
 import Link from "next/link";
+import { Trophy } from "lucide-react";
+import Button from "@/components/ui/Button";
+import SectionHeader from "@/components/ui/SectionHeader";
 
-export default function PrestasiSection() {
-  const timelineItems = [
-    {
-      date: "JUNI 2026",
-      title: "Duta Koperasi",
-      subtitle: "Juara 1 Putri · Vania Garnetta Putri XII LPS 2",
-    },
-    {
-      date: "JUNI 2026",
-      title: "Turnamen Futsal Tunas Cup 2026",
-      subtitle: "Juara 3 · Tim Futsal SMKN 2 MOJOKERTO",
-    },
-    {
-      date: "MEI 2026",
-      title: "Kejuaraan Provinsi (Kejurprov) Dayung 2026",
-      subtitle: "Medali Perunggu · Ayu Pinky Salsabila",
-    },
-    {
-      date: "APRIL 2026",
-      title: "Graphic Design Technology",
-      subtitle: "Juara 3 · Tim Karya Siswa XII DKV",
-    },
-  ];
+export default function PrestasiSection({ items = [] }) {
+  // Prestasi bergambar terbaru jadi kartu utama, sisanya linimasa
+  const featured = items.find((item) => item.image) ?? items[0];
+  const timeline = items.filter((item) => item !== featured).slice(0, 4);
+
+  if (!featured) return null;
 
   return (
-    <section id="prestasi" className="border-t border-slate-200/80 bg-white py-16 sm:py-20 px-5 lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#05529E] tracking-tight">
-            Prestasi yang terus tumbuh
-          </h2>
-          <p className="mt-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
-            Deretan penghargaan siswa SMKN 2 Kota Mojokerto di ajang lokal, nasional,
-            <br className="hidden sm:inline" /> hingga internasional.
-          </p>
-        </div>
+    <section id="prestasi" className="section">
+      <div className="page-container">
+        <SectionHeader
+          title="Prestasi yang terus tumbuh"
+          description="Deretan penghargaan siswa SMKN 2 Kota Mojokerto di ajang lokal, nasional, hingga internasional."
+        />
 
-        {/* 2-Column Content Layout */}
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Feature Card (Photo with Gradient & Award) */}
-          <div className="lg:col-span-6">
-            <div className="relative rounded-[32px] overflow-hidden shadow-xl border border-slate-200/80 bg-slate-900 group aspect-[4/3] sm:aspect-[16/11]">
-              {/* Photo */}
-              <img
-                src="/prestasi-utama.png"
-                alt="Lomba Menulis Surat Untuk Gubernur Memperingati Hari Pendidikan"
-                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-              />
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,673px)_1fr] lg:gap-[72px]">
+          <article className="relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-3xl p-6 text-white sm:min-h-[460px] sm:p-10 lg:min-h-[558px] lg:rounded-[36px] lg:p-[54px]">
+            <img
+              src={featured.image || "/prestasi-utama.png"}
+              alt={featured.title}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(17,52,132,0.9)] via-[rgba(17,52,132,0.71)] via-25% to-transparent to-60%" />
 
-              {/* Thin Sleek Bottom Gradient Behind Text Only */}
-              <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 bg-gradient-to-t from-[#021f3d]/85 via-[#021f3d]/30 to-transparent pointer-events-none" />
+            <span className="relative inline-flex w-fit items-center gap-2 rounded-full bg-gold px-[18px] py-3 text-[15px] font-bold tracking-wide text-gold-ink">
+              <Trophy size={16} strokeWidth={2.25} aria-hidden="true" />
+              {featured.badge}
+            </span>
 
-              {/* Top-Left Juara 1 Badge */}
-              <div className="absolute top-5 left-5 z-10">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f59e0b] px-3.5 py-1.5 text-xs font-black text-slate-950 shadow-md">
-                  <span>🏆</span>
-                  <span>Juara 1</span>
+            <div className="relative">
+              <h3 className="font-heading text-2xl leading-tight font-bold sm:text-3xl lg:text-4xl lg:leading-[1.3]">
+                <Link href={`/prestasi/${featured.slug}`} className="hover:underline">
+                  {featured.title}
+                </Link>
+              </h3>
+              <p className="mt-2 text-[15px] text-[#fff8f8] sm:text-lg">{featured.subtitle}</p>
+            </div>
+          </article>
+
+          <ol className="relative space-y-8 pl-12 before:absolute before:top-2.5 before:bottom-2 before:left-3 before:w-0.5 before:bg-accent/30 lg:space-y-11 lg:pl-[45px]">
+            {timeline.map((item) => (
+              <li key={item.title} className="relative">
+                <span
+                  className="absolute top-px -left-12 flex h-[27px] w-[27px] items-center justify-center rounded-full border-[4.5px] border-accent bg-[#283044] lg:-left-[45px]"
+                  aria-hidden="true"
+                >
+                  <span className="h-2 w-2 rounded-full bg-accent" />
                 </span>
-              </div>
-
-              {/* Bottom Caption Inside Card */}
-              <div className="absolute bottom-6 left-6 right-6 z-10 text-white">
-                <h3 className="text-lg sm:text-2xl font-black text-white leading-snug drop-shadow-sm">
-                  Lomba Menulis Surat Untuk Gurbernur Memperingati Hari Pendidikan
+                <p className="text-[13px] font-bold text-black uppercase">{item.date}</p>
+                <h3 className="mt-1 font-heading text-xl leading-snug font-bold text-accent sm:text-2xl lg:text-[27px] lg:leading-[1.4]">
+                  <Link href={`/prestasi/${item.slug}`} className="hover:underline">
+                    {item.cardTitle}
+                  </Link>
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-sky-100/90 font-medium">
-                  Carla Nur Parawansa · Kelas XII LPS 2
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Vertical Timeline */}
-          <div className="lg:col-span-6 pl-2 sm:pl-4">
-            <div className="relative pl-7 sm:pl-8 before:absolute before:left-2.5 sm:before:left-3 before:top-2 before:bottom-2 before:w-[2px] before:bg-sky-300/80 space-y-6 sm:space-y-7">
-              {timelineItems.map((item, idx) => (
-                <div key={idx} className="relative group">
-                  {/* Timeline Circular Beacon */}
-                  <div className="absolute -left-7 sm:-left-8 top-1 flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-[#0099ff] ring-4 ring-white shadow-xs">
-                    <span className="h-2 w-2 rounded-full bg-[#022b54]" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="space-y-0.5">
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-900 block">
-                      {item.date}
-                    </span>
-                    <h4 className="text-base sm:text-xl font-bold text-[#0099ff] group-hover:text-[#05529E] transition-colors leading-tight">
-                      {item.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-700 font-normal leading-relaxed pt-0.5">
-                      {item.subtitle}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                <p className="mt-1 text-[15px] text-black sm:text-lg">{item.subtitle}</p>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        {/* Bottom Center Link */}
-        <div className="mt-12 text-center">
-          <Link
-            href="/#informasi"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0099ff] hover:text-[#05529E] transition group"
-          >
-            <span>Lihat semua prestasi</span>
-            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-          </Link>
+        <div className="mt-12 flex justify-center">
+          <Button href="/prestasi" variant="link" withArrow>
+            Lihat semua prestasi
+          </Button>
         </div>
       </div>
     </section>

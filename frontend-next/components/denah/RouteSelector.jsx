@@ -1,110 +1,124 @@
 "use client";
 
-export default function RouteSelector({
-  allRooms = [],
-  routeFrom = "",
-  routeTo = "",
-  onRouteChange,
-  onFetchRoute,
-  onCancelRoute,
-  isRouteLoading = false,
-  showRoute = false,
-  routeInfo = null,
-}) {
+import { useId, useMemo } from "react";
+import { ArrowLeftRight, Footprints, Loader2, MapPin, Navigation, Square, X } from "lucide-react";
+import Select from "@/components/ui/Select";
+import { CATEGORY_ORDER, roomKey } from "@/lib/denah/meta";
+import RouteDirections from "./RouteDirections";
+
+function RoomPicker({ label, icon, value, onChange, options }) {
+  const labelId = useId();
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/80 p-4 sm:p-5 flex flex-col lg:flex-row items-center justify-between gap-4 shadow-sm">
-      {/* Title */}
-      <div className="flex items-center gap-2 text-slate-900 font-bold text-sm shrink-0 w-full lg:w-auto">
-        <span className="text-[#05529E] text-base">✦</span>
-        <span>Cari rute ke ruangan</span>
-      </div>
+    <div className="block min-w-0 flex-1">
+      <span id={labelId} className="mb-1.5 block text-xs text-[#64748b]">
+        {label}
+      </span>
+      <Select
+        aria-labelledby={labelId}
+        icon={icon}
+        value={value}
+        onChange={onChange}
+        options={options}
+        placeholder="Pilih lokasi"
+        searchable
+        searchPlaceholder="Cari ruangan..."
+        emptyText="Ruangan tidak ditemukan."
+        className="[--select-h:48px] [--select-radius:12px]"
+      />
+    </div>
+  );
+}
 
-      {/* Dynamic Dari & Tujuan Dropdowns & Action Button */}
-      <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto flex-1 max-w-3xl">
-        {/* Dari (Origin) */}
-        <div className="w-full sm:w-1/2">
-          <label className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
-            Dari
-          </label>
-          <div className="relative">
-            <select
-              value={routeFrom}
-              onChange={(e) => onRouteChange("from", e.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-3 pr-8 text-xs text-slate-800 focus:border-[#05529E] focus:outline-none shadow-xs cursor-pointer"
-            >
-              <option value="" disabled>
-                -- Pilih Lokasi Asal --
-              </option>
-              {allRooms.map((r) => (
-                <option key={`from-${r.id}`} value={r.slug || r.id}>
-                  {r.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+/** Bar "Cari rute ke ruangan": asal, tujuan, tombol, lalu petunjuk arah langkah demi langkah. */
+export default function RouteSelector({
+  rooms,
+  from,
+  to,
+  onChange,
+  onSubmit,
+  onSwap,
+  onClear,
+  route,
+  routing,
+  error,
+  activeStep,
+  onStepSelect,
+  onPrevStep,
+  onNextStep,
+}) {
+  // Opsi dikelompokkan per kategori ruangan agar mudah dicari
+  const options = useMemo(() => {
+    const rank = (room) => {
+      const index = CATEGORY_ORDER.indexOf(room.category?.slug);
+      return index === -1 ? CATEGORY_ORDER.length : index;
+    };
+    return [...rooms]
+      .sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name, "id"))
+      .map((room) => ({
+        value: roomKey(room),
+        label: room.name,
+        description: room.building_name,
+        group: room.category?.name ?? "Lainnya",
+      }));
+  }, [rooms]);
 
-        {/* Tujuan (Destination) */}
-        <div className="w-full sm:w-1/2">
-          <label className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
-            Tujuan
-          </label>
-          <div className="relative">
-            <select
-              value={routeTo}
-              onChange={(e) => onRouteChange("to", e.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-3 pr-8 text-xs text-slate-800 focus:border-[#05529E] focus:outline-none shadow-xs cursor-pointer"
-            >
-              <option value="" disabled>
-                -- Pilih Lokasi Tujuan --
-              </option>
-              {allRooms.map((r) => (
-                <option key={`to-${r.id}`} value={r.slug || r.id}>
-                  {r.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+  return (
+    <section className="rounded-2xl bg-white p-4 sm:p-5 lg:px-6">
+      <div className="grid gap-4 lg:grid-cols-[180px_1fr_auto] lg:items-end lg:gap-5">
+        <h3 className="flex items-center gap-2 text-base font-semibold text-ink lg:pb-3.5">
+          <Navigation size={16} className="text-blue" aria-hidden="true" />
+          Cari rute ke ruangan
+        </h3>
 
-        {/* Buttons */}
-        <div className="w-full sm:w-auto self-end flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-3">
+          <RoomPicker label="Dari" icon={Square} value={from} onChange={(value) => onChange("from", value)} options={options} />
           <button
             type="button"
-            onClick={onFetchRoute}
-            disabled={isRouteLoading || !routeFrom || !routeTo}
-            className="w-full sm:w-auto whitespace-nowrap rounded-2xl bg-[#05529E] hover:bg-[#0766c6] disabled:opacity-50 text-white px-5 py-2.5 text-xs font-bold shadow-md hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-1.5"
+            onClick={onSwap}
+            disabled={!from && !to}
+            aria-label="Tukar lokasi asal dan tujuan"
+            title="Tukar asal & tujuan"
+            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center self-center rounded-full border border-[#e2e8f0] text-[#475569] transition-colors hover:bg-[#f1f5f9] disabled:cursor-not-allowed disabled:opacity-40 sm:mb-1 sm:self-end"
           >
-            {isRouteLoading && <span className="animate-spin text-xs">⏳</span>}
-            <span>{isRouteLoading ? "Menghitung..." : "➔ Tampilkan Rute"}</span>
+            <ArrowLeftRight size={16} className="rotate-90 sm:rotate-0" aria-hidden="true" />
           </button>
+          <RoomPicker label="Tujuan" icon={MapPin} value={to} onChange={(value) => onChange("to", value)} options={options} />
+        </div>
 
-          {showRoute && (
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={routing || !from || !to}
+            className="flex h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#0b3b8c] px-6 text-sm font-semibold whitespace-nowrap text-white transition-colors hover:bg-[#0a3278] disabled:cursor-not-allowed disabled:opacity-60 lg:flex-none"
+          >
+            {routing ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <Navigation size={16} aria-hidden="true" />}
+            {routing ? "Menghitung..." : "Tampilkan Rute"}
+          </button>
+          {route.points.length ? (
             <button
               type="button"
-              onClick={onCancelRoute}
-              className="whitespace-nowrap rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-4 py-2.5 text-xs font-bold transition cursor-pointer"
+              onClick={onClear}
+              aria-label="Hapus rute"
+              title="Hapus rute"
+              className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-[#e2e8f0] text-[#475569] transition-colors hover:bg-[#f1f5f9]"
             >
-              Batalkan Rute
+              <X size={18} aria-hidden="true" />
             </button>
-          )}
+          ) : null}
         </div>
       </div>
 
-      {/* Route Stats Info */}
-      {showRoute && routeInfo && (
-        <div className="text-xs text-slate-700 bg-sky-50 px-4 py-2.5 rounded-2xl border border-sky-200 shadow-2xs shrink-0 flex items-center gap-2.5">
-          <span className="text-lg">🚶</span>
-          <div>
-            <p className="font-bold text-[#05529E]">
-              Jarak: ± {routeInfo.distance} meter
-            </p>
-            <p className="text-[11px] text-slate-500">
-              Estimasi waktu: ± {routeInfo.estimated_minutes} menit
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
+      {error ? (
+        <p role="status" className="mt-4 flex items-center gap-2 rounded-xl bg-[#fef2f2] px-4 py-2.5 text-sm text-[#b91c1c]">
+          <Footprints size={16} className="shrink-0" aria-hidden="true" />
+          {error}
+        </p>
+      ) : null}
+
+      {route.info && route.steps.length ? (
+        <RouteDirections route={route} activeStep={activeStep} onSelect={onStepSelect} onPrev={onPrevStep} onNext={onNextStep} />
+      ) : null}
+    </section>
   );
 }

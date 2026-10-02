@@ -18,6 +18,7 @@ class MapEdgeResource extends JsonResource
             'id' => $this->id,
             'from_node_id' => $this->from_node_id,
             'to_node_id' => $this->to_node_id,
+            'name' => $this->name,
             'distance' => (float) $this->distance,
             'is_walkable' => (bool) $this->is_walkable,
             'from_node' => new MapNodeResource($this->whenLoaded('fromNode')),

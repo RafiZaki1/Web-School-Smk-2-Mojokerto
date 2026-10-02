@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 90" fill="none">
+  <!-- Icon: Yellow Rounded Rect with Donut -->
+  <g transform="translate(10, 15)">
+    <rect x="0" y="0" width="60" height="60" rx="14" fill="#fbbf24"/>
+    <!-- Donut -->
+    <ellipse cx="30" cy="30" rx="20" ry="14" fill="#451a03" transform="rotate(-15 30 30)"/>
+    <ellipse cx="30" cy="30" rx="8" ry="5.5" fill="#fbbf24" transform="rotate(-15 30 30)"/>
+    <!-- Sprinkles / Frosting -->
+    <path d="M 18 24 Q 24 18 34 22 Q 42 25 44 32" stroke="#fef08a" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+  <!-- Text: HACHI DONUTS -->
+  <g transform="translate(82, 10)">
+    <text x="0" y="32" font-family="'Arial Black', sans-serif" font-weight="900" font-size="24" fill="#eab308" letter-spacing="1">HACHI</text>
+    <text x="92" y="32" font-family="'Arial Black', sans-serif" font-weight="900" font-size="24" fill="#451a03" letter-spacing="0.5">DONUTS</text>
+    <!-- Subtitle: DONAT LABU MADU -->
+    <text x="44" y="47" font-family="Arial, sans-serif" font-weight="800" font-size="9" fill="#eab308" letter-spacing="2">DONAT LABU MADU</text>
+    <!-- Footer cursive: Spesialis Donat Ucapan Langsung Jadi -->
+    <text x="44" y="62" font-family="'Brush Script MT', 'Comic Sans MS', cursive" font-size="10" font-style="italic" fill="#78350f">Spesialis Donat Ucapan Langsung Jadi</text>
+  </g>
+</svg>

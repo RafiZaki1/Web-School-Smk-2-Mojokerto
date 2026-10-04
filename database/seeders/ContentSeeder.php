@@ -451,7 +451,7 @@ class ContentSeeder extends Seeder
 
     private function jobs(): void
     {
-        $contact = ['contact_phone' => '0857-3050-2173', 'contact_email' => 'bkk.smkn2mr@gmail.com', 'status' => JobVacancy::STATUS_OPEN];
+        $contact = ['contact_phone' => '0812-3456-7890', 'contact_email' => 'bkk.smkn2mr@gmail.com', 'status' => JobVacancy::STATUS_OPEN];
 
         $items = [
             [

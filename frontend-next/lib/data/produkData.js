@@ -1,4 +1,4 @@
-export const PRODUK_WHATSAPP = "6285730502173";
+export const PRODUK_WHATSAPP = "6281234567890";
 
 // Poster produk sudah memuat label kategori bawaan desain
 export const PRODUK = [

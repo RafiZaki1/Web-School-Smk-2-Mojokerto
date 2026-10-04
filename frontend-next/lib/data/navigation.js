@@ -41,6 +41,6 @@ export const SOCIAL_LINKS = [
 
 export const CONTACT = {
   telepon: "(0321) 387-356",
-  whatsapp: "0857-3050-2173",
+  whatsapp: "0812-3456-7890",
   email: "smkn2mr@gmail.com",
 };

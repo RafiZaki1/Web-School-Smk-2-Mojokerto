@@ -98,7 +98,7 @@ export default function LokerForm({ id }) {
           <ListEditor label="Tanggung jawab" items={data.tanggungJawab} onChange={set("tanggungJawab")} />
           <ListEditor label="Kualifikasi" items={data.kualifikasi} onChange={set("kualifikasi")} />
           <div className="grid gap-5 sm:grid-cols-2">
-            <InputText label="Kontak pelamar (telepon/WA)" placeholder="0812-3456-7890" value={data.kontak} onChange={set("kontak")} />
+            <InputText label="Kontak pelamar (telepon/WA)" placeholder="0857-3050-2173" value={data.kontak} onChange={set("kontak")} />
             <InputText type="email" label="Email pelamar" placeholder="bkk.smkn2mr@gmail.com" value={data.email} onChange={set("email")} />
           </div>
         </>

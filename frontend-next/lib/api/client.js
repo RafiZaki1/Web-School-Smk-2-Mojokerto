@@ -9,16 +9,32 @@ export async function apiClient(endpoint, options = {}) {
     ...(options.body && typeof options.body === "string" ? { "Content-Type": "application/json" } : {}),
   };
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...options.headers,
-    },
-    // For server components / fetch caching
-    next: options.next || undefined,
-    cache: options.cache || (options.method && options.method !== "GET" ? "no-store" : undefined),
-  });
+  // Batas waktu agar UI tidak menunggu selamanya saat API macet (GET 15 detik, kirim data 60 detik)
+  const { timeout, ...fetchOptions } = options;
+  const isRead = !options.method || options.method === "GET";
+  const timeoutMs = timeout ?? (isRead ? 15000 : 60000);
+  const signal = options.signal ?? AbortSignal.timeout(timeoutMs);
+
+  let response;
+  try {
+    response = await fetch(url, {
+      ...fetchOptions,
+      signal,
+      headers: {
+        ...defaultHeaders,
+        ...options.headers,
+      },
+      // For server components / fetch caching
+      next: options.next || undefined,
+      cache: options.cache || (options.method && options.method !== "GET" ? "no-store" : undefined),
+    });
+  } catch (cause) {
+    const timedOut = cause?.name === "TimeoutError" || cause?.name === "AbortError";
+    const error = new Error(timedOut ? "Server tidak merespons. Coba muat ulang halaman." : "Tidak dapat terhubung ke server.");
+    error.status = 0;
+    error.cause = cause;
+    throw error;
+  }
 
   if (!response.ok) {
     let errorData = null;
@@ -45,7 +61,8 @@ export async function apiClient(endpoint, options = {}) {
  */
 export async function fetchPublic(endpoint, { revalidate = 60 } = {}) {
   try {
-    const json = await apiClient(`/api/v1/public${endpoint}`, { next: { revalidate } });
+    // Lebih singkat dari default: kalau API lambat, halaman langsung pakai data cadangan
+    const json = await apiClient(`/api/v1/public${endpoint}`, { next: { revalidate }, timeout: 8000 });
     return json.data ?? null;
   } catch (error) {
     if (error.status !== 404) console.error(`[api] ${endpoint}:`, error.message);

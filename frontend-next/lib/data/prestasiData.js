@@ -117,7 +117,7 @@ export const getPrestasiDetail = (slug) => {
     tingkat: `Tingkat ${base.level}`,
     bulan: base.date,
     title: base.title,
-    hero: "/prestasi-utama.png",
+    hero: "/prestasi-utama.webp",
     siswa: { nama: base.subtitle, kelas: "SMKN 2 Kota Mojokerto", foto: null },
     tanggal: base.date,
     lokasi: "-",

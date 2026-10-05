@@ -18,7 +18,7 @@ export const LULUSAN_TERBAIK = [
     jurusan: "RPL",
     angkatan: 2019,
     karier: "IT Engineer, PT Pertamina (Persero)",
-    photo: "/images/lulusan/rafi-zaki.png",
+    photo: "/images/lulusan/rafi-zaki.webp",
   },
   {
     name: "Indra Setiawan",

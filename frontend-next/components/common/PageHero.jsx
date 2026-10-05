@@ -6,7 +6,7 @@ export default function PageHero({
   badge,
   title,
   description,
-  image = "/hero-bg.jpg",
+  image = "/hero-bg.webp",
   overlay = "bg-[linear-gradient(90deg,rgba(11,34,78,0.92)_0%,rgba(11,34,78,0.7)_45%,rgba(11,34,78,0.35)_100%)]",
   className = "",
 }) {

@@ -47,7 +47,7 @@ export default function SambutanSection({ statistics = {} }) {
       <div className="page-container">
         <div className="relative overflow-hidden rounded-3xl bg-navy lg:rounded-[36px]">
           <img
-            src="/images/sambutan-bg.jpg"
+            src="/images/sambutan-bg.webp"
             alt=""
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover"
@@ -73,7 +73,7 @@ export default function SambutanSection({ statistics = {} }) {
             </div>
 
             <img
-              src="/images/kepala-sekolah.png"
+              src="/images/kepala-sekolah.webp"
               alt="Bapak Iswahyudi, S.ST., Kepala SMKN 2 Mojokerto"
               className="pointer-events-none absolute right-0 bottom-0 w-[200px] opacity-60 sm:w-[340px] sm:opacity-100 lg:static lg:mt-auto lg:w-full lg:self-end"
             />

@@ -69,9 +69,11 @@ export default function MapCanvas({
             style={{ "--z": scale }}
           >
             <img
-              src="/denah-map.png"
+              src="/denah-map.webp"
               alt="Denah SMK Negeri 2 Kota Mojokerto"
               draggable={false}
+              fetchPriority="high"
+              decoding="async"
               className="pointer-events-none absolute inset-0 h-full w-full select-none"
             />
             <RouteLayer points={route.points} activeSegment={activeSegment} />
@@ -101,13 +103,15 @@ export default function MapCanvas({
           </div>
         ) : null}
 
+        {/* Peta tetap terlihat; hanya data ruangan yang sedang dimuat */}
         {loading ? (
-          <div className="absolute inset-0 z-30 flex items-center justify-center rounded-2xl bg-white/80">
-            <span className="flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white px-4 py-2 text-sm font-medium text-ink shadow-sm">
-              <Loader2 size={16} className="animate-spin text-blue" aria-hidden="true" />
-              Memuat denah...
-            </span>
-          </div>
+          <span
+            role="status"
+            className="pointer-events-none absolute bottom-3 left-3 z-30 flex items-center gap-2 rounded-full border border-[#e2e8f0] bg-white/95 px-3 py-1.5 text-xs font-medium text-ink shadow-sm"
+          >
+            <Loader2 size={14} className="animate-spin text-blue" aria-hidden="true" />
+            Memuat data ruangan...
+          </span>
         ) : null}
       </div>
 

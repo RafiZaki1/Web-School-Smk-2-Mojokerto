@@ -11,7 +11,7 @@ export default function HeroSection() {
       style={{ backgroundImage: HERO_GRADIENT }}
     >
       <img
-        src="/hero-bg.jpg"
+        src="/hero-bg.webp"
         alt=""
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"

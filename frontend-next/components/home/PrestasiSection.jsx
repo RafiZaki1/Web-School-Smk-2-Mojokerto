@@ -21,7 +21,7 @@ export default function PrestasiSection({ items = [] }) {
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,673px)_1fr] lg:gap-[72px]">
           <article className="relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-3xl p-6 text-white sm:min-h-[460px] sm:p-10 lg:min-h-[558px] lg:rounded-[36px] lg:p-[54px]">
             <img
-              src={featured.image || "/prestasi-utama.png"}
+              src={featured.image || "/prestasi-utama.webp"}
               alt={featured.title}
               className="absolute inset-0 h-full w-full object-cover"
             />

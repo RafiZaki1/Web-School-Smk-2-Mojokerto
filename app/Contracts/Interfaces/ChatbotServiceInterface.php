@@ -5,11 +5,7 @@ namespace App\Contracts\Interfaces;
 interface ChatbotServiceInterface
 {
     /**
-     * Kirim pertanyaan pengguna ke layanan AI dan kembalikan respon dasar.
-     *
-     * @param string $message
-     * @param array $history
-     * @return array
+     * Send a user message to the AI chatbot and get a reply.
      */
     public function sendMessage(string $message, array $history = []): array;
 }

@@ -5,19 +5,23 @@ namespace App\Services\LandingPage;
 use App\Contracts\Interfaces\FileUploadServiceInterface;
 use App\Contracts\Interfaces\HeroRepositoryInterface;
 use App\Contracts\Interfaces\HeroServiceInterface;
+use App\Enums\UploadDirectoryEnum;
 use App\Models\Hero;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 
 class HeroService implements HeroServiceInterface
 {
+    /**
+     * Inisialisasi HeroService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected FileUploadServiceInterface $fileUploadService,
         protected HeroRepositoryInterface $heroRepository,
     ) {}
 
     /**
-     * Get all heroes ordered.
+     * Ambil seluruh banner beranda sesuai urutan tampil.
      */
     public function getAll(): Collection
     {
@@ -25,7 +29,7 @@ class HeroService implements HeroServiceInterface
     }
 
     /**
-     * Get active heroes for public view.
+     * Ambil banner beranda yang aktif untuk halaman publik.
      */
     public function getActiveHeroes(): Collection
     {
@@ -33,7 +37,7 @@ class HeroService implements HeroServiceInterface
     }
 
     /**
-     * Get single active hero for landing page.
+     * Ambil satu banner aktif teratas untuk beranda.
      */
     public function getActiveHero(): ?Hero
     {
@@ -41,7 +45,7 @@ class HeroService implements HeroServiceInterface
     }
 
     /**
-     * Find hero by id.
+     * Ambil banner berdasarkan id, atau gagal.
      */
     public function getById(int|string $id): Hero
     {
@@ -49,14 +53,16 @@ class HeroService implements HeroServiceInterface
     }
 
     /**
-     * Create a new hero.
+     * Simpan banner baru beserta gambar latarnya.
+     *
+     * @param  array<string, mixed>  $data
      */
     public function create(array $data): Hero
     {
         if (isset($data['background_image']) && $data['background_image'] instanceof UploadedFile) {
             $data['background_image'] = $this->fileUploadService->upload(
                 $data['background_image'],
-                'heroes'
+                UploadDirectoryEnum::HEROES->value
             );
         }
 
@@ -64,7 +70,9 @@ class HeroService implements HeroServiceInterface
     }
 
     /**
-     * Update an existing hero.
+     * Perbarui banner dan ganti gambar latarnya bila ada unggahan baru.
+     *
+     * @param  array<string, mixed>  $data
      */
     public function update(int|string $id, array $data): Hero
     {
@@ -74,7 +82,7 @@ class HeroService implements HeroServiceInterface
             $data['background_image'] = $this->fileUploadService->replace(
                 $data['background_image'],
                 $hero->background_image,
-                'heroes'
+                UploadDirectoryEnum::HEROES->value
             );
         }
 
@@ -82,7 +90,7 @@ class HeroService implements HeroServiceInterface
     }
 
     /**
-     * Delete a hero and its associated background image.
+     * Hapus banner beserta gambar latarnya.
      */
     public function delete(int|string $id): bool
     {

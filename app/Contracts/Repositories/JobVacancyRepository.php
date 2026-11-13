@@ -3,25 +3,36 @@
 namespace App\Contracts\Repositories;
 
 use App\Contracts\Interfaces\JobVacancyRepositoryInterface;
+use App\Enums\JobVacancyStatusEnum;
 use App\Models\JobVacancy;
 use Illuminate\Database\Eloquent\Builder;
 
 class JobVacancyRepository extends BaseRepository implements JobVacancyRepositoryInterface
 {
+    /** @var class-string<JobVacancy> */
     protected string $model = JobVacancy::class;
 
-    /** Lowongan tidak punya draf; yang tutup tetap tampil dengan label "Tutup". */
+    /**
+     * Lowongan tidak memiliki draf, jadi semua data tetap ditampilkan termasuk yang sudah tutup.
+     */
     protected function onlyPublished(Builder $query): Builder
     {
         return $query;
     }
 
+    /**
+     * Urutkan lowongan aktif lebih dulu, lalu yang paling cepat tutup.
+     */
     protected function ordered(Builder $query): Builder
     {
-        // Lowongan aktif lebih dulu, lalu yang paling cepat tutup
-        return $query->orderByRaw('status = ? desc', [JobVacancy::STATUS_OPEN])->ordered();
+        return $query->orderByRaw('status = ? desc', [JobVacancyStatusEnum::OPEN->value])->ordered();
     }
 
+    /**
+     * Terapkan filter kategori, status, dan pencarian judul atau perusahaan pada daftar lowongan.
+     *
+     * @param  array<string, mixed>  $filters
+     */
     protected function applyFilters(Builder $query, array $filters): Builder
     {
         return $query

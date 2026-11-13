@@ -4,56 +4,105 @@ namespace App\Services\Content;
 
 use App\Contracts\Interfaces\AchievementRepositoryInterface;
 use App\Contracts\Interfaces\ArticleRepositoryInterface;
-use App\Contracts\Interfaces\AspirationRepositoryInterface;
 use App\Contracts\Interfaces\BaseRepositoryInterface;
 use App\Contracts\Interfaces\DashboardServiceInterface;
 use App\Contracts\Interfaces\ExtracurricularRepositoryInterface;
 use App\Contracts\Interfaces\JobVacancyRepositoryInterface;
+use App\Contracts\Interfaces\MajorQuizSubmissionRepositoryInterface;
 use App\Contracts\Interfaces\MajorRepositoryInterface;
-use App\Models\JobVacancy;
+use App\Enums\JobVacancyStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class DashboardService implements DashboardServiceInterface
 {
+    /**
+     * Inisialisasi DashboardService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected MajorRepositoryInterface $majors,
         protected AchievementRepositoryInterface $achievements,
         protected ExtracurricularRepositoryInterface $extracurriculars,
         protected ArticleRepositoryInterface $articles,
         protected JobVacancyRepositoryInterface $jobs,
-        protected AspirationRepositoryInterface $aspirations,
+        protected MajorQuizSubmissionRepositoryInterface $quizSubmissions,
     ) {}
 
+    /**
+     * Susun ringkasan dashboard admin: jumlah konten, draf, kuis, dan aktivitas terbaru.
+     * Menggunakan agregasi tunggal per tabel agar hemat query dan ringan.
+     *
+     * @return array<string, mixed>
+     */
     public function summary(): array
     {
+        $majors = $this->majors->countPublishSummary();
+        $achievements = $this->achievements->countPublishSummary();
+        $extracurriculars = $this->extracurriculars->countPublishSummary();
+        $articles = $this->articles->countPublishSummary();
+
         return [
             'stats' => [
-                'majors' => $this->majors->count(),
-                'achievements' => $this->achievements->count(),
-                'extracurriculars' => $this->extracurriculars->count(),
-                'articles' => $this->articles->count(),
-                'jobs' => $this->jobs->count(['status' => JobVacancy::STATUS_OPEN]),
+                'majors' => $majors['total'],
+                'achievements' => $achievements['total'],
+                'extracurriculars' => $extracurriculars['total'],
+                'articles' => $articles['total'],
+                'jobs' => $this->jobs->count(['status' => JobVacancyStatusEnum::OPEN->value]),
             ],
             'drafts' => [
-                'majors' => $this->majors->count(['is_published' => false]),
-                'achievements' => $this->achievements->count(['is_published' => false]),
-                'extracurriculars' => $this->extracurriculars->count(['is_published' => false]),
-                'articles' => $this->articles->count(['is_published' => false]),
+                'majors' => $majors['drafts'],
+                'achievements' => $achievements['drafts'],
+                'extracurriculars' => $extracurriculars['drafts'],
+                'articles' => $articles['drafts'],
             ],
-            'aspirations' => $this->aspirations->countByStatus(),
+            'major_quiz' => $this->quizSubmissions->countByStatus(),
             'activities' => $this->activities(),
         ];
     }
 
-    /** Gabungan perubahan terbaru dari semua modul, terbaru di atas. */
+    /**
+     * Gabungkan perubahan terbaru dari seluruh modul, terbaru di atas.
+     * Hanya mengambil kolom ringkas tanpa memuat kolom teks besar/JSON.
+     *
+     * @return array<int, array<string, mixed>>
+     */
     protected function activities(int $limit = 6): array
     {
         $sources = [
-            ['repo' => $this->achievements, 'module' => 'Prestasi', 'icon' => 'trophy', 'label' => fn (Model $m) => "Prestasi \"{$m->title}\""],
-            ['repo' => $this->articles, 'module' => 'Berita & Artikel', 'icon' => 'news', 'label' => fn (Model $m) => "Berita \"{$m->title}\""],
-            ['repo' => $this->jobs, 'module' => 'Loker & BKK', 'icon' => 'briefcase', 'label' => fn (Model $m) => "Lowongan {$m->title} — {$m->company}"],
-            ['repo' => $this->majors, 'module' => 'Jurusan', 'icon' => 'graduation', 'label' => fn (Model $m) => "Data jurusan {$m->code}"],
-            ['repo' => $this->extracurriculars, 'module' => 'Ekstrakurikuler', 'icon' => 'run', 'label' => fn (Model $m) => "Ekstrakurikuler {$m->name}"],
+            [
+                'repo' => $this->achievements,
+                'module' => 'Prestasi',
+                'icon' => 'trophy',
+                'columns' => ['id', 'title', 'created_at', 'updated_at'],
+                'label' => fn (Model $m) => "Prestasi \"{$m->title}\"",
+            ],
+            [
+                'repo' => $this->articles,
+                'module' => 'Berita & Artikel',
+                'icon' => 'news',
+                'columns' => ['id', 'title', 'created_at', 'updated_at'],
+                'label' => fn (Model $m) => "Berita \"{$m->title}\"",
+            ],
+            [
+                'repo' => $this->jobs,
+                'module' => 'Loker & BKK',
+                'icon' => 'briefcase',
+                'columns' => ['id', 'title', 'company', 'created_at', 'updated_at'],
+                'label' => fn (Model $m) => "Lowongan {$m->title} — {$m->company}",
+            ],
+            [
+                'repo' => $this->majors,
+                'module' => 'Jurusan',
+                'icon' => 'graduation',
+                'columns' => ['id', 'code', 'created_at', 'updated_at'],
+                'label' => fn (Model $m) => "Data jurusan {$m->code}",
+            ],
+            [
+                'repo' => $this->extracurriculars,
+                'module' => 'Ekstrakurikuler',
+                'icon' => 'run',
+                'columns' => ['id', 'name', 'created_at', 'updated_at'],
+                'label' => fn (Model $m) => "Ekstrakurikuler {$m->name}",
+            ],
         ];
 
         return collect($sources)
@@ -65,9 +114,17 @@ class DashboardService implements DashboardServiceInterface
             ->all();
     }
 
+    /**
+     * Ubah model terbaru dari satu modul menjadi item aktivitas.
+     *
+     * @param  array<string, mixed>  $source
+     * @return array<int, array<string, mixed>>
+     */
     protected function mapActivities(BaseRepositoryInterface $repository, array $source, int $limit): array
     {
-        return $repository->latestUpdated($limit)->map(function (Model $model) use ($source) {
+        $columns = $source['columns'] ?? ['*'];
+
+        return $repository->latestUpdated($limit, $columns)->map(function (Model $model) use ($source) {
             $isNew = $model->created_at?->equalTo($model->updated_at);
 
             return [

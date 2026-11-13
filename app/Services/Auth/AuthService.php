@@ -9,6 +9,13 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService implements AuthServiceInterface
 {
+    /**
+     * Verifikasi username atau email beserta password, lalu terbitkan token akses.
+     *
+     * @return array{user: User, token: string}
+     *
+     * @throws ValidationException
+     */
     public function login(string $login, string $password, string $device = 'admin-panel'): array
     {
         $login = trim($login);
@@ -20,7 +27,7 @@ class AuthService implements AuthServiceInterface
 
         if (! $user || ! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
-                'login' => 'Username/email atau password salah.',
+                'login' => trans('alert.invalid_credentials'),
             ]);
         }
 
@@ -30,6 +37,9 @@ class AuthService implements AuthServiceInterface
         ];
     }
 
+    /**
+     * Cabut token akses yang sedang dipakai pengguna.
+     */
     public function logout(User $user): void
     {
         $user->currentAccessToken()?->delete();

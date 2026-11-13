@@ -5,19 +5,23 @@ namespace App\Services\LandingPage;
 use App\Contracts\Interfaces\FileUploadServiceInterface;
 use App\Contracts\Interfaces\GalleryRepositoryInterface;
 use App\Contracts\Interfaces\GalleryServiceInterface;
+use App\Enums\UploadDirectoryEnum;
 use App\Models\Gallery;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 
 class GalleryService implements GalleryServiceInterface
 {
+    /**
+     * Inisialisasi GalleryService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected FileUploadServiceInterface $fileUploadService,
         protected GalleryRepositoryInterface $galleryRepository,
     ) {}
 
     /**
-     * Get all galleries with optional category filter.
+     * Ambil seluruh foto galeri, opsional difilter per kategori.
      */
     public function getAll(?string $category = null): Collection
     {
@@ -25,7 +29,7 @@ class GalleryService implements GalleryServiceInterface
     }
 
     /**
-     * Get active galleries for public view with optional category filter.
+     * Ambil foto galeri yang aktif untuk halaman publik, opsional difilter per kategori.
      */
     public function getActiveGalleries(?string $category = null): Collection
     {
@@ -33,7 +37,7 @@ class GalleryService implements GalleryServiceInterface
     }
 
     /**
-     * Find gallery by id.
+     * Ambil foto galeri berdasarkan id, atau gagal.
      */
     public function getById(int|string $id): Gallery
     {
@@ -41,14 +45,16 @@ class GalleryService implements GalleryServiceInterface
     }
 
     /**
-     * Create a new gallery item.
+     * Simpan foto galeri baru beserta berkas gambarnya.
+     *
+     * @param  array<string, mixed>  $data
      */
     public function create(array $data): Gallery
     {
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
             $data['image'] = $this->fileUploadService->upload(
                 $data['image'],
-                'galleries'
+                UploadDirectoryEnum::GALLERIES->value
             );
         }
 
@@ -56,7 +62,9 @@ class GalleryService implements GalleryServiceInterface
     }
 
     /**
-     * Update an existing gallery item.
+     * Perbarui foto galeri dan ganti gambarnya bila ada unggahan baru.
+     *
+     * @param  array<string, mixed>  $data
      */
     public function update(int|string $id, array $data): Gallery
     {
@@ -66,7 +74,7 @@ class GalleryService implements GalleryServiceInterface
             $data['image'] = $this->fileUploadService->replace(
                 $data['image'],
                 $gallery->image,
-                'galleries'
+                UploadDirectoryEnum::GALLERIES->value
             );
         }
 
@@ -74,7 +82,7 @@ class GalleryService implements GalleryServiceInterface
     }
 
     /**
-     * Delete a gallery item and its image.
+     * Hapus foto galeri beserta gambarnya.
      */
     public function delete(int|string $id): bool
     {

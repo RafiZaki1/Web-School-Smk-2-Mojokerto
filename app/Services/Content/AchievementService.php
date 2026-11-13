@@ -5,23 +5,35 @@ namespace App\Services\Content;
 use App\Contracts\Interfaces\AchievementRepositoryInterface;
 use App\Contracts\Interfaces\AchievementServiceInterface;
 use App\Contracts\Interfaces\FileUploadServiceInterface;
+use App\Enums\UploadDirectoryEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class AchievementService extends ContentService implements AchievementServiceInterface
 {
+    /** @var array<string, string> */
     protected array $fileFields = [
-        'cover_image' => 'achievements',
-        'student_photo' => 'achievements/students',
-        'document' => 'achievements/documents',
+        'cover_image' => UploadDirectoryEnum::ACHIEVEMENTS->value,
+        'student_photo' => UploadDirectoryEnum::ACHIEVEMENT_STUDENTS->value,
+        'document' => UploadDirectoryEnum::ACHIEVEMENT_DOCUMENTS->value,
     ];
 
-    protected array $fileListFields = ['gallery' => 'achievements/gallery'];
+    /** @var array<string, string> */
+    protected array $fileListFields = ['gallery' => UploadDirectoryEnum::ACHIEVEMENT_GALLERY->value];
 
+    /**
+     * Inisialisasi AchievementService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(AchievementRepositoryInterface $repository, FileUploadServiceInterface $files)
     {
         parent::__construct($repository, $files);
     }
 
+    /**
+     * Rapikan testimoni dan judul kartu. Testimoni tanpa kutipan dianggap kosong.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
     protected function transform(array $data, ?Model $model): array
     {
         if (array_key_exists('testimonial', $data)) {

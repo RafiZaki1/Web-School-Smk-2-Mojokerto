@@ -10,6 +10,7 @@ class Gallery extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     protected $fillable = [
         'title',
         'image',
@@ -18,13 +19,14 @@ class Gallery extends Model
         'sort_order',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
 
     /**
-     * Scope a query to only include active galleries.
+     * Batasi query hanya pada foto galeri yang aktif.
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -32,7 +34,7 @@ class Gallery extends Model
     }
 
     /**
-     * Scope a query to order galleries.
+     * Urutkan galeri berdasarkan urutan tampil, lalu id terbaru.
      */
     public function scopeOrdered(Builder $query): Builder
     {
@@ -40,14 +42,10 @@ class Gallery extends Model
     }
 
     /**
-     * Scope a query to filter by category.
+     * Saring galeri berdasarkan kategori bila kategori diisi.
      */
     public function scopeCategory(Builder $query, ?string $category): Builder
     {
-        if ($category) {
-            return $query->where('category', $category);
-        }
-
-        return $query;
+        return $category ? $query->where('category', $category) : $query;
     }
 }

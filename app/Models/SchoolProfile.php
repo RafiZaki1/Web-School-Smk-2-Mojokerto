@@ -18,9 +18,15 @@ class SchoolProfile extends Model
         'welcome_message',
         'background_image',
         'established_year',
+        'student_count',
+        'teacher_count',
+        'alumni_count',
     ];
 
     protected $casts = [
         'established_year' => 'integer',
+        'student_count' => 'integer',
+        'teacher_count' => 'integer',
+        'alumni_count' => 'integer',
     ];
 }

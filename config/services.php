@@ -2,18 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Resend, Postmark, AWS, and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
-
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],
@@ -26,6 +14,18 @@ return [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
+
+    'frontend' => [
+        // IP server Next.js yang mengambil data saat render/build; dibebaskan dari batas request publik
+        'server_ips' => array_values(array_filter(array_map('trim', explode(',', (string) env('FRONTEND_SERVER_IPS', '127.0.0.1,::1'))))),
+    ],
+
+    // Web Push layanan alumni. Buat kunci sekali: php artisan tinker -> Minishlink\WebPush\VAPID::createVapidKeys()
+    'webpush' => [
+        'subject' => env('VAPID_SUBJECT', 'mailto:smkn2mr@gmail.com'),
+        'public_key' => env('VAPID_PUBLIC_KEY'),
+        'private_key' => env('VAPID_PRIVATE_KEY'),
     ],
 
     'slack' => [

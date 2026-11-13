@@ -10,8 +10,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    public const CATEGORIES = ['Informasi umum', 'Prestasi', 'Agenda sekolah', 'Pengumuman', 'Karya siswa'];
-
+    /** @var array<int, string> */
     protected $fillable = [
         'slug',
         'title',
@@ -24,17 +23,24 @@ class Article extends Model
         'is_published',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'published_at' => 'date',
         'gallery' => 'array',
         'is_published' => 'boolean',
     ];
 
+    /**
+     * Batasi query hanya pada berita yang diterbitkan.
+     */
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true);
     }
 
+    /**
+     * Urutkan berita dari tanggal terbit terbaru.
+     */
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderByDesc('published_at')->orderByDesc('id');

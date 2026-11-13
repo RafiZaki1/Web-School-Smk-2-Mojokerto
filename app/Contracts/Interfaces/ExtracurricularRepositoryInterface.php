@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface ExtracurricularRepositoryInterface extends ContentRepositoryInterface
-{
-}
+interface ExtracurricularRepositoryInterface extends ContentRepositoryInterface {}

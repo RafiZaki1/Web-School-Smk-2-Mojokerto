@@ -10,6 +10,7 @@ class Achievement extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     protected $fillable = [
         'slug',
         'title',
@@ -36,6 +37,7 @@ class Achievement extends Model
         'is_published',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
@@ -44,11 +46,17 @@ class Achievement extends Model
         'is_published' => 'boolean',
     ];
 
+    /**
+     * Batasi query hanya pada prestasi yang diterbitkan.
+     */
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true);
     }
 
+    /**
+     * Urutkan prestasi dari tanggal mulai terbaru.
+     */
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderByDesc('start_date')->orderByDesc('id');

@@ -19,7 +19,20 @@ class DatabaseSeeder extends Seeder
             LandingPageSeeder::class,
             InteractiveMapSeeder::class,
             ContentSeeder::class,
+            TeacherSeeder::class,
             SiteContentSeeder::class,
+
+            // Modul Admin TU & Layanan Informasi Publik
+            AdminTuSeeder::class,
+            GraduationSeeder::class,
+            AlumniServiceRequestSeeder::class,
+            PartnershipSeeder::class,
+            StudentGuideSeeder::class,
+            GuestBookSeeder::class,
+            PortalLinkSeeder::class,
+
+            // Modul Bank Mini & Pembayaran SPP (akun siswa dari data kelulusan)
+            BankMiniSeeder::class,
         ]);
     }
 }

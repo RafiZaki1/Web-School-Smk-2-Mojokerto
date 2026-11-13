@@ -10,6 +10,9 @@ use App\Contracts\Interfaces\StatisticServiceInterface;
 
 class HomeService implements HomeServiceInterface
 {
+    /**
+     * Inisialisasi HomeService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected HeroServiceInterface $heroService,
         protected GalleryServiceInterface $galleryService,
@@ -18,9 +21,9 @@ class HomeService implements HomeServiceInterface
     ) {}
 
     /**
-     * Get aggregated data for Landing Page.
+     * Kumpulkan seluruh data yang dibutuhkan halaman beranda.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getHomeData(): array
     {

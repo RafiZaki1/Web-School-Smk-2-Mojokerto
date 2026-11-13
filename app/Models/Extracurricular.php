@@ -10,6 +10,7 @@ class Extracurricular extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     protected $fillable = [
         'slug',
         'name',
@@ -30,6 +31,7 @@ class Extracurricular extends Model
         'sort_order',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'gallery' => 'array',
         'achievements' => 'array',
@@ -38,11 +40,17 @@ class Extracurricular extends Model
         'sort_order' => 'integer',
     ];
 
+    /**
+     * Batasi query hanya pada ekstrakurikuler yang diterbitkan.
+     */
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true);
     }
 
+    /**
+     * Urutkan ekstrakurikuler berdasarkan urutan tampil, lalu id.
+     */
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderBy('sort_order')->orderBy('id');

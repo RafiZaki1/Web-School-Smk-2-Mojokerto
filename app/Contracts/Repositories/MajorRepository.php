@@ -7,5 +7,6 @@ use App\Models\Major;
 
 class MajorRepository extends BaseRepository implements MajorRepositoryInterface
 {
+    /** @var class-string<Major> */
     protected string $model = Major::class;
 }

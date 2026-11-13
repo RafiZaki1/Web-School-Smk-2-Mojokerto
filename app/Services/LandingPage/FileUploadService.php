@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class FileUploadService implements FileUploadServiceInterface
 {
     /**
-     * Upload file to the specified directory on the public disk.
+     * Simpan berkas unggahan ke folder tertentu pada disk publik.
      */
     public function upload(UploadedFile $file, string $directory): string
     {
@@ -17,7 +17,7 @@ class FileUploadService implements FileUploadServiceInterface
     }
 
     /**
-     * Delete file from public disk if exists.
+     * Hapus berkas dari disk publik bila berkasnya ada.
      */
     public function delete(?string $path): void
     {
@@ -27,12 +27,13 @@ class FileUploadService implements FileUploadServiceInterface
     }
 
     /**
-     * Replace existing file with a new file.
+     * Ganti berkas lama dengan berkas baru. Berkas lama dihapus bila berkas baru tersedia.
      */
     public function replace(?UploadedFile $newFile, ?string $oldPath, string $directory): ?string
     {
         if ($newFile) {
             $this->delete($oldPath);
+
             return $this->upload($newFile, $directory);
         }
 
@@ -40,15 +41,14 @@ class FileUploadService implements FileUploadServiceInterface
     }
 
     /**
-     * Get full public URL for a stored file path.
+     * Ubah path berkas menjadi URL publik. URL yang sudah lengkap dikembalikan apa adanya.
      */
     public function url(?string $path): ?string
     {
-        if (!$path) {
+        if (! $path) {
             return null;
         }
 
-        // If path is already a full URL
         if (filter_var($path, FILTER_VALIDATE_URL)) {
             return $path;
         }

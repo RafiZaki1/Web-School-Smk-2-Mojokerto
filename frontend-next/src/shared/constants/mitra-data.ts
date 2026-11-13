@@ -1,0 +1,97 @@
+// Daftar mitra industri SMKN 2 Mojokerto beserta kategori jurusannya.
+// kategori: RPL, APHP, DKV, LPS, KULINER (= Tata Boga), UMUM (hanya tampil di landing page).
+// Mitra tanpa logo tampil sebagai nama.
+
+export interface MitraDaftar {
+  name: string;
+  kategori: string[];
+  logo?: string;
+  height?: string;
+}
+
+export const MITRA_DAFTAR: MitraDaftar[] = [
+  { name: "Ruil Power Software House", kategori: ["RPL"] },
+  { name: "PT. Adira Dinamika Multifinance, Tbk", kategori: ["RPL"], logo: "/images/mitra/adira-finance.webp", height: "h-12 sm:h-14" },
+  { name: "RSI Sakinah Mojokerto", kategori: ["RPL"] },
+  { name: "IT Corner", kategori: ["RPL"] },
+  { name: "Mediatama", kategori: ["RPL"] },
+  { name: "PT. Otak Kanan", kategori: ["RPL"], logo: "/images/mitra/otak-kanan.svg", height: "h-12 sm:h-14" },
+  { name: "PT. Sido Jodo", kategori: ["APHP"] },
+  { name: "Maspion IT", kategori: ["RPL"] },
+  { name: "PT. Smartfren Telecom, Tbk", kategori: ["UMUM"], logo: "/images/mitra/smartfren.svg", height: "h-10 sm:h-12" },
+  { name: "PT. Global Digital Pro", kategori: ["UMUM"] },
+  { name: "PT. Parsaoran Global Datatrans (HSPnet)", kategori: ["UMUM"] },
+  { name: "PT. Anekapay Teknologi Indonesia", kategori: ["UMUM"] },
+  { name: "PT. Primafood International", kategori: ["UMUM"] },
+  { name: "PT. Geoequator Indonesia", kategori: ["RPL"] },
+  { name: "IT Brain Indonesia", kategori: ["RPL"] },
+  { name: "PT. Minarsih Tech Mojokerto", kategori: ["RPL"] },
+  { name: "PT. Bitniaga Cipta Gemilang", kategori: ["RPL"] },
+  { name: "Topsell Mojokerto", kategori: ["RPL"] },
+  { name: "Arasa Bakery", kategori: ["APHP"] },
+  { name: "PROOF.CO", kategori: ["KULINER"] },
+  { name: "Hachi Donuts", kategori: ["APHP"], logo: "/images/mitra/hachi-donuts.svg", height: "h-12 sm:h-14" },
+  { name: "OurStudio", kategori: ["DKV"] },
+  { name: "PT. Pilar Digital Indonesia", kategori: ["DKV"] },
+  { name: "Bank Muamalat Cab. Mojokerto", kategori: ["LPS"], logo: "/images/mitra/bank-muamalat.svg", height: "h-12 sm:h-14" },
+  { name: "BTPN Syariah", kategori: ["UMUM"], logo: "/images/mitra/btpn-syariah.webp", height: "h-14 sm:h-16" },
+  { name: "JT. Shine", kategori: ["KULINER"] },
+  { name: "Favehotel Sidoarjo - East Java", kategori: ["KULINER"] },
+  { name: "Four Points by Sheraton Surabaya", kategori: [] },
+  { name: "Sheraton Surabaya Hotel & Towers", kategori: ["RPL", "LPS", "KULINER"], logo: "/images/mitra/sheraton-surabaya.svg", height: "h-14 sm:h-16" },
+  { name: "PT. Universal Big Data (UBIG)", kategori: ["RPL"], logo: "/images/mitra/ubig.webp", height: "h-8 sm:h-10" },
+  { name: "Jagoan Hosting", kategori: ["RPL"], logo: "/images/mitra/jagoan-hosting.webp", height: "h-12 sm:h-14" },
+  { name: "Aston Hotel Mojokerto", kategori: ["UMUM", "RPL", "LPS", "KULINER"], logo: "/images/mitra/aston-mojokerto.svg", height: "h-14 sm:h-16" },
+  { name: "PT. JACCS Mitra Pinasthika Mustika Finance", kategori: ["RPL"] },
+  { name: "Dinas Kependudukan dan Pencatatan Sipil", kategori: ["RPL"] },
+  { name: "Kantor Notaris Mirza Prima", kategori: ["RPL"] },
+  { name: "Kantor Notaris dan PPAT Katarina", kategori: ["RPL"] },
+  { name: "Lynn Hotel Mojokerto", kategori: ["RPL"] },
+  { name: "Toko Mas Wahyuredjo", kategori: ["UMUM"] },
+  { name: "CV. Teknos", kategori: ["DKV"], logo: "/images/mitra/teknos.svg", height: "h-14 sm:h-16" },
+  { name: "Percetakan Milenial Project", kategori: ["DKV"] },
+  { name: "Amateras Bakery", kategori: ["APHP"] },
+  { name: "Sigma Food", kategori: ["APHP"] },
+  { name: "Nun Bakery", kategori: ["APHP"] },
+  { name: "Nawasena's House", kategori: ["APHP"] },
+  { name: "Sanrio Swalayan", kategori: ["APHP"] },
+  { name: "Eni Cookies", kategori: ["APHP"] },
+  { name: "The Southern Hotel", kategori: ["KULINER"] },
+  { name: "Pusat Oleh-Oleh Arasa", kategori: ["APHP"] },
+  { name: "Yayasan Permata Mojokerto", kategori: ["RPL", "KULINER"] },
+  { name: "UD. Family Food", kategori: ["APHP"], logo: "/images/mitra/family-food.svg", height: "h-12 sm:h-14" },
+  { name: "DKU Donuts", kategori: ["APHP"] },
+  { name: "Ziebest Printing", kategori: ["DKV"] },
+  { name: "Bank Mandiri Taspen", kategori: ["LPS"], logo: "/images/mitra/mandiri-taspen.svg", height: "h-12 sm:h-14" },
+  { name: "Ayola Sunrise Hotel Mojokerto", kategori: ["RPL", "LPS", "KULINER"] },
+  { name: "Movenpick Surabaya City - Mercure", kategori: ["RPL", "KULINER"] },
+  { name: "BAZNAS Kota Mojokerto", kategori: ["LPS"], logo: "/images/mitra/baznas-mojokerto.svg", height: "h-14 sm:h-16" },
+  { name: "Zafision Digital Workshop", kategori: ["DKV"] },
+  { name: "Utero Mojokerto", kategori: ["DKV"], logo: "/images/mitra/utero-indonesia.svg", height: "h-10 sm:h-12" },
+  { name: "Lily Bakery and Brownies", kategori: ["APHP"] },
+  { name: "Java Studio", kategori: ["DKV"], logo: "/images/mitra/java-studio.svg", height: "h-14 sm:h-16" },
+  { name: "Ilham Camera", kategori: ["DKV"] },
+  { name: "Gedung Rumah Besar Kemasan", kategori: ["DKV"] },
+  { name: "Behind the Studio / Shaman", kategori: ["DKV"] },
+  { name: "Difams Souvenir", kategori: ["DKV"] },
+  { name: "Lynn Hotel Tuban", kategori: ["KULINER"] },
+  { name: "Manov Kopi", kategori: ["KULINER"] },
+  { name: "Sitarasa", kategori: ["KULINER"] },
+  { name: "Deavy Hantaran", kategori: ["KULINER"] },
+  { name: "Bagian Kesejahteraan Rakyat Sekretariat", kategori: ["LPS"] },
+  { name: "Sensatype Studio", kategori: ["DKV"] },
+  { name: "Casalamia Photo Studio", kategori: ["DKV"] },
+  { name: "Aysha Catering", kategori: ["KULINER"] },
+  { name: "Vasa Hotel Surabaya", kategori: ["KULINER"] },
+  { name: "PT. Tiga Permata Development", kategori: ["LPS"] },
+  { name: "Inisouvenir", kategori: ["KULINER"] },
+  { name: "Olivia Bakery Kota Mojokerto", kategori: ["APHP"], logo: "/images/mitra/olivia-bakery.svg", height: "h-14 sm:h-16" },
+  { name: "Full Space (Coffee & Eatery)", kategori: ["KULINER"] },
+  { name: "BMT Permata", kategori: ["LPS"] },
+  { name: "De'Xavier Boulangerie & Patisserie", kategori: ["APHP"] },
+];
+
+/** Mitra untuk satu kategori jurusan (RPL, APHP, DKV, LPS, KULINER). */
+export function mitraUntuk(kategori: string): Omit<MitraDaftar, "kategori">[] {
+  return MITRA_DAFTAR.filter((mitra) => mitra.kategori.includes(kategori)).map(({ kategori: _kategori, ...mitra }) => mitra);
+}

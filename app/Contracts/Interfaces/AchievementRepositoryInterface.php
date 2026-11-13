@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface AchievementRepositoryInterface extends ContentRepositoryInterface
-{
-}
+interface AchievementRepositoryInterface extends ContentRepositoryInterface {}

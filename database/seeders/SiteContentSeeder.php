@@ -21,15 +21,7 @@ class SiteContentSeeder extends Seeder
             ],
 
             'mitra' => [
-                'items' => [
-                    ['name' => 'Mandiri Taspen', 'logo' => '/images/mitra/mandiri-taspen.svg', 'height' => 'h-14 sm:h-16 lg:h-20'],
-                    ['name' => 'BPJS Ketenagakerjaan', 'logo' => '/images/mitra/bpjs-ketenagakerjaan.svg', 'height' => 'h-14 sm:h-16 lg:h-20'],
-                    ['name' => 'Bank Muamalat', 'logo' => '/images/mitra/bank-muamalat.svg', 'height' => 'h-14 sm:h-16 lg:h-20'],
-                    ['name' => 'BAZNAS Kota Mojokerto', 'logo' => '/images/mitra/baznas-mojokerto.svg', 'height' => 'h-16 sm:h-20 lg:h-24'],
-                    ['name' => 'Hummatech', 'logo' => '/images/mitra/hummatech.svg', 'height' => 'h-14 sm:h-16 lg:h-20'],
-                    ['name' => 'Otak Kanan', 'logo' => '/images/mitra/otak-kanan.svg', 'height' => 'h-14 sm:h-16 lg:h-20'],
-                    ['name' => 'Family Food', 'logo' => '/images/mitra/family-food.svg', 'height' => 'h-14 sm:h-16 lg:h-20'],
-                ],
+                'items' => MitraList::semua(),
             ],
 
             'bkk' => [
@@ -105,11 +97,11 @@ class SiteContentSeeder extends Seeder
                 ],
                 'nilai_tahun' => 2025,
                 'nilai' => [
-                    ['kompetensi' => 'Layanan Perbankan Syariah', 'terdekat' => '5.400 m', 'terjauh' => '150 m', 'terendah' => '87.90', 'tertinggi' => '89.60'],
-                    ['kompetensi' => 'Desain Komunikasi Visual', 'terdekat' => '3.100 m', 'terjauh' => '400 m', 'terendah' => '88.70', 'tertinggi' => '89.70'],
-                    ['kompetensi' => 'Agribisnis Pengolahan Hasil Pertanian', 'terdekat' => '1.600 m', 'terjauh' => '300 m', 'terendah' => '88.60', 'tertinggi' => '90.10'],
-                    ['kompetensi' => 'Kuliner', 'terdekat' => '2.900 m', 'terjauh' => '850 m', 'terendah' => '87.80', 'tertinggi' => '89.90'],
-                    ['kompetensi' => 'Rekayasa Perangkat Lunak', 'terdekat' => '2.400 m', 'terjauh' => '380 m', 'terendah' => '87.10', 'tertinggi' => '89.20'],
+                    ['kompetensi' => 'Rekayasa Perangkat Lunak', 'rapor' => '85,20', 'tka' => '66,50', 'rata' => '77,72', 'terendah' => '72,10', 'tertinggi' => '91,24', 'di_atas_90' => 2],
+                    ['kompetensi' => 'Desain Komunikasi Visual', 'rapor' => '84,60', 'tka' => '64,80', 'rata' => '76,68', 'terendah' => '71,35', 'tertinggi' => '90,18', 'di_atas_90' => 1],
+                    ['kompetensi' => 'Layanan Perbankan Syariah', 'rapor' => '83,90', 'tka' => '61,40', 'rata' => '74,90', 'terendah' => '69,80', 'tertinggi' => '86,42', 'di_atas_90' => 0],
+                    ['kompetensi' => 'Kuliner', 'rapor' => '83,40', 'tka' => '59,70', 'rata' => '73,92', 'terendah' => '68,95', 'tertinggi' => '85,76', 'di_atas_90' => 0],
+                    ['kompetensi' => 'Agribisnis Pengolahan Hasil Pertanian', 'rapor' => '82,80', 'tka' => '58,20', 'rata' => '72,96', 'terendah' => '68,20', 'tertinggi' => '84,90', 'di_atas_90' => 0],
                 ],
                 'domisili' => [
                     ['label' => 'Domisili Kab./Kota Mojokerto', 'value' => 57, 'color' => '#1e40af'],
@@ -136,18 +128,31 @@ class SiteContentSeeder extends Seeder
                 'intro' => [
                     'image' => '/images/sejarah/gedung.jpg',
                     'eyebrow' => 'Awal mula',
-                    'title' => 'Berawal dari kebutuhan tenaga terampil',
-                    'text' => 'SMK Negeri 2 Kota Mojokerto berdiri pada tahun 1978 sebagai jawaban atas kebutuhan tenaga kerja terampil di Kota Mojokerto dan sekitarnya. Sejak awal berdiri, sekolah ini berkomitmen menghadirkan pendidikan vokasi yang dekat dengan kebutuhan dunia usaha dan dunia industri (DUDI), sebuah semangat yang terus dijaga hingga saat ini.',
+                    'title' => 'Sejarah singkat',
+                    'text' => 'SMK Negeri 2 Kota Mojokerto (SKANEDA) berdiri sejak 24 Juni 2013 dan terus berkembang untuk mencetak lulusan vokasi yang kompeten dan berkarakter.',
+                    'stats' => [
+                        ['value' => '2013', 'label' => 'Tahun berdiri'],
+                        ['value' => '2014', 'label' => 'Pindah ke gedung baru'],
+                        ['value' => '5', 'label' => 'Bidang keahlian'],
+                    ],
+                    'awal' => [
+                        ['label' => 'Tanggal berdiri', 'value' => '24 Juni 2013'],
+                        ['label' => 'Dasar hukum', 'value' => 'SK Pendirian dan SK Ijin Operasional, nomor 188.45/630/417.111/2013'],
+                        ['label' => 'Lokasi awal', 'value' => 'Gedung SMKN 1 Mojokerto, Jl. Kedungsari, Magersari'],
+                        ['label' => 'Kepala sekolah pertama', 'value' => 'Drs. Harol Kristiandoko, M.T. (Plt.)'],
+                        ['label' => 'Kompetensi awal', 'value' => 'Tata Boga (TB) dan Rekayasa Perangkat Lunak (RPL)'],
+                    ],
                 ],
                 'timeline' => [
-                    ['year' => '2013', 'title' => 'Sekolah resmi didirikan', 'text' => 'Berdiri dengan beberapa jurusan awal untuk memenuhi kebutuhan tenaga kerja industri lokal.'],
-                    ['year' => '2014', 'title' => 'Penempatan', 'text' => "SMKN 2 Kota Mojokerto menempati gedung baru di Jl. Pulorejo Kecamatan Prajuritkulon Kota Mojokerto yang diresmikan oleh Walikota Mojokerto Drs. H. Mas'ud Yunus."],
-                    ['year' => '2014', 'title' => 'Meraih akreditasi "A"', 'text' => 'Diakui secara resmi sebagai sekolah dengan standar mutu pendidikan terbaik.'],
-                    ['year' => '2026', 'title' => 'SMK Hebat, terus bertransformasi', 'text' => 'Kini menjadi pusat pendidikan vokasi rujukan dengan 900+ siswa aktif dan 5 program keahlian.', 'highlight' => true],
+                    ['year' => '2013', 'title' => 'Sekolah berdiri', 'text' => '24 Juni 2013, dibuka dengan Tata Boga dan RPL.'],
+                    ['year' => '2014', 'title' => 'Gedung baru', 'text' => '16 Januari 2014 di Jl. Pulorejo, Kota Mojokerto.'],
+                    ['year' => '2014', 'title' => 'Jurusan bertambah', 'text' => 'DKV, APHP, dan Perbankan Syariah.'],
+                    ['year' => 'Kini', 'title' => '5 bidang keahlian', 'text' => 'Pariwisata hingga bisnis manajemen.', 'highlight' => true],
                 ],
                 'kepala_sekolah' => [
-                    ['periode' => 'Periode I', 'tahun' => '1978-1990', 'foto' => null],
-                    ['periode' => 'Periode II', 'tahun' => '1990-2005', 'foto' => '/images/sejarah/kepsek-2.jpg'],
+                    ['nama' => 'Drs. Harol Kristiandoko, M.T.', 'periode' => '2014', 'keterangan' => 'Plt. saat sekolah diresmikan, sekaligus Kepala SMKN 1 Kota Mojokerto.', 'foto' => null],
+                    ['nama' => 'Drs. Akhmad Muklason, M.Pd.', 'periode' => 's.d. 2025/2026', 'keterangan' => 'Memimpin pengembangan fasilitas dan persiapan menuju sekolah Adiwiyata.', 'foto' => null],
+                    ['nama' => 'Iswahyudi, S.ST., M.Pd.', 'periode' => '2026 – Sekarang', 'keterangan' => 'Mengusung visi “SKANEDA KEREN” untuk lulusan vokasi yang kompeten dan berkarakter.', 'foto' => '/images/kepala-sekolah.webp'],
                 ],
             ],
 

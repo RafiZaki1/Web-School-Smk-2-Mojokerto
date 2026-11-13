@@ -14,7 +14,7 @@ class LandingPageSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Hero Landing Page
+
         Hero::updateOrCreate(
             ['id' => 1],
             [
@@ -29,7 +29,6 @@ class LandingPageSeeder extends Seeder
             ]
         );
 
-        // 2. Galeri Foto
         $galleries = [
             [
                 'title' => 'Kegiatan Pembelajaran Berbasis Proyek (PjBL)',
@@ -68,7 +67,6 @@ class LandingPageSeeder extends Seeder
             );
         }
 
-        // 3. Profil Sekolah & Sambutan Kepala Sekolah
         SchoolProfile::updateOrCreate(
             ['id' => 1],
             [

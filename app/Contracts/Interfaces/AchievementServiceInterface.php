@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface AchievementServiceInterface extends ContentServiceInterface
-{
-}
+interface AchievementServiceInterface extends ContentServiceInterface {}

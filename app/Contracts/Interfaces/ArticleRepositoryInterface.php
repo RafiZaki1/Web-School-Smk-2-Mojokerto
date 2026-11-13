@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface ArticleRepositoryInterface extends ContentRepositoryInterface
-{
-}
+interface ArticleRepositoryInterface extends ContentRepositoryInterface {}

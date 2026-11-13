@@ -7,5 +7,6 @@ use App\Models\Extracurricular;
 
 class ExtracurricularRepository extends BaseRepository implements ExtracurricularRepositoryInterface
 {
+    /** @var class-string<Extracurricular> */
     protected string $model = Extracurricular::class;
 }

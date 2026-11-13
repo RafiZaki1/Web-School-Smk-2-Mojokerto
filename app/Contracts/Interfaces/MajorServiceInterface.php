@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface MajorServiceInterface extends ContentServiceInterface
-{
-}
+interface MajorServiceInterface extends ContentServiceInterface {}

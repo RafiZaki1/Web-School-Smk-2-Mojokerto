@@ -1,0 +1,10 @@
+export { default as AdminDashboard } from "./components/AdminDashboard";
+export { default as AdminListPage, RowActions } from "./components/AdminListPage";
+export { default as AdminShell } from "./components/AdminShell";
+export { ADMIN_MENU } from "./constants/admin-menu";
+export { adminKeys } from "./constants/query-keys";
+export type { AdminDashboardSummary, DashboardModule, StatusCount } from "./types/dashboard.type";
+export { useAdminSummary } from "./hooks/useAdminSummary";
+export { invalidateAdminResource, useAdminDelete, useAdminList, useAdminRecord, useAdminSave } from "./hooks/useAdminResource";
+export { lastUpdated } from "./utils/last-updated";
+export { loadErrorMessage } from "./utils/load-error-message";

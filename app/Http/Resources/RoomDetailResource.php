@@ -44,4 +44,3 @@ class RoomDetailResource extends JsonResource
         ];
     }
 }
-

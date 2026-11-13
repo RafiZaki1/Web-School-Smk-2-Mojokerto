@@ -8,7 +8,8 @@ use Illuminate\Database\Seeder;
 
 /**
  * Jaringan jalur pejalan kaki SMKN 2 Kota Mojokerto, ditelusuri dari
- * gambar denah (frontend-next/public/denah-map.png, 1024x584).
+ * gambar denah terbaru (frontend-next/public/denah-2026.webp, 1540x752,
+ * berlaku mulai 5 Oktober 2026).
  * Koordinat dalam persen gambar; semua ruas lurus horizontal/vertikal
  * mengikuti koridor & area berpaving sehingga rute tidak menembus gedung.
  */
@@ -16,106 +17,102 @@ class CampusWalkwaySeeder extends Seeder
 {
     /** kode => [nama, x, y] */
     public const NODES = [
-        // Koridor utara (antara deret Lab APHP/Kantin/Kelas XI dan deret Kolam/Kelas XII)
-        'nw' => ['Pojok Barat Laut', 16.3, 10.3],
-        'n_aphp' => ['Depan Lab APHP', 22.6, 10.3],
-        'n_kantin' => ['Depan Kantin', 32.05, 10.3],
-        'n_pastri' => ['Depan Lab Pastri Kuliner', 42.6, 10.3],
-        'n_blvd' => ['Ujung Utara Boulevard', 53.0, 10.3],
-        'n_xikul' => ['Depan Kelas XI Kuliner', 66.25, 10.3],
-        'n_xirpl' => ['Depan Kelas XI RPL', 81.5, 10.3],
-        'ne' => ['Pojok Timur Laut', 88.6, 10.3],
 
-        // Lorong y=19.5 (belakang kolam & depan Lab RPL)
-        'c_w' => ['Taman Barat Gedung APHP', 22.6, 19.5],
-        'c_blvd' => ['Tengah Boulevard', 53.0, 19.5],
-        'c_rpl1' => ['Depan Lab RPL 1', 65.75, 19.5],
-        'c_rpl2' => ['Depan Lab RPL 2', 76.4, 19.5],
-        'c_e' => ['Pintu Masuk Lapangan Olahraga', 88.6, 19.5],
+        'wb_n' => ['Ujung Utara Lorong Gedung Barat', 10.4, 22.0],
+        'wb_s' => ['Ujung Selatan Lorong Gedung Barat', 10.4, 46.6],
+        'w_court' => ['Halaman Lab Kuliner', 16.3, 35.5],
+        'w_s' => ['Sudut Barat Laut Lapangan Olahraga', 16.3, 46.6],
+        'w_lib' => ['Pojok Barat Perpustakaan', 16.3, 59.0],
+        'w_kul' => ['Pojok Barat Kelas Kuliner', 16.3, 78.6],
 
-        // Koridor tengah y=33.2 (depan Gedung APHP, Aula)
-        'm_w' => ['Persimpangan Jalur Parkiran', 16.3, 33.2],
-        'm_nw' => ['Persimpangan Taman Barat', 22.6, 33.2],
-        'm_plw' => ['Sudut Barat Laut Lapangan Tengah', 29.3, 33.2],
-        'm_ple' => ['Sudut Timur Laut Lapangan Tengah', 47.6, 33.2],
-        'm_blvd' => ['Persimpangan Boulevard', 53.0, 33.2],
-        'm_mid' => ['Sudut Barat Laut Plaza Timur', 58.3, 33.2],
-        'm_east' => ['Persimpangan Gedung Timur', 74.3, 33.2],
-        'm_e' => ['Sudut Lapangan Olahraga', 88.6, 33.2],
+        'n_w' => ['Pojok Barat Jalan Parkir Motor', 22.8, 21.6],
+        'w_gap' => ['Samping UKS', 22.8, 35.5],
+        'mus_w' => ['Pojok Barat Daya Musholla', 22.8, 46.6],
+        'mus_door' => ['Depan Musholla', 28.6, 46.6],
+        'mus_e' => ['Pojok Tenggara Musholla', 38.7, 46.6],
 
-        // Jalur parkiran (sisi barat)
-        'w_mid' => ['Jalur Parkiran Tengah', 16.3, 52.0],
-        's_w' => ['Ujung Selatan Jalur Parkiran', 16.3, 73.3],
+        'n_rplw' => ['Pertigaan Barat Gedung RPL', 38.7, 21.6],
+        'gate' => ['Depan Pos Satpam', 50.3, 21.6],
+        'n_e' => ['Ujung Timur Jalan Parkir Motor', 51.6, 21.6],
+        'rpl_nw' => ['Pojok Barat Laut Gedung RPL', 38.7, 27.2],
+        'rpl_n' => ['Pintu Utara Gedung RPL', 47.2, 27.2],
+        'rpl_ne' => ['Pojok Timur Laut Gedung RPL', 51.6, 27.2],
+        'rpl_sw' => ['Pojok Barat Daya Gedung RPL', 38.7, 55.0],
+        'c_sw' => ['Pertigaan Timur Aula', 44.3, 55.0],
+        'rpl_s' => ['Pintu Selatan Gedung RPL', 47.2, 55.0],
+        'c_w' => ['Samping Gazebo', 52.2, 55.0],
 
-        // Lapangan tengah (plaza antara Gedung DKV-LPS dan Gedung RPL)
-        'p_w' => ['Sisi Barat Lapangan Tengah', 29.3, 52.0],
-        'p_e' => ['Sisi Timur Lapangan Tengah', 47.6, 52.0],
-        's_plw' => ['Sudut Barat Daya Lapangan Tengah', 29.3, 71.2],
-        's_ple' => ['Sudut Tenggara Lapangan Tengah', 47.6, 71.2],
-        's_e' => ['Persimpangan Samping Musholla', 58.3, 71.2],
+        'lib_door' => ['Depan Perpustakaan', 28.6, 59.0],
+        'lib_e' => ['Pojok Timur Perpustakaan', 38.7, 59.0],
+        'aula_ne' => ['Pojok Timur Laut Aula', 44.3, 59.0],
+        'kul_e' => ['Pojok Timur Kelas Kuliner', 44.3, 78.6],
 
-        // Area depan: BKK, Kantor, Pos Satpam, Musholla
-        's_bkk' => ['Depan Taman BKK', 22.4, 73.3],
-        's_wr' => ['Ujung Jalan Depan Kelas LPS', 29.3, 73.3],
-        'bkk' => ['Depan Koperasi Siswa', 22.4, 79.8],
-        'bkk_w' => ['Depan BKK', 19.4, 79.8],
-        'bkk_e' => ['Depan Mini Bank', 25.3, 79.8],
-        'pos' => ['Samping Pos Satpam', 47.6, 84.25],
-        'pos_s' => ['Depan Gerbang Pos Satpam', 47.6, 89.3],
-        'gate' => ['Depan Pintu Utama Kantor', 37.75, 89.3],
-        'mus_w' => ['Pojok Depan Musholla', 58.3, 89.3],
-        'mus_door' => ['Depan Pintu Musholla', 64.0, 89.3],
+        'gu_w' => ['Sisi Barat Plaza Gedung Utama', 54.8, 36.3],
+        'gu_door' => ['Depan Tangga Gedung Utama', 59.6, 36.3],
+        'gu_e' => ['Sisi Timur Plaza Gedung Utama', 73.0, 36.3],
+        'pl_sw' => ['Ujung Selatan Plaza Gedung Utama', 54.8, 46.2],
+        'c_n' => ['Utara Gazebo', 52.2, 46.2],
+        'aphp_w' => ['Pintu Barat Gedung APHP-DKV', 52.2, 59.0],
+        'aphp_e' => ['Pintu Timur Gedung APHP-DKV', 73.0, 59.0],
 
-        // Plaza timur & gedung timur
-        'e_mid' => ['Sisi Barat Plaza Timur', 58.3, 47.0],
-        'e_tree' => ['Sisi Timur Plaza Timur', 74.3, 47.0],
-        'e_sw' => ['Sudut Barat Daya Plaza Timur', 58.3, 60.5],
-        'e_ups' => ['Depan Kelas XII UPS 1', 70.3, 60.5],
-        'court' => ['Halaman Gedung Timur', 74.3, 60.5],
-        'uks' => ['Depan Lab UKS', 80.35, 60.5],
-        'lps1' => ['Depan Kelas XII LPS 1', 80.35, 52.0],
-        'e_s' => ['Pojok Belakang Praktik Resto', 70.3, 76.3],
-        'dkv' => ['Belakang Lab DKV', 80.35, 76.3],
-        'bk' => ['Depan Ruang BK', 88.6, 68.25],
-        'se' => ['Pojok Tenggara', 88.6, 76.3],
+        'gu_bw' => ['Belakang Gedung Utama Sisi Barat', 51.6, 17.0],
+        'gu_be' => ['Belakang Gedung Utama Sisi Timur', 66.3, 17.0],
+        'gu_ne' => ['Pojok Timur Laut Gedung Utama', 66.3, 21.6],
+        'bkk_w' => ['Samping R. BKK', 68.0, 21.6],
+
+        'ne_bkk' => ['Depan R. BKK', 68.0, 23.2],
+        'ne_x' => ['Depan Toko Sekolah', 73.0, 23.2],
+        'ne_e' => ['Depan Parkir Mobil', 87.4, 23.2],
+        'lps_nw' => ['Pojok Barat Laut Gedung LPS', 73.0, 28.4],
+        'lps_n' => ['Pintu Utara Gedung LPS', 80.3, 28.4],
+        'lps_ne' => ['Pojok Timur Laut Gedung LPS', 87.4, 28.4],
+        'lps_sw' => ['Pojok Barat Daya Gedung LPS', 73.0, 55.5],
+        'lps_s' => ['Pintu Selatan Gedung LPS', 80.3, 55.5],
+        'lps_se' => ['Pojok Tenggara Gedung LPS', 87.4, 55.5],
+
+        's_w' => ['Pertigaan Selatan Aula', 44.3, 70.0],
+        's_c' => ['Pojok Barat Daya Gedung APHP-DKV', 52.2, 70.0],
+        's_pond' => ['Pojok Taman Kolam', 56.5, 70.0],
+        's_e1' => ['Pojok Tenggara Gedung APHP-DKV', 73.0, 70.0],
+        's_e2' => ['Depan Taman TEFA', 80.0, 70.0],
+        's_e3' => ['Ujung Selatan Parkir Motor Siswa', 87.4, 70.0],
+        'b_pastry' => ['Depan Lab Pastry', 56.5, 89.6],
+        'b_aphp' => ['Depan APHP Lab', 80.0, 89.6],
+        'tefa_door' => ['Depan TEFA Laboratory', 88.3, 89.6],
     ];
 
     /** [nama jalur, ...kode node berurutan] — tiap pasangan berurutan menjadi satu ruas. */
     public const PATHS = [
-        ['Koridor Depan Kantin', 'nw', 'n_aphp', 'n_kantin', 'n_pastri', 'n_blvd'],
-        ['Lorong Kelas XI', 'n_blvd', 'n_xikul', 'n_xirpl', 'ne'],
-        ['Lorong Belakang Kolam', 'c_w', 'c_blvd'],
-        ['Koridor Depan Lab RPL', 'c_blvd', 'c_rpl1', 'c_rpl2', 'c_e'],
-        ['Koridor Depan Gedung APHP', 'm_w', 'm_nw', 'm_plw', 'm_ple'],
-        ['Koridor Tengah', 'm_ple', 'm_blvd', 'm_mid'],
-        ['Koridor Depan Aula', 'm_mid', 'm_east', 'm_e'],
-        ['Taman Barat', 'n_aphp', 'c_w', 'm_nw'],
-        ['Boulevard Tengah', 'n_blvd', 'c_blvd', 'm_blvd'],
-        ['Jalur Parkiran', 'nw', 'm_w', 'w_mid', 's_w'],
-        ['Lorong Tengah Gedung DKV-LPS', 'w_mid', 'p_w'],
-        ['Sisi Barat Lapangan Tengah', 'm_plw', 'p_w', 's_plw', 's_wr'],
-        ['Lapangan Tengah', 'p_w', 'p_e'],
-        ['Sisi Timur Lapangan Tengah', 'm_ple', 'p_e', 's_ple'],
-        ['Jalan Depan Air Mancur', 's_plw', 's_ple'],
-        ['Jalan Selatan Gedung RPL', 's_ple', 's_e'],
-        ['Jalan Depan Kelas LPS', 's_w', 's_bkk', 's_wr'],
-        ['Jalan Menuju BKK', 's_bkk', 'bkk'],
-        ['Teras BKK, Koperasi & Bank', 'bkk_w', 'bkk', 'bkk_e'],
-        ['Jalan Samping Pos Satpam', 's_ple', 'pos', 'pos_s'],
-        ['Jalan Depan Kantor', 'gate', 'pos_s'],
-        ['Jalan Depan Pos Satpam', 'pos_s', 'mus_w'],
-        ['Halaman Depan Musholla', 'mus_w', 'mus_door'],
-        ['Jalan Samping Musholla', 's_e', 'mus_w'],
-        ['Sisi Barat Plaza Timur', 'm_mid', 'e_mid', 'e_sw'],
-        ['Lorong Antara Gedung RPL & Musholla', 'e_sw', 's_e'],
-        ['Plaza Timur', 'e_mid', 'e_tree'],
-        ['Lorong Gedung Percetakan', 'm_east', 'e_tree', 'court'],
-        ['Sisi Selatan Plaza Timur', 'e_sw', 'e_ups', 'court'],
-        ['Halaman Gedung Timur', 'court', 'uks', 'lps1'],
-        ['Lorong Timur Musholla', 'e_ups', 'e_s'],
-        ['Jalan Belakang Lab DKV', 'e_s', 'dkv', 'se'],
-        ['Jalur Timur Sisi Lapangan', 'ne', 'c_e', 'm_e'],
-        ['Jalur Timur Gedung DKV', 'm_e', 'bk', 'se'],
+        ['Jalan Depan Parkir Motor', 'n_w', 'n_rplw', 'gate', 'n_e'],
+        ['Jalan Samping Pos Satpam', 'n_e', 'rpl_ne'],
+        ['Halaman Depan Gedung RPL', 'rpl_nw', 'rpl_n', 'rpl_ne'],
+        ['Lorong Gedung RPL', 'rpl_n', 'rpl_s'],
+        ['Jalan Barat Gedung RPL', 'n_rplw', 'rpl_nw', 'mus_e', 'rpl_sw', 'lib_e'],
+        ['Jalan Selatan Gedung RPL', 'rpl_sw', 'c_sw', 'rpl_s', 'c_w'],
+        ['Jalan Barat Musholla', 'n_w', 'w_gap', 'mus_w'],
+        ['Jalan Depan Musholla', 'wb_s', 'w_s', 'mus_w', 'mus_door', 'mus_e'],
+        ['Lorong Gedung Barat', 'wb_n', 'wb_s'],
+        ['Halaman Lab Kuliner', 'w_gap', 'w_court', 'w_s'],
+        ['Jalan Samping Lapangan Olahraga', 'w_s', 'w_lib', 'w_kul'],
+        ['Jalan Depan Perpustakaan', 'w_lib', 'lib_door', 'lib_e', 'aula_ne'],
+        ['Jalan Timur Aula', 'c_sw', 'aula_ne', 's_w', 'kul_e'],
+        ['Jalan Depan Kelas Kuliner', 'w_kul', 'kul_e'],
+        ['Plaza Gedung Utama', 'gu_w', 'gu_door', 'gu_e'],
+        ['Jalan Barat Plaza', 'gu_w', 'pl_sw'],
+        ['Jalan Selatan Plaza', 'c_n', 'pl_sw'],
+        ['Jalan Barat Gedung APHP-DKV', 'c_n', 'c_w', 'aphp_w', 's_c'],
+        ['Lorong Gedung APHP-DKV', 'aphp_w', 'aphp_e'],
+        ['Jalan Timur Gedung APHP-DKV', 'ne_x', 'lps_nw', 'gu_e', 'lps_sw', 'aphp_e', 's_e1'],
+        ['Jalan Belakang Gedung Utama', 'n_e', 'gu_bw', 'gu_be', 'gu_ne', 'bkk_w', 'ne_bkk'],
+        ['Jalan Depan BKK & Toko Sekolah', 'ne_bkk', 'ne_x', 'ne_e'],
+        ['Halaman Depan Gedung LPS', 'lps_nw', 'lps_n', 'lps_ne'],
+        ['Lorong Gedung LPS-DKV', 'lps_n', 'lps_s'],
+        ['Jalan Selatan Gedung LPS', 'lps_sw', 'lps_s', 'lps_se'],
+        ['Jalan Parkir Motor Siswa', 'ne_e', 'lps_ne', 'lps_se', 's_e3'],
+        ['Jalan Tengah Selatan', 's_w', 's_c', 's_pond', 's_e1', 's_e2', 's_e3'],
+        ['Jalan Barat Lab Pastry', 's_pond', 'b_pastry'],
+        ['Jalan Barat TEFA Laboratory', 's_e2', 'b_aphp'],
+        ['Jalan Depan Kantin', 'b_pastry', 'b_aphp', 'tefa_door'],
     ];
 
     /**
@@ -123,8 +120,13 @@ class CampusWalkwaySeeder extends Seeder
      * slug ruangan => kode node.
      */
     public const DOORS = [
-        'kantor-pusat' => 'gate',
+        'gerbang-utama' => 'gate',
+        'kantor-pusat' => 'gu_door',
+        'bkk' => 'bkk_w',
         'musholla' => 'mus_door',
+        'perpustakaan' => 'lib_door',
+        'x-rpl-1' => 'lib_door',
+        'lab-tefa' => 'tefa_door',
     ];
 
     /** @var array<string, int> kode node => id */
@@ -134,7 +136,7 @@ class CampusWalkwaySeeder extends Seeder
     {
         $width = (float) config('map.width_meters', 200);
         $metersPerX = $width / 100;
-        $metersPerY = $width * (float) config('map.image_aspect', 584 / 1024) / 100;
+        $metersPerY = $width * (float) config('map.image_aspect', 752 / 1540) / 100;
 
         foreach (self::NODES as $code => [$name, $x, $y]) {
             $this->nodeIds[$code] = MapNode::create([

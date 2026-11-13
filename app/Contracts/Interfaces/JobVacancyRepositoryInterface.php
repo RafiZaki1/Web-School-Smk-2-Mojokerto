@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface JobVacancyRepositoryInterface extends ContentRepositoryInterface
-{
-}
+interface JobVacancyRepositoryInterface extends ContentRepositoryInterface {}

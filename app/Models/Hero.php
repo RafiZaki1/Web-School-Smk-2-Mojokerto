@@ -10,6 +10,7 @@ class Hero extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     protected $fillable = [
         'title',
         'school_name',
@@ -21,13 +22,14 @@ class Hero extends Model
         'sort_order',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
 
     /**
-     * Scope a query to only include active heroes.
+     * Batasi query hanya pada banner yang aktif.
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -35,7 +37,7 @@ class Hero extends Model
     }
 
     /**
-     * Scope a query to order heroes.
+     * Urutkan banner berdasarkan urutan tampil, lalu id terbaru.
      */
     public function scopeOrdered(Builder $query): Builder
     {

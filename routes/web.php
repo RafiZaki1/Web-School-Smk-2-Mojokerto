@@ -10,3 +10,6 @@ Route::get('/', function () {
         'frontend' => 'Next.js (frontend-next)',
     ]);
 });
+
+// Portal Bank Mini & Pembayaran SPP (Blade + sesi siswa/petugas).
+require __DIR__.'/bank-mini.php';

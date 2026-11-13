@@ -1,0 +1,392 @@
+@import "tailwindcss";
+@import "./ui/button.css";
+@import "./ui/tab-buttons.css";
+@import "./ui/section-header.css";
+@import "./ui/header.css";
+@import "./ui/toggle.css";
+@import "./ui/select.css";
+@import "./ui/motion.css";
+@import "./ui/service.css";
+
+/* Varian `dark:` mengikuti atribut data-theme di <html>, bukan media query */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Design tokens — diturunkan dari emblem SMKN 2 Kota Mojokerto:
+ * biru cerulean (#1A8FC4), kuning roda gigi (#F7D51D), hijau daun (#9CC030).
+ * Netral sengaja hangat (krem/abu batu), bukan abu-abu slate dingin.
+ */
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-ui: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Biru logo dan turunannya */
+  --color-brand: #1a8fc4;
+  --color-primary: #0a6a97;
+  --color-primary-dark: #08516f;
+  /* Teks di atas latar primary (tombol .svc-btn--primary, chip aktif) */
+  --color-on-primary: #ffffff;
+  --color-accent: #1a8fc4;
+  --color-navy: #0c4a68;
+  --color-navy-deep: #08354b;
+  /* Navy untuk teks/garis; di tema gelap jadi biru muda, sedangkan navy di atas tetap latar gelap */
+  --color-navy-ink: #0c4a68;
+  --color-navy-deep-ink: #08354b;
+  --color-tint: #e6f2f8;
+  --color-tint-strong: #c7e3f1;
+
+  /* Kuning & hijau logo */
+  --color-sun: #f7d51d;
+  --color-sun-ink: #2e2700;
+  --color-gold: #f7d51d;
+  --color-gold-ink: #4a3d00;
+  --color-lime: #9cc030;
+  --color-lime-ink: #1f2a06;
+  --color-lime-soft: #e9f2d4;
+  --color-green: #4b6b12;
+
+  /* Permukaan: latar halaman dan kartu (putih di tema terang) */
+  --color-canvas: #ffffff;
+  --color-card: #ffffff;
+
+  /* Netral hangat */
+  --color-heading: #13232c;
+  --color-ink: #1d2a31;
+  --color-body: #3e4b52;
+  --color-muted: #66737a;
+  --color-line: #e5e1d8;
+  --color-surface: #f1eee6;
+  --color-surface-alt: #f8f6f1;
+  --color-page: #f8f6f1;
+  --color-soft: #f1eee6;
+
+  --color-footer: #0c4a68;
+  --color-footer-deep: #08354b;
+  --color-teal: #1a8fc4;
+
+  /* Alias lama untuk halaman dalam (berita, BKK, SPMB, dll.) */
+  --color-blue: #0a6a97;
+  --color-blue-dark: #08516f;
+  --color-blue-deep: #0c4a68;
+}
+
+/*
+ * Tema gelap: token yang sama diberi nilai baru, jadi kelas seperti text-ink,
+ * bg-card, dan border-line ikut berubah tanpa varian dark: di tiap komponen.
+ * Biru dibuat sedikit lebih terang agar tetap terbaca di latar gelap.
+ */
+:root[data-theme="dark"] {
+  --color-canvas: #0b1419;
+  --color-card: #111e25;
+
+  --color-brand: #3aa9dc;
+  --color-primary: #2690c4;
+  --color-primary-dark: #1d77a3;
+  --color-accent: #3aa9dc;
+  --color-navy: #0d3247;
+  --color-navy-deep: #08212f;
+  --color-navy-ink: #8fcdea;
+  --color-navy-deep-ink: #d3ebf7;
+  --color-tint: #12303f;
+  --color-tint-strong: #1a4459;
+
+  --color-lime-soft: #1f2b12;
+  --color-green: #a3c75a;
+
+  --color-heading: #eef3f5;
+  --color-ink: #dde6ea;
+  --color-body: #b3c0c6;
+  --color-muted: #8797a0;
+  --color-line: #24363f;
+  --color-surface: #15252d;
+  --color-surface-alt: #0f1a20;
+  --color-page: #0f1a20;
+  --color-soft: #15252d;
+
+  --color-footer: #0a2230;
+  --color-footer-deep: #071a25;
+  --color-teal: #3aa9dc;
+
+  --color-blue: #2690c4;
+  --color-blue-dark: #1d77a3;
+  --color-blue-deep: #0d3247;
+
+  color-scheme: dark;
+}
+
+/*
+ * Palet Warna Tema (Theme Color Presets) — bekerja di Mode Terang maupun Gelap.
+ * Pilihan: "ocean" (default di @theme), "emerald" (Hijau Vokasi), "royal" (Biru Royal), "amber" (Emas Surya).
+ */
+:root[data-color-theme="emerald"] {
+  --color-brand: #14b8a6;
+  --color-primary: #0f766e;
+  --color-primary-dark: #115e59;
+  --color-accent: #14b8a6;
+  --color-navy: #064e3b;
+  --color-navy-deep: #022c22;
+  --color-navy-ink: #065f46;
+  --color-navy-deep-ink: #022c22;
+  --color-tint: #e6f7f4;
+  --color-tint-strong: #c2ebe3;
+  --color-footer: #064e3b;
+  --color-footer-deep: #022c22;
+  --color-teal: #14b8a6;
+  --color-blue: #0f766e;
+  --color-blue-dark: #115e59;
+  --color-blue-deep: #064e3b;
+}
+
+:root[data-theme="dark"][data-color-theme="emerald"] {
+  --color-brand: #2dd4bf;
+  --color-primary: #14b8a6;
+  --color-primary-dark: #0d9488;
+  --color-on-primary: #042f2a;
+  --color-accent: #2dd4bf;
+  --color-navy: #064e3b;
+  --color-navy-deep: #022c22;
+  --color-navy-ink: #6ee7b7;
+  --color-navy-deep-ink: #d1fae5;
+  --color-tint: #0d332d;
+  --color-tint-strong: #134e45;
+  --color-footer: #042f26;
+  --color-footer-deep: #021f19;
+  --color-teal: #2dd4bf;
+  --color-blue: #14b8a6;
+  --color-blue-dark: #0d9488;
+  --color-blue-deep: #064e3b;
+}
+
+:root[data-color-theme="royal"] {
+  --color-brand: #3b82f6;
+  --color-primary: #1e40af;
+  --color-primary-dark: #1e3a8a;
+  --color-accent: #3b82f6;
+  --color-navy: #172554;
+  --color-navy-deep: #0f172a;
+  --color-navy-ink: #1e3a8a;
+  --color-navy-deep-ink: #0f172a;
+  --color-tint: #e8effd;
+  --color-tint-strong: #c7d9fa;
+  --color-footer: #172554;
+  --color-footer-deep: #0f172a;
+  --color-teal: #3b82f6;
+  --color-blue: #1e40af;
+  --color-blue-dark: #1e3a8a;
+  --color-blue-deep: #172554;
+}
+
+:root[data-theme="dark"][data-color-theme="royal"] {
+  --color-brand: #60a5fa;
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-accent: #60a5fa;
+  --color-navy: #1e3a8a;
+  --color-navy-deep: #172554;
+  --color-navy-ink: #93c5fd;
+  --color-navy-deep-ink: #dbeafe;
+  --color-tint: #152547;
+  --color-tint-strong: #1e3666;
+  --color-footer: #0f1b38;
+  --color-footer-deep: #091124;
+  --color-teal: #60a5fa;
+  --color-blue: #3b82f6;
+  --color-blue-dark: #2563eb;
+  --color-blue-deep: #1e3a8a;
+}
+
+:root[data-color-theme="amber"] {
+  --color-brand: #f59e0b;
+  --color-primary: #b45309;
+  --color-primary-dark: #92400e;
+  --color-accent: #d97706;
+  --color-navy: #78350f;
+  --color-navy-deep: #451a03;
+  --color-navy-ink: #78350f;
+  --color-navy-deep-ink: #451a03;
+  --color-tint: #fef3c7;
+  --color-tint-strong: #fde68a;
+  --color-footer: #5c280b;
+  --color-footer-deep: #3d1a06;
+  --color-teal: #f59e0b;
+  --color-blue: #b45309;
+  --color-blue-dark: #92400e;
+  --color-blue-deep: #78350f;
+}
+
+:root[data-theme="dark"][data-color-theme="amber"] {
+  --color-brand: #fbbf24;
+  --color-primary: #f59e0b;
+  --color-primary-dark: #d97706;
+  --color-on-primary: #2e1505;
+  --color-accent: #fbbf24;
+  --color-navy: #5c280b;
+  --color-navy-deep: #3d1a06;
+  --color-navy-ink: #fcd34d;
+  --color-navy-deep-ink: #fef3c7;
+  --color-tint: #36210c;
+  --color-tint-strong: #4d2f10;
+  --color-footer: #2e1505;
+  --color-footer-deep: #1f0e03;
+  --color-teal: #fbbf24;
+  --color-blue: #f59e0b;
+  --color-blue-dark: #d97706;
+  --color-blue-deep: #5c280b;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 88px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  /* Lebar konten halaman: 1350px di desktop, mengikuti Figma */
+  .page-container {
+    width: min(1350px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  .section {
+    padding-block: 96px;
+  }
+
+  @media (max-width: 1024px) {
+    .section {
+      padding-block: 72px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-container {
+      width: calc(100% - 32px);
+    }
+
+    .section {
+      padding-block: 56px;
+    }
+  }
+}
+
+/* Arc Carousel 3D Styles */
+.arc-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.16);
+  background: #0a2540;
+  cursor: pointer;
+  will-change: transform, opacity;
+  user-select: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.25s ease;
+}
+
+.arc-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.arc-slide:hover {
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.24);
+}
+
+/* Custom Scrollbar Utilities */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide Next.js Development Indicator ("N" Icon) */
+[data-nextjs-dev-indicator],
+[data-nextjs-toast],
+nextjs-portal,
+#nextjs-dev-indicator,
+div[data-nextjs-dev-indicator] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+/* Infinite Marquee Animation for Partner Logos */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Arah jalan pada garis rute denah (titik putih bergerak dari asal ke tujuan) */
+@keyframes denah-route-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.denah-route-flow {
+  animation: denah-route-flow 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .denah-route-flow {
+    animation: none;
+  }
+}
+

@@ -18,40 +18,61 @@ abstract class ContentService implements ContentServiceInterface
 {
     use ManagesMedia;
 
-    /** Kolom yang dipakai untuk membentuk slug bila slug tidak dikirim. */
     protected string $slugSource = 'title';
 
-    /** Field berkas tunggal => folder penyimpanan. */
+    /** @var array<string, string> */
     protected array $fileFields = [];
 
-    /** Field daftar berkas (galeri) => folder penyimpanan. */
+    /** @var array<string, string> */
     protected array $fileListFields = [];
 
+    /**
+     * Inisialisasi ContentService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected ContentRepositoryInterface $repository,
         protected FileUploadServiceInterface $files,
     ) {}
 
+    /**
+     * Ambil daftar konten yang diterbitkan beserta filter.
+     *
+     * @param  array<string, mixed>  $filters
+     */
     public function getPublished(array $filters = []): Collection
     {
         return $this->repository->published($filters);
     }
 
+    /**
+     * Ambil detail konten yang diterbitkan berdasarkan id atau slug.
+     */
     public function getPublishedByIdentifier(int|string $identifier): Model
     {
         return $this->repository->findPublishedOrFail($identifier);
     }
 
+    /**
+     * Ambil seluruh konten untuk admin.
+     */
     public function getAll(): Collection
     {
         return $this->repository->all();
     }
 
+    /**
+     * Ambil konten berdasarkan id atau slug, termasuk yang belum diterbitkan.
+     */
     public function getByIdentifier(int|string $identifier): Model
     {
         return $this->repository->findByIdentifierOrFail($identifier);
     }
 
+    /**
+     * Simpan konten baru beserta berkas dan slug unik.
+     *
+     * @param  array<string, mixed>  $data
+     */
     public function create(array $data): Model
     {
         $data = $this->prepare($data);
@@ -60,6 +81,11 @@ abstract class ContentService implements ContentServiceInterface
         return $this->repository->create($data);
     }
 
+    /**
+     * Perbarui konten, termasuk berkas dan slug unik bila slug ikut diubah.
+     *
+     * @param  array<string, mixed>  $data
+     */
     public function update(int|string $identifier, array $data): Model
     {
         $model = $this->getByIdentifier($identifier);
@@ -74,6 +100,9 @@ abstract class ContentService implements ContentServiceInterface
         return $this->repository->update($model, $data);
     }
 
+    /**
+     * Hapus konten beserta seluruh berkas miliknya.
+     */
     public function delete(int|string $identifier): bool
     {
         $model = $this->getByIdentifier($identifier);
@@ -83,7 +112,12 @@ abstract class ContentService implements ContentServiceInterface
         return $this->repository->delete($model);
     }
 
-    /** Simpan berkas & rapikan input sebelum ditulis ke database. */
+    /**
+     * Simpan berkas dan rapikan input sebelum ditulis ke database.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
     protected function prepare(array $data, ?Model $model = null): array
     {
         foreach ($this->fileFields as $field => $directory) {
@@ -101,13 +135,22 @@ abstract class ContentService implements ContentServiceInterface
         return $this->transform($data, $model);
     }
 
-    /** Hook per modul untuk field turunan/bersarang. */
+    /**
+     * Hook per modul untuk merapikan field turunan atau bersarang.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
     protected function transform(array $data, ?Model $model): array
     {
         return $data;
     }
 
-    /** Semua path berkas milik record (dipakai saat menghapus). */
+    /**
+     * Kumpulkan seluruh path berkas milik record, dipakai saat record dihapus.
+     *
+     * @return array<int, mixed>
+     */
     protected function mediaPaths(Model $model): array
     {
         return collect(array_merge(array_keys($this->fileFields), array_keys($this->fileListFields)))
@@ -117,6 +160,9 @@ abstract class ContentService implements ContentServiceInterface
             ->all();
     }
 
+    /**
+     * Buat slug unik dari sumber teks dengan akhiran angka bila sudah dipakai.
+     */
     protected function uniqueSlug(string $source, int|string|null $ignoreId = null): string
     {
         $base = Str::slug($source) ?: Str::lower(Str::random(8));
@@ -131,7 +177,12 @@ abstract class ContentService implements ContentServiceInterface
         return $slug;
     }
 
-    /** Buang baris kosong dari daftar teks (tanggung jawab, kualifikasi, dsb). */
+    /**
+     * Buang baris kosong dari daftar teks, misalnya tanggung jawab atau kualifikasi.
+     *
+     * @param  array<int, mixed>|null  $items
+     * @return array<int, mixed>
+     */
     protected function cleanList(?array $items): array
     {
         return collect($items ?? [])

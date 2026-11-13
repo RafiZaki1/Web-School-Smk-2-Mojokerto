@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Schema;
 
 class StatisticRepository implements StatisticRepositoryInterface
 {
+    /**
+     * Hitung jumlah siswa, guru, jurusan, dan alumni dari tabel masing-masing.
+     *
+     * @return array<string, int>
+     */
     public function getCounts(): array
     {
         return [
@@ -19,11 +24,17 @@ class StatisticRepository implements StatisticRepositoryInterface
         ];
     }
 
+    /**
+     * Ambil tahun berdiri sekolah dari profil sekolah.
+     */
     public function establishedYear(): ?int
     {
         return SchoolProfile::query()->value('established_year');
     }
 
+    /**
+     * Hitung baris sebuah tabel, atau 0 bila tabel belum ada.
+     */
     private function countTable(string $table): int
     {
         return Schema::hasTable($table) ? DB::table($table)->count() : 0;

@@ -8,8 +8,14 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ArticleRepository extends BaseRepository implements ArticleRepositoryInterface
 {
+    /** @var class-string<Article> */
     protected string $model = Article::class;
 
+    /**
+     * Terapkan filter kategori, pencarian judul, dan pengecualian slug pada daftar berita.
+     *
+     * @param  array<string, mixed>  $filters
+     */
     protected function applyFilters(Builder $query, array $filters): Builder
     {
         return $query

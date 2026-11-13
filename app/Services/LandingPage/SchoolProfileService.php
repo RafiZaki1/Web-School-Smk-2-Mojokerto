@@ -5,18 +5,25 @@ namespace App\Services\LandingPage;
 use App\Contracts\Interfaces\FileUploadServiceInterface;
 use App\Contracts\Interfaces\SchoolProfileRepositoryInterface;
 use App\Contracts\Interfaces\SchoolProfileServiceInterface;
+use App\Enums\UploadDirectoryEnum;
 use App\Models\SchoolProfile;
 use Illuminate\Http\UploadedFile;
 
 class SchoolProfileService implements SchoolProfileServiceInterface
 {
+    /** @var array<int, string> */
+    private const IMAGE_FIELDS = ['school_logo', 'principal_photo', 'background_image'];
+
+    /**
+     * Inisialisasi SchoolProfileService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected FileUploadServiceInterface $fileUploadService,
         protected SchoolProfileRepositoryInterface $schoolProfileRepository,
     ) {}
 
     /**
-     * Get single school profile record.
+     * Ambil satu-satunya profil sekolah.
      */
     public function getProfile(): ?SchoolProfile
     {
@@ -24,37 +31,22 @@ class SchoolProfileService implements SchoolProfileServiceInterface
     }
 
     /**
-     * Update or create the single school profile.
+     * Perbarui profil sekolah, atau buat baru bila belum ada, sekaligus mengganti gambar yang diunggah ulang.
+     *
+     * @param  array<string, mixed>  $data
      */
     public function updateProfile(array $data): SchoolProfile
     {
         $profile = $this->getProfile();
 
-        // Handle school_logo upload
-        if (isset($data['school_logo']) && $data['school_logo'] instanceof UploadedFile) {
-            $data['school_logo'] = $this->fileUploadService->replace(
-                $data['school_logo'],
-                $profile?->school_logo,
-                'school-profiles'
-            );
-        }
-
-        // Handle principal_photo upload
-        if (isset($data['principal_photo']) && $data['principal_photo'] instanceof UploadedFile) {
-            $data['principal_photo'] = $this->fileUploadService->replace(
-                $data['principal_photo'],
-                $profile?->principal_photo,
-                'school-profiles'
-            );
-        }
-
-        // Handle background_image upload
-        if (isset($data['background_image']) && $data['background_image'] instanceof UploadedFile) {
-            $data['background_image'] = $this->fileUploadService->replace(
-                $data['background_image'],
-                $profile?->background_image,
-                'school-profiles'
-            );
+        foreach (self::IMAGE_FIELDS as $field) {
+            if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
+                $data[$field] = $this->fileUploadService->replace(
+                    $data[$field],
+                    $profile?->{$field},
+                    UploadDirectoryEnum::SCHOOL_PROFILES->value
+                );
+            }
         }
 
         return $this->schoolProfileRepository->updateOrCreate($profile, $data);

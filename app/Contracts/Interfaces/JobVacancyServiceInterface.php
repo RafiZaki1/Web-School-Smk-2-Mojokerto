@@ -2,6 +2,4 @@
 
 namespace App\Contracts\Interfaces;
 
-interface JobVacancyServiceInterface extends ContentServiceInterface
-{
-}
+interface JobVacancyServiceInterface extends ContentServiceInterface {}

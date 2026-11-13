@@ -5,22 +5,33 @@ namespace App\Services\Content;
 use App\Contracts\Interfaces\ArticleRepositoryInterface;
 use App\Contracts\Interfaces\ArticleServiceInterface;
 use App\Contracts\Interfaces\FileUploadServiceInterface;
+use App\Enums\UploadDirectoryEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class ArticleService extends ContentService implements ArticleServiceInterface
 {
-    protected array $fileFields = ['cover_image' => 'articles'];
+    /** @var array<string, string> */
+    protected array $fileFields = ['cover_image' => UploadDirectoryEnum::ARTICLES->value];
 
-    protected array $fileListFields = ['gallery' => 'articles/gallery'];
+    /** @var array<string, string> */
+    protected array $fileListFields = ['gallery' => UploadDirectoryEnum::ARTICLE_GALLERY->value];
 
+    /**
+     * Inisialisasi ArticleService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(ArticleRepositoryInterface $repository, FileUploadServiceInterface $files)
     {
         parent::__construct($repository, $files);
     }
 
+    /**
+     * Isi tanggal terbit hari ini untuk berita baru dan penulis default bila kosong.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
     protected function transform(array $data, ?Model $model): array
     {
-        // Berita baru tanpa tanggal dianggap terbit hari ini
         if (! $model && empty($data['published_at'])) {
             $data['published_at'] = now()->toDateString();
         }

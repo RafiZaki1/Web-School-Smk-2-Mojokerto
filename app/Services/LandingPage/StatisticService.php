@@ -2,19 +2,22 @@
 
 namespace App\Services\LandingPage;
 
-use App\Contracts\Interfaces\StatisticServiceInterface;
 use App\Contracts\Interfaces\StatisticRepositoryInterface;
+use App\Contracts\Interfaces\StatisticServiceInterface;
 
 class StatisticService implements StatisticServiceInterface
 {
+    /**
+     * Inisialisasi StatisticService dengan dependensi yang disuntikkan oleh service container.
+     */
     public function __construct(
         protected StatisticRepositoryInterface $statisticRepository,
     ) {}
 
     /**
-     * Calculate and retrieve school statistics data.
+     * Ambil statistik sekolah: jumlah siswa, guru, jurusan, alumni, dan tahun berdiri.
      *
-     * @return array
+     * @return array<string, int|null>
      */
     public function getStatistics(): array
     {

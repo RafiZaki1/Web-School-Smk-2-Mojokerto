@@ -1,0 +1,148 @@
+import type { ElearningTeacher } from "@/features/portal-belajar/types/portal-belajar.type";
+
+/**
+ * Daftar Bapak & Ibu Guru PABP, PJOK, Bahasa Jawa, Seni Budaya, BK & KIK
+ * berdasarkan struktur kategori pembelajaran di http://smkn2mojokerto.my.id/
+ */
+export const GURU_LANJUTAN_DAN_BK: ElearningTeacher[] = [
+  // PABP (Pendidikan Agama & Budi Pekerti)
+  {
+    id: "intan-nur-fitri",
+    name: "Intan Nur Fitri, S.Pd.",
+    role: "Guru Pendidikan Agama & Budi Pekerti",
+    group: "umum",
+    subjects: ["Pendidikan Agama & Budi Pekerti (PABP)"],
+    categoryId: 31,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "ahmad-rofii-noprianto",
+    name: "Ahmad Rofi'i Noprianto, S.Pd.I.",
+    role: "Guru Pendidikan Agama & Budi Pekerti",
+    group: "umum",
+    subjects: ["Pendidikan Agama & Budi Pekerti (PABP)"],
+    categoryId: 128,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "avif-sulaiman-nur",
+    name: "Avif Sulaiman Nur, S.Ag.",
+    role: "Guru Pendidikan Agama & Budi Pekerti",
+    group: "umum",
+    subjects: ["Pendidikan Agama & Budi Pekerti (PABP)"],
+    categoryId: 130,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  // PJOK
+  {
+    id: "harjo-santoso",
+    name: "Harjo Santoso, S.Pd.",
+    role: "Guru PJOK",
+    group: "umum",
+    subjects: ["Pendidikan Jasmani, Olahraga & Kesehatan (PJOK)"],
+    categoryId: 38,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "basukisna-setya-candra",
+    name: "Basukisna Setya Candra, S.Pd.",
+    role: "Guru PJOK",
+    group: "umum",
+    subjects: ["Pendidikan Jasmani, Olahraga & Kesehatan (PJOK)"],
+    categoryId: 131,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "gisik-giriantoko",
+    name: "Gisik Giriantoko, S.Pd.",
+    role: "Guru PJOK",
+    group: "umum",
+    subjects: ["Pendidikan Jasmani, Olahraga & Kesehatan (PJOK)"],
+    categoryId: 132,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  // Bahasa Jawa & Seni Budaya
+  {
+    id: "nur-choiroh-bekti-wiyati",
+    name: "Nur Choiroh Bekti Wiyati, S.Pd.",
+    role: "Guru Bahasa Jawa",
+    group: "umum",
+    subjects: ["Bahasa Jawa"],
+    categoryId: 42,
+    semesterInfo: "Semester Gasal & Genap",
+  },
+  {
+    id: "yusuf-widhiarso",
+    name: "Yusuf Widhiarso, S.Pd.",
+    role: "Guru Bahasa Jawa",
+    group: "umum",
+    subjects: ["Bahasa Jawa"],
+    categoryId: 138,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "adhela-indra-saphira",
+    name: "Adhela Indra Saphira, S.Pd.",
+    role: "Guru Bahasa Jawa",
+    group: "umum",
+    subjects: ["Bahasa Jawa"],
+    categoryId: 139,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "hafid-setiawan",
+    name: "Hafid Setiawan, S.Pd.",
+    role: "Guru Seni Budaya",
+    group: "umum",
+    subjects: ["Seni Budaya"],
+    categoryId: 24,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  // Bimbingan Konseling (BK) & Kewirausahaan (KIK)
+  {
+    id: "ani-latifah",
+    name: "Ani Latifah, S.Pd.",
+    role: "Guru Bimbingan Konseling (BK)",
+    group: "bk-kik",
+    subjects: ["Bimbingan Konseling (BK)"],
+    categoryId: 142,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "ariqa-ayni-alfianita",
+    name: "Ariqa Ayni Alfianita S., S.Psi.",
+    role: "Guru Bimbingan Konseling (BK)",
+    group: "bk-kik",
+    subjects: ["Bimbingan Konseling (BK)"],
+    categoryId: 143,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "sugianto",
+    name: "Sugianto, S.Pd.",
+    role: "Guru Bimbingan Konseling (BK)",
+    group: "bk-kik",
+    subjects: ["Bimbingan Konseling (BK)"],
+    categoryId: 145,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "bintang-ananta-elyana",
+    name: "Bintang Ananta Elyana P., S.Pd.",
+    role: "Guru Bimbingan Konseling (BK)",
+    group: "bk-kik",
+    subjects: ["Bimbingan Konseling (BK)"],
+    categoryId: 146,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+  {
+    id: "yeti-diah-retnowulan",
+    name: "Yeti Diah Retnowulan, S.Sos.",
+    role: "Guru Kreativitas, Inovasi & Kewirausahaan (KIK)",
+    group: "bk-kik",
+    subjects: ["Kreativitas, Inovasi & Kewirausahaan (KIK)"],
+    categoryId: 149,
+    semesterInfo: "Semester Ganjil & Genap",
+  },
+];
+

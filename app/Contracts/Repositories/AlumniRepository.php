@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Collection;
 
 class AlumniRepository extends BaseRepository implements AlumniRepositoryInterface
 {
+    /** @var class-string<Alumni> */
     protected string $model = Alumni::class;
 
+    /**
+     * Ambil daftar alumni, opsional hanya yang ditandai unggulan.
+     */
     public function list(bool $featuredOnly = false): Collection
     {
         return $this->query()

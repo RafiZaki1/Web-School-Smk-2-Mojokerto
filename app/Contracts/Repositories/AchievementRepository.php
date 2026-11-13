@@ -8,8 +8,14 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AchievementRepository extends BaseRepository implements AchievementRepositoryInterface
 {
+    /** @var class-string<Achievement> */
     protected string $model = Achievement::class;
 
+    /**
+     * Terapkan filter kategori, tingkat, dan tahun pada daftar prestasi.
+     *
+     * @param  array<string, mixed>  $filters
+     */
     protected function applyFilters(Builder $query, array $filters): Builder
     {
         return $query

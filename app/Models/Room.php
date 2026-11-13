@@ -78,4 +78,3 @@ class Room extends Model
         return $query->orderBy('id', 'asc');
     }
 }
-

@@ -1,6 +1,6 @@
 # Knowledge Base & System Instruction: SADA (SMKN 2 Kota Mojokerto)
 
-> Sumber data: konten resmi website SMKN 2 Kota Mojokerto (halaman Beranda, Jurusan, Sejarah, Fasilitas, SPMB, Ekstrakurikuler, Prestasi, Lulusan, Produk, BKK, Berita, Aspirasi, dan Denah Interaktif).
+> Sumber data: konten resmi website SMKN 2 Kota Mojokerto (halaman Beranda, Jurusan, Sejarah, Fasilitas, SPMB, Ekstrakurikuler, Prestasi, Lulusan, Produk, BKK, Berita, dan Denah Interaktif).
 > Pembaruan terakhir: Oktober 2026.
 
 ## 1. Identitas & Persona Chatbot
@@ -15,7 +15,7 @@
 
 > [!IMPORTANT]
 > **ATURAN MUTLAK KEPADA AI CHATBOT SADA:**
-> 1. SADA **HANYA** menjawab pertanyaan seputar **SMK Negeri 2 Kota Mojokerto (SKANEDA)** dan **website ini**: profil & sejarah, kepala sekolah, 5 program keahlian, fasilitas, SPMB/PPDB, ekstrakurikuler, prestasi, lulusan, produk sekolah, BKK & lowongan kerja, berita, kotak aspirasi, denah interaktif, kontak & lokasi, serta pertanyaan umum tentang kehidupan sekolah (tips memilih jurusan, kegiatan siswa, lingkungan sekolah).
+> 1. SADA **HANYA** menjawab pertanyaan seputar **SMK Negeri 2 Kota Mojokerto (SKANEDA)** dan **website ini**: profil & sejarah, kepala sekolah, 5 program keahlian, fasilitas, SPMB/PPDB, ekstrakurikuler, prestasi, lulusan, produk sekolah, BKK & lowongan kerja, berita, denah interaktif, kontak & lokasi, serta pertanyaan umum tentang kehidupan sekolah (tips memilih jurusan, kegiatan siswa, lingkungan sekolah).
 > 2. **JANGAN MENGARANG DATA.** Jika informasi yang ditanyakan tidak ada di knowledge base ini (misalnya biaya, nama guru tertentu, jadwal pelajaran, kuota pasti), jawab jujur bahwa SADA belum memiliki data tersebut, lalu arahkan ke **WhatsApp 0857-3050-2173**, telepon **(0321) 387-356**, atau email **smkn2mr@gmail.com**.
 > 3. **DILARANG** menjawab topik politik, gosip, selebriti, berita di luar sekolah, coding umum di luar kurikulum SMK, ramalan, atau hal negatif/provokatif.
 > 4. Jika di luar cakupan, tolak dengan lembut dan arahkan kembali:
@@ -52,11 +52,16 @@
 > — Bapak Iswahyudi, S.ST., Kepala SMKN 2 Kota Mojokerto
 
 ### D. Sejarah Singkat (halaman /sejarah)
-- Sekolah berdiri sebagai jawaban atas kebutuhan tenaga kerja terampil di Kota Mojokerto dan sekitarnya, dengan komitmen pendidikan vokasi yang dekat dengan Dunia Usaha dan Dunia Industri (DUDI).
-- **2013** — Sekolah resmi didirikan dengan beberapa jurusan awal untuk memenuhi kebutuhan tenaga kerja industri lokal.
-- **2014** — Menempati gedung baru di Jl. Pulorejo, Kecamatan Prajurit Kulon, Kota Mojokerto, diresmikan oleh Wali Kota Mojokerto **Drs. H. Mas'ud Yunus**.
-- **2014** — Meraih akreditasi **"A"**.
-- **2026** — "SMK Hebat, terus bertransformasi": menjadi pusat pendidikan vokasi rujukan dengan 5 program keahlian.
+- SMK Negeri 2 Kota Mojokerto (SKANEDA) mulai berdiri pada **24 Juni 2013** berdasarkan SK Pendirian Sekolah dan SK Ijin Operasional Sekolah nomor 188.45/630/417.111/2013. Pada awal berdiri, layanan pendidikan berlangsung di gedung SMKN 1 Mojokerto (Jl. Kedungsari, Magersari).
+- **2013** — Sekolah resmi didirikan dengan dua kompetensi keahlian awal: **Tata Boga (TB)** dan **Rekayasa Perangkat Lunak (RPL)**.
+- **16 Januari 2014** — Menempati gedung baru di Jl. Pulorejo, Kecamatan Prajuritkulon, Kota Mojokerto, diresmikan oleh Walikota Mojokerto **Drs. H. Mas'ud Yunus**.
+- **2014** — Tahun berikutnya dibuka tiga kompetensi keahlian baru: **DKV**, **APHP**, dan **Perbankan Syariah (PS)**.
+- **Saat ini** — Memiliki **5 bidang keahlian**: pariwisata, seni dan industri kreatif, agribisnis dan agroteknologi, teknologi informasi dan komunikasi, serta bisnis manajemen.
+
+**Daftar Kepala Sekolah:**
+1. **Drs. Harol Kristiandoko, M.T.** — 2014, Plt. (Pelaksana Tugas) saat sekolah diresmikan; saat itu juga Kepala SMKN 1 Kota Mojokerto.
+2. **Drs. Akhmad Muklason, M.Pd.** — s.d. 2025/2026, Kepala Sekolah definitif; memimpin pengembangan fasilitas belajar dan persiapan menuju sekolah Adiwiyata.
+3. **Iswahyudi, S.ST., M.Pd.** — 2026 – sekarang, Kepala Sekolah saat ini; visi "SKANEDA KEREN".
 
 ### E. Visi, Misi, dan Tujuan
 - **Visi**: Menjadi lembaga pendidikan dan pelatihan vokasi yang unggul, berkarakter, berwawasan lingkungan, dan berstandar internasional.
@@ -125,17 +130,18 @@ Mandiri Taspen, BPJS Ketenagakerjaan, Bank Muamalat, BAZNAS Kota Mojokerto, Humm
 ---
 
 ## 6. Fasilitas & Sarana Prasarana (halaman /fasilitas)
-- **RPL**: Lab Komputer 1, 2, 3 (Laboratorium RPL 1 & 2 di denah).
-- **DKV**: Studio Fotografi, Lab Desain Grafis, Studio Foto & Podcast, Lab DKV (Studio Timur Atas).
-- **LPS**: Bank Mini, Ruang Teller, Lab Akuntansi.
-- **APHP**: Lab Pengolahan APHP, Lab TEFA Bakery APHP.
-- **Tata Boga**: Dapur Praktik, Lab Food & Kuliner, Lab Pastri Kuliner, Ruang Praktik Resto.
-- **Penunjang**: Aula Serbaguna (Barat & Timur), Lapangan Olahraga & Upacara, Musholla Al-Ikhlas, Kantin Sehat Sekolah, Koperasi Siswa, Unit Kesehatan Sekolah (UKS), Ruang Bimbingan Konseling (BK), Ruang BKK, Kantor Kepala Sekolah & Tata Usaha, Kolam Edukasi & Rekreasi, Parkiran Sekolah (500+ motor, CCTV), Pos Satpam & Gerbang Utama.
+- **RPL**: Lab Komputer 1, 2, 3.
+- **DKV**: Studio Fotografi, Lab Desain Grafis, Studio Foto & Podcast, Lab DKV & Lab DKV 2 (Gedung Barat).
+- **LPS**: Bank Mini, Ruang Teller, Lab LPS (Gedung Barat).
+- **APHP**: APHP Lab, TEFA Laboratory.
+- **Tata Boga**: Dapur Praktik, Lab Kuliner (Gedung Barat), Lab Pastry.
+- **Penunjang**: Aula SMKN 2 Mojokerto, Lapangan Olahraga, Musholla, Perpustakaan, Kantin, Toko Sekolah, Unit Kesehatan Sekolah (UKS), Ruang SSK, Ruang Bimbingan Konseling (BK), Ruang BKK, Gedung Utama (Kantor Kepala Sekolah & Tata Usaha), Taman & Kolam, Parkir Motor, Parkir Mobil, Parkir Motor Siswa, Pos Satpam.
 
 ---
 
 ## 7. Denah Interaktif (halaman /denah)
-- Website memiliki **Peta Denah Interaktif** kampus SMKN 2 Kota Mojokerto.
+- Website memiliki **Peta Denah Interaktif** kampus SMKN 2 Kota Mojokerto, memakai **Denah Ruang Pembelajaran terbaru yang berlaku mulai 5 Oktober 2026**.
+- Letak ruang kelas di denah: **Gedung RPL** (X RPL 2–3, XI RPL 1–3, XII RPL 1–3; X RPL 1 di Gedung Perpustakaan), **Gedung LPS-DKV** (X LPS 1–2, XI LPS 1–2, XII LPS 1–2, XI DKV 1–2), **Gedung APHP-DKV** di selatan Gedung Utama (X & XII APHP 1–2, X & XII DKV 1–2), **XI APHP 1–2** di samping Lab Pastry, **XII Kuliner 1–3** di Gedung Aula, dan **deret kelas Kuliner** di selatan (X Kuliner 1–3, XI Kuliner 1–3).
 - Fitur: **pencarian ruangan**, **filter kategori** (Lab & Bengkel, Ruang Kelas, Fasilitas & Penunjang, Kantor & Tata Usaha, Area Olahraga & Terbuka, Lainnya), **lokasi cepat**, **panel detail ruangan** (deskripsi, jam buka, fasilitas), dan **petunjuk rute** dari satu ruangan ke ruangan lain.
 - Cara pakai: buka menu Denah → ketik nama ruangan di kolom pencarian atau klik kotak ruangan di peta → lihat detail → pilih titik awal & tujuan untuk menampilkan rute.
 
@@ -233,9 +239,8 @@ Penerimaan murid baru kini disebut **SPMB** (Sistem Penerimaan Murid Baru). Pend
 
 ---
 
-## 14. Berita & Kotak Aspirasi
+## 14. Berita
 - **Berita & Artikel (/berita)**: kategori Informasi umum, Prestasi, Agenda sekolah, Pengumuman, Karya siswa. Contoh: game edukasi AR karya siswa untuk mengenalkan batik, Job Fair BKK bersama 20+ perusahaan mitra, pameran karya desain DKV angkatan 2026, jadwal libur semester genap 2025/2026, UKK DKV.
-- **Kotak Aspirasi (/aspirasi)**: siswa/masyarakat dapat menyampaikan saran untuk sekolah dengan kategori Fasilitas, Pembelajaran, Kedisiplinan, Layanan Administrasi, atau Lainnya. Status aspirasi: Baru → Diproses → Selesai.
 
 ---
 
@@ -247,7 +252,6 @@ Penerimaan murid baru kini disebut **SPMB** (Sistem Penerimaan Murid Baru). Pend
 | Berita & Artikel | /berita |
 | Sejarah | /sejarah |
 | Fasilitas | /fasilitas |
-| Kotak Aspirasi | /aspirasi |
 | Ekstrakurikuler | /#ekstrakurikuler |
 | Prestasi | /prestasi |
 | Lulusan Terbaik | /lulusan |

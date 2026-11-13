@@ -2,22 +2,35 @@
   "name": "frontend-next",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3000",
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.9.2",
+    "@tanstack/react-query": "^5.105.0",
+    "axios": "^1.21.0",
     "lucide-react": "^1.49.0",
     "next": "16.3.3",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-hook-form": "^7.91.0",
+    "zod": "^4.6.7",
+    "zustand": "^5.0.16"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "typescript": "^5.9.3"
   }
 }

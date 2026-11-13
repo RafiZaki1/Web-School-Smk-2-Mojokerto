@@ -11,6 +11,7 @@ class RoomCategory extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     protected $fillable = [
         'name',
         'slug',
@@ -18,15 +19,22 @@ class RoomCategory extends Model
         'is_active',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
     ];
 
+    /**
+     * Ambil ruangan yang termasuk dalam kategori ini.
+     */
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class, 'category_id');
     }
 
+    /**
+     * Batasi query hanya pada kategori yang aktif.
+     */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);

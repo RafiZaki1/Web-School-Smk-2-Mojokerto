@@ -9,7 +9,7 @@ Portal web modern, interaktif, dan responsif untuk **SMK Negeri 2 Kota Mojokerto
 | Layer | Teknologi | Deskripsi |
 |---|---|---|
 | **Frontend** | Next.js 16 (App Router), React, Tailwind CSS | Single Page Landing, 3D Arc Carousel, Denah Interaktif, Chatbot SADA AI, Modal PPDB & Jurusan |
-| **Backend** | Laravel 11+, PHP 8.3+ | RESTful API Engine, Service & Repository Pattern, Dijkstra Shortest Path Engine |
+| **Backend** | Laravel 13, PHP 8.5 | RESTful API Engine, Service & Repository Pattern, Dijkstra Shortest Path Engine |
 | **Database** | MySQL / MariaDB | Relasional database untuk profil, hero, jurusan, ruangan denah, waypoint navigasi, dan chatbot |
 | **Routing Map** | Algoritma Dijkstra Pathfinding | Navigasi presisi mengikuti koridor pejalan kaki fisik (*paving walkway*) tanpa menembus dinding gedung |
 
@@ -20,7 +20,7 @@ Portal web modern, interaktif, dan responsif untuk **SMK Negeri 2 Kota Mojokerto
 ### 1. 🚀 Modern Hero Section & 3D Arc Carousel
 - Banner utama beresolusi tinggi dengan tagline resmi *"DISIPLIN • BERAKHLAK • BERPRESTASI"*.
 - **Arc Carousel 3D**: Karusel lengkung 60fps dengan kartu foto kegiatan siswa beresolusi HD, fitur *pause on hover*, dan *click-to-center*.
-- Tombol aksi cepat *Kotak Aspirasi* dan pendaftaran *Informasi PPDB*.
+- Tombol aksi cepat pendaftaran *Informasi PPDB*.
 
 ### 2. ✍️ Sambutan Kepala Sekolah (Live Typewriter Effect)
 - Kutipan inspiratif dari Kepala Sekolah (**Bapak Iswahyudi, S.ST.**) yang tampil dengan **efek animasi mengetik (*Typewriter*)** berurutan (*sequential typing*) dan kursor berkedip.
@@ -36,7 +36,7 @@ Portal web modern, interaktif, dan responsif untuk **SMK Negeri 2 Kota Mojokerto
 - **Modal Detail Jurusan**: Klik nama atau foto jurusan untuk membuka popup lengkap berisi profil, kompetensi keahlian, prospek karir lulusan, fasilitas laboratorium, dan tautan langsung ke denah.
 
 ### 4. 🗺️ Denah Interaktif Sekolah (Interactive Campus Map)
-- Blueprint denah presisi rasio `1024x584` dengan hotspot transparan pada setiap ruangan.
+- Blueprint denah presisi rasio `1540x752` (Denah Ruang Pembelajaran, mulai 5 Oktober 2026) dengan hotspot transparan pada setiap ruangan.
 - **Dijkstra Walkway Routing**: Pencarian rute pejalan kaki dari Gerbang Utama menuju ruangan mana pun (seperti Lab RPL 1, Bengkel APHP, Ruang Guru) melalui jalur paving luar ruangan tanpa menembus gedung.
 - Pencarian cerdas (*instant search*) dengan autocomplete, filter kategori ruangan, kontrol zoom, dan panel detail ruangan.
 
@@ -82,7 +82,7 @@ JHIC/
 ## ⚡ Panduan Instalasi & Menjalankan
 
 ### 1. Menjalankan Backend (Laravel API)
-Pastikan PHP 8.2+, Composer, dan MySQL telah terpasang (misalnya via Laragon/XAMPP):
+Pastikan PHP 8.5+, Composer, dan MySQL telah terpasang (misalnya via Laragon/XAMPP):
 
 ```bash
 # Masuk ke direktori root project

@@ -19,15 +19,18 @@ class MapRouteResource extends JsonResource
             'destination' => $this->place('destination'),
             'distance' => (int) data_get($this->resource, 'distance', 0),
             'estimated_minutes' => (int) data_get($this->resource, 'estimated_minutes', 0),
-            // Titik belok rute dalam persen gambar denah (0-100), siap digambar sebagai polyline
+
             'path' => data_get($this->resource, 'path', []),
-            // Nama jalur/koridor yang dilalui, berurutan
+
             'via' => data_get($this->resource, 'via', []),
-            // Petunjuk arah: depart, turn-left/right, slight-left/right, straight, u-turn, arrive
+
             'steps' => data_get($this->resource, 'steps', []),
         ];
     }
 
+    /**
+     * Ambil data ruangan asal atau tujuan dari hasil rute berdasarkan kuncinya.
+     */
     protected function place(string $key): array
     {
         return [

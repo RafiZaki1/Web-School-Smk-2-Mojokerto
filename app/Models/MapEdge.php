@@ -11,6 +11,7 @@ class MapEdge extends Model
 {
     use HasFactory;
 
+    /** @var array<int, string> */
     protected $fillable = [
         'from_node_id',
         'to_node_id',
@@ -19,6 +20,7 @@ class MapEdge extends Model
         'is_walkable',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'from_node_id' => 'integer',
         'to_node_id' => 'integer',
@@ -26,16 +28,25 @@ class MapEdge extends Model
         'is_walkable' => 'boolean',
     ];
 
+    /**
+     * Ambil titik asal sisi peta.
+     */
     public function fromNode(): BelongsTo
     {
         return $this->belongsTo(MapNode::class, 'from_node_id');
     }
 
+    /**
+     * Ambil titik tujuan sisi peta.
+     */
     public function toNode(): BelongsTo
     {
         return $this->belongsTo(MapNode::class, 'to_node_id');
     }
 
+    /**
+     * Batasi query hanya pada sisi yang dapat dilalui.
+     */
     public function scopeWalkable(Builder $query): Builder
     {
         return $query->where('is_walkable', true);

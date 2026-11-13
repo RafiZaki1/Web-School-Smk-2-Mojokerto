@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JobVacancyStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,14 +11,7 @@ class JobVacancy extends Model
 {
     use HasFactory;
 
-    public const CATEGORIES = ['Perbankan', 'IT & Teknologi', 'Kuliner & Hospitality', 'Desain & Kreatif', 'Manufaktur'];
-
-    public const TYPES = ['Full-time', 'Part-time', 'Magang', 'Kontrak'];
-
-    public const STATUS_OPEN = 'open';
-
-    public const STATUS_CLOSED = 'closed';
-
+    /** @var array<int, string> */
     protected $fillable = [
         'slug',
         'title',
@@ -38,17 +32,24 @@ class JobVacancy extends Model
         'contact_email',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'closes_at' => 'date',
         'responsibilities' => 'array',
         'qualifications' => 'array',
     ];
 
+    /**
+     * Batasi query hanya pada lowongan yang masih dibuka.
+     */
     public function scopeOpen(Builder $query): Builder
     {
-        return $query->where('status', self::STATUS_OPEN);
+        return $query->where('status', JobVacancyStatusEnum::OPEN->value);
     }
 
+    /**
+     * Urutkan lowongan berdasarkan tanggal tutup terdekat, lalu id terbaru.
+     */
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderByRaw('closes_at is null')->orderBy('closes_at')->orderByDesc('id');

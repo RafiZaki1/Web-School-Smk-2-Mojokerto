@@ -1,0 +1,408 @@
+/*
+ * Layanan TU (cek kelulusan, layanan alumni, buku tamu, dan meja kerja TU).
+ * Gaya formal dan fungsional: permukaan rata, border tipis, sudut 6px, tanpa bayangan.
+ * Semua warna dari token tema, jadi mode terang dan gelap ikut berjalan.
+ */
+@layer components {
+  .svc-card {
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-card);
+  }
+
+  .svc-card--muted {
+    background: var(--color-surface-alt);
+  }
+
+  .svc-btn {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 18px;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-card);
+    color: var(--color-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .svc-btn:hover {
+    border-color: var(--color-muted);
+    background: var(--color-surface-alt);
+  }
+
+  .svc-btn:active {
+    background: var(--color-surface);
+  }
+
+  .svc-btn:focus-visible,
+  .svc-chip:focus-visible,
+  .svc-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .svc-btn:disabled,
+  .svc-btn[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .svc-btn--primary {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .svc-btn--primary:hover {
+    border-color: var(--color-primary-dark);
+    background: var(--color-primary-dark);
+  }
+
+  .svc-btn--primary:active {
+    background: var(--color-navy);
+  }
+
+  .svc-btn--danger {
+    border-color: #b91c1c;
+    color: #b91c1c;
+  }
+
+  .svc-btn--danger:hover {
+    background: #fef2f2;
+    border-color: #991b1b;
+  }
+
+  .svc-btn--sm {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+  }
+
+  .svc-link {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .svc-link:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .svc-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .svc-hint {
+    margin-top: 6px;
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+  }
+
+  .svc-error {
+    margin-top: 6px;
+    color: #b91c1c;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  [data-theme="dark"] .svc-error,
+  [data-theme="dark"] .svc-btn--danger {
+    color: #fca5a5;
+    border-color: #fca5a5;
+  }
+
+  [data-theme="dark"] .svc-btn--danger:hover {
+    background: rgba(252, 165, 165, 0.08);
+  }
+
+  .svc-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-card);
+    color: var(--color-ink);
+    font-size: 1rem;
+  }
+
+  .svc-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .svc-input[aria-invalid="true"] {
+    border-color: #b91c1c;
+  }
+
+  .svc-input:disabled {
+    cursor: not-allowed;
+    background: var(--color-surface-alt);
+  }
+
+  textarea.svc-input {
+    min-height: 96px;
+    resize: vertical;
+  }
+
+  select.svc-input {
+    cursor: pointer;
+  }
+
+  /* Status ditulis sebagai teks, warna hanya penegas */
+  .svc-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .svc-tag--ok {
+    color: #166534;
+    background: #f0fdf4;
+  }
+
+  .svc-tag--warn {
+    color: #92400e;
+    background: #fffbeb;
+  }
+
+  .svc-tag--bad {
+    color: #991b1b;
+    background: #fef2f2;
+  }
+
+  .svc-tag--info {
+    color: var(--color-primary-dark);
+    background: var(--color-tint);
+  }
+
+  .svc-tag--neutral {
+    color: var(--color-body);
+    background: var(--color-surface-alt);
+  }
+
+  [data-theme="dark"] .svc-tag--ok {
+    color: #86efac;
+    background: transparent;
+  }
+
+  [data-theme="dark"] .svc-tag--warn {
+    color: #fcd34d;
+    background: transparent;
+  }
+
+  [data-theme="dark"] .svc-tag--bad {
+    color: #fca5a5;
+    background: transparent;
+  }
+
+  /* Kode tiket dan NISN dibacakan ke petugas, jadi angka dibuat sejajar */
+  .svc-code {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .svc-rows {
+    display: grid;
+    grid-template-columns: minmax(120px, 34%) 1fr;
+  }
+
+  .svc-rows > dt,
+  .svc-rows > dd {
+    padding: 10px 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .svc-rows > dt {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+
+  .svc-rows > dd {
+    color: var(--color-heading);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .svc-chip {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-card);
+    color: var(--color-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .svc-chip:hover {
+    border-color: var(--color-muted);
+  }
+
+  .svc-chip[aria-pressed="true"] {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .svc-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .svc-table th {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-surface-alt);
+    color: var(--color-muted);
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .svc-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    vertical-align: top;
+  }
+
+  .svc-table tbody tr:hover td {
+    background: var(--color-surface-alt);
+  }
+
+  .svc-table .svc-input {
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: 0.875rem;
+  }
+
+  .svc-table textarea.svc-input {
+    min-height: 36px;
+  }
+
+  /*
+   * Komponen form bersama (FormText, FormTextarea, SearchInput) di halaman publik.
+   * Di panel admin gayanya dari admin.css; di sini memakai token tema agar mode gelap ikut.
+   */
+  .svc-form .field {
+    display: block;
+  }
+
+  .svc-form .field__label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .svc-form .field__hint {
+    margin-top: 6px;
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+  }
+
+  .svc-form .field__error {
+    margin-top: 6px;
+    color: #b91c1c;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  [data-theme="dark"] .svc-form .field__error {
+    color: #fca5a5;
+  }
+
+  .svc-form .inputtext__wrap,
+  .svc-form .search-input-wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .svc-form .inputtext__field,
+  .svc-form .inputlongtext__field,
+  .svc-form .search-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-card);
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: 1rem;
+  }
+
+  .svc-form .inputlongtext__field {
+    min-height: 112px;
+    line-height: 1.6;
+    resize: vertical;
+  }
+
+  .svc-form .search-input {
+    padding-left: 40px;
+  }
+
+  .svc-form .search-input__icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    width: 18px;
+    height: 18px;
+    color: var(--color-muted);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .svc-form .inputtext__field::placeholder,
+  .svc-form .inputlongtext__field::placeholder,
+  .svc-form .search-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .svc-form .inputtext__field:focus-visible,
+  .svc-form .inputlongtext__field:focus-visible,
+  .svc-form .search-input:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  .svc-form .inputtext__field[aria-invalid="true"],
+  .svc-form .inputlongtext__field[aria-invalid="true"] {
+    border-color: #b91c1c;
+  }
+
+  .svc-form .inputtext__field:disabled,
+  .svc-form .inputlongtext__field:disabled {
+    cursor: not-allowed;
+    background: var(--color-surface-alt);
+    color: var(--color-muted);
+  }
+}

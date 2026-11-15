@@ -35,6 +35,9 @@ class TransaksiBankMini extends Model
         'expires_at',
         'paid_at',
         'petugas_id',
+        'verifikator_id',
+        'diverifikasi_at',
+        'catatan_verifikasi',
         'gateway_payload',
     ];
 
@@ -59,6 +62,7 @@ class TransaksiBankMini extends Model
             'biaya_admin' => 'integer',
             'expires_at' => 'datetime',
             'paid_at' => 'datetime',
+            'diverifikasi_at' => 'datetime',
             'gateway_payload' => 'array',
         ];
     }
@@ -81,6 +85,16 @@ class TransaksiBankMini extends Model
     public function petugas(): BelongsTo
     {
         return $this->belongsTo(User::class, 'petugas_id');
+    }
+
+    /**
+     * Petugas atau admin yang terakhir memutus transaksi ini (setujui, tolak, batalkan).
+     *
+     * @return BelongsTo
+     */
+    public function verifikator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verifikator_id');
     }
 
     /**

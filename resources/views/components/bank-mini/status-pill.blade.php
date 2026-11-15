@@ -9,6 +9,7 @@
         'pending' => ['Pending', 'bg-amber-50 text-amber-800 ring-amber-200'],
         'belum_jatuh_tempo' => ['Belum Jatuh Tempo', 'bg-slate-100 text-slate-600 ring-slate-200'],
         'expired' => ['Kedaluwarsa', 'bg-slate-100 text-slate-600 ring-slate-200'],
+        'canceled' => ['Dibatalkan', 'bg-slate-100 text-slate-600 ring-slate-200'],
     ];
     [$label, $warna] = $peta[$status] ?? [ucfirst(str_replace('_', ' ', $status)), 'bg-slate-100 text-slate-600 ring-slate-200'];
 @endphp

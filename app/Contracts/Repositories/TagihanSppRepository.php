@@ -138,32 +138,25 @@ class TagihanSppRepository extends BaseRepository implements TagihanSppRepositor
     }
 
     /**
-     * Lunasi bulan dari transaksi gateway yang settlement. Bulan yang sempat dilepas
-     * (belum_lunas) karena kedaluwarsa lokal tetap dilunasi karena uangnya sudah diterima.
+     * Pindahkan status bulan secara atomic, hanya untuk bulan yang statusnya termasuk $dari.
+     * Dipakai callback Tripay (kunci ulang, lepas pending) dan keputusan petugas (lunasi, cabut lunas).
+     * Pemanggil membandingkan hasilnya dengan jumlah id bila semua bulan wajib ikut berubah.
      *
      * @param  array<int, int>  $ids
+     * @param  array<int, StatusTagihanEnum>  $dari
+     * @param  StatusTagihanEnum  $ke
      * @return int Jumlah baris terpengaruh
      */
-    public function lunasiDariGateway(array $ids): int
+    public function pindahStatus(array $ids, array $dari, StatusTagihanEnum $ke): int
     {
         return $this->query()
             ->whereIn('id', $ids)
-            ->whereIn('status', [StatusTagihanEnum::PENDING->value, StatusTagihanEnum::BELUM_LUNAS->value])
-            ->update(['status' => StatusTagihanEnum::LUNAS->value, 'lunas_at' => now(), 'updated_at' => now()]);
-    }
-
-    /**
-     * Kembalikan bulan pending menjadi belum_lunas setelah transaksi gagal atau kedaluwarsa.
-     *
-     * @param  array<int, int>  $ids
-     * @return int Jumlah baris terpengaruh
-     */
-    public function lepasPending(array $ids): int
-    {
-        return $this->query()
-            ->whereIn('id', $ids)
-            ->where('status', StatusTagihanEnum::PENDING->value)
-            ->update(['status' => StatusTagihanEnum::BELUM_LUNAS->value, 'updated_at' => now()]);
+            ->whereIn('status', array_map(fn (StatusTagihanEnum $status) => $status->value, $dari))
+            ->update([
+                'status' => $ke->value,
+                'lunas_at' => $ke === StatusTagihanEnum::LUNAS ? now() : null,
+                'updated_at' => now(),
+            ]);
     }
 
     /**

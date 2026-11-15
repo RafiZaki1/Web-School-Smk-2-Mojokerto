@@ -2,8 +2,10 @@
 
 namespace App\Contracts\Interfaces;
 
+use App\Enums\BankMini\AksiVerifikasiEnum;
 use App\Enums\BankMini\MetodeBayarEnum;
 use App\Models\Siswa;
+use App\Models\TransaksiBankMini;
 use Illuminate\Support\Collection;
 
 /**
@@ -48,4 +50,15 @@ interface BankMiniTransaksiServiceInterface
      * @return array<string, mixed>
      */
     public function atributStatus(array $data, bool $settlement): array;
+
+    /**
+     * Kontrak method atributVerifikasi.
+     *
+     * @param  TransaksiBankMini  $transaksi
+     * @param  AksiVerifikasiEnum  $aksi
+     * @param  int  $verifikatorId
+     * @param  ?string  $catatan
+     * @return array<string, mixed>
+     */
+    public function atributVerifikasi(TransaksiBankMini $transaksi, AksiVerifikasiEnum $aksi, int $verifikatorId, ?string $catatan): array;
 }

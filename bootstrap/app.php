@@ -2,6 +2,7 @@
 
 use App\Helpers\BankMiniBeranda;
 use App\Helpers\ResponseHelper;
+use App\Http\Middleware\BankMiniBukaMiddleware;
 use App\Http\Middleware\BankMiniRoleMiddleware;
 use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Middleware\SecurityHeadersMiddleware;
@@ -31,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => CheckRoleMiddleware::class,
             'tripay.signature' => TripayCallbackSignatureMiddleware::class,
             'bank-mini.role' => BankMiniRoleMiddleware::class,
+            'bank-mini.buka' => BankMiniBukaMiddleware::class,
         ]);
 
         $middleware->api(append: [SecurityHeadersMiddleware::class]);

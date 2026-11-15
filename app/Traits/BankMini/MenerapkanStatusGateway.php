@@ -7,6 +7,7 @@ use App\Contracts\Interfaces\TagihanSppRepositoryInterface;
 use App\Contracts\Interfaces\TransaksiBankMiniRepositoryInterface;
 use App\Contracts\Interfaces\TransaksiDetailBulanRepositoryInterface;
 use App\Contracts\Interfaces\TripayServiceInterface;
+use App\Enums\BankMini\StatusTagihanEnum;
 use App\Enums\BankMini\StatusTransaksiEnum;
 use App\Events\BankMini\PembayaranSppLunas;
 use App\Models\TransaksiBankMini;
@@ -36,7 +37,7 @@ trait MenerapkanStatusGateway
 
     /**
      * Ubah status transaksi dan tagihannya dalam satu DB transaction (dua tabel berubah).
-     * Settlement boleh datang dari pending, expired, atau failed karena uangnya sudah diterima;
+     * Settlement boleh datang dari pending, expired, failed, atau canceled karena uangnya sudah diterima;
      * status gagal/kedaluwarsa hanya berlaku dari pending.
      *
      * @param  TransaksiBankMini  $transaksi
@@ -54,7 +55,7 @@ trait MenerapkanStatusGateway
 
         $settlement = $status === StatusTransaksiEnum::SETTLEMENT;
         $dari = $settlement
-            ? [StatusTransaksiEnum::PENDING, StatusTransaksiEnum::EXPIRED, StatusTransaksiEnum::FAILED]
+            ? [StatusTransaksiEnum::PENDING, StatusTransaksiEnum::EXPIRED, StatusTransaksiEnum::FAILED, StatusTransaksiEnum::CANCELED]
             : [StatusTransaksiEnum::PENDING];
 
         DB::beginTransaction();
@@ -70,7 +71,7 @@ trait MenerapkanStatusGateway
             if ($settlement) {
                 $this->lunasiTagihanGateway($transaksi, $tagihanIds);
             } else {
-                $this->tagihan->lepasPending($tagihanIds);
+                $this->tagihan->pindahStatus($tagihanIds, [StatusTagihanEnum::PENDING], StatusTagihanEnum::BELUM_LUNAS);
             }
 
             DB::commit();
@@ -162,7 +163,7 @@ trait MenerapkanStatusGateway
      */
     private function lunasiTagihanGateway(TransaksiBankMini $transaksi, array $tagihanIds): void
     {
-        $dilunasi = $this->tagihan->lunasiDariGateway($tagihanIds);
+        $dilunasi = $this->tagihan->pindahStatus($tagihanIds, [StatusTagihanEnum::PENDING, StatusTagihanEnum::BELUM_LUNAS], StatusTagihanEnum::LUNAS);
 
         if ($dilunasi < count($tagihanIds)) {
             Log::warning('Bank Mini: sebagian bulan sudah lunas sebelum settlement gateway, periksa kemungkinan bayar ganda.', [

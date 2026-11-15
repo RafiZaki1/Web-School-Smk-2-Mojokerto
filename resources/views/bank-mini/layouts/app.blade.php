@@ -11,11 +11,13 @@
         'admin' => [
             'UTAMA' => [
                 ['kunci' => 'monitoring', 'label' => 'Monitoring Kelas', 'ikon' => 'grid', 'url' => route('bank-mini.admin.monitoring'), 'warna' => 'bg-blue-50 text-blue-600'],
+                ['kunci' => 'pembayaran', 'label' => 'Pembayaran Masuk', 'ikon' => 'card', 'url' => route('bank-mini.admin.pembayaran'), 'warna' => 'bg-amber-50 text-amber-600'],
                 ['kunci' => 'laporan', 'label' => 'Laporan Kas', 'ikon' => 'report', 'url' => route('bank-mini.admin.laporan'), 'warna' => 'bg-emerald-50 text-emerald-600'],
             ],
             'KELOLA SPP' => [
                 ['kunci' => 'tagihan', 'label' => 'Generate Tagihan', 'ikon' => 'file-plus', 'url' => route('bank-mini.admin.tagihan'), 'warna' => 'bg-violet-50 text-violet-600'],
                 ['kunci' => 'wali-kelas', 'label' => 'Akun Wali Kelas', 'ikon' => 'user', 'url' => route('bank-mini.admin.wali-kelas'), 'warna' => 'bg-sky-50 text-sky-600'],
+                ['kunci' => 'layanan', 'label' => 'Buka / Tutup Layanan', 'ikon' => 'clock', 'url' => route('bank-mini.admin.layanan'), 'warna' => 'bg-rose-50 text-rose-600'],
             ],
         ],
         'walas' => [
@@ -191,6 +193,8 @@
                         </span>
                     @endif
 
+                    @include('bank-mini.partials.pengingat-sholat')
+
                     @if ($area === 'admin')
                         @include('bank-mini.partials.lonceng-notifikasi')
                     @endif
@@ -229,6 +233,14 @@
                 </div>
                 @yield('aksi-header')
             </div>
+
+            @if ($area === 'admin' && $aktif !== 'layanan' && app(\App\Services\BankMini\StatusLayananService::class)->baca()['tutup'])
+                <p class="no-print mb-5 flex flex-wrap items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+                    <x-bank-mini.icon name="alert" class="h-4 w-4 shrink-0" />
+                    Portal siswa sedang ditutup. Siswa tidak bisa masuk atau membayar online.
+                    <a href="{{ route('bank-mini.admin.layanan') }}" class="font-semibold underline">Buka layanan</a>
+                </p>
+            @endif
 
             @yield('konten')
         </main>

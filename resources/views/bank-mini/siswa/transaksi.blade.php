@@ -35,6 +35,11 @@
                             <x-bank-mini.icon name="printer" class="h-4 w-4" /> Kwitansi
                         </a>
                     </div>
+                @elseif ($transaksi->status === S::CANCELED)
+                    <div class="mt-5 flex items-start gap-3 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
+                        <x-bank-mini.icon name="info" class="mt-0.5 h-5 w-5 shrink-0 text-slate-500" />
+                        <p>Transaksi ini dibatalkan petugas Bank Mini{{ $transaksi->catatan_verifikasi ? ': '.$transaksi->catatan_verifikasi : '' }}. Bulan tagihannya sudah dibuka lagi; hubungi Bank Mini bila kamu sudah telanjur membayar.</p>
+                    </div>
                 @elseif (in_array($transaksi->status, [S::EXPIRED, S::FAILED], true))
                     <div class="mt-5 flex items-start gap-3 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
                         <x-bank-mini.icon name="info" class="mt-0.5 h-5 w-5 shrink-0 text-slate-500" />

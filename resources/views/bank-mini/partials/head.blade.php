@@ -68,6 +68,18 @@
         rupiah(n) {
             return 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(n || 0));
         },
+        // Unduh kwitansi sebagai PDF tanpa meninggalkan halaman: halaman kwitansi dimuat di iframe
+        // luar layar dengan ?unduh=1, lalu halaman itu sendiri yang membuat dan menyimpan PDF-nya.
+        unduhKwitansi(url) {
+            if (!url) return;
+            const bingkai = document.createElement('iframe');
+            bingkai.setAttribute('aria-hidden', 'true');
+            bingkai.tabIndex = -1;
+            bingkai.style.cssText = 'position:fixed;left:-10000px;top:0;width:820px;height:1160px;border:0;';
+            bingkai.src = url + (url.includes('?') ? '&' : '?') + 'unduh=1';
+            document.body.appendChild(bingkai);
+            setTimeout(() => bingkai.remove(), 60000);
+        },
         galatPertama(errors) {
             const nilai = Object.values(errors || {})[0];
             return Array.isArray(nilai) ? nilai[0] : null;

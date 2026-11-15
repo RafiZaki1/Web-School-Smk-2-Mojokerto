@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Interfaces;
 
+use App\Enums\BankMini\StatusTagihanEnum;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
@@ -79,20 +80,14 @@ interface TagihanSppRepositoryInterface
     public function lunasiTunai(array $ids, int $siswaId): int;
 
     /**
-     * Kontrak method lunasiDariGateway.
+     * Kontrak method pindahStatus.
      *
      * @param  array<int, int>  $ids
+     * @param  array<int, StatusTagihanEnum>  $dari
+     * @param  StatusTagihanEnum  $ke
      * @return int
      */
-    public function lunasiDariGateway(array $ids): int;
-
-    /**
-     * Kontrak method lepasPending.
-     *
-     * @param  array<int, int>  $ids
-     * @return int
-     */
-    public function lepasPending(array $ids): int;
+    public function pindahStatus(array $ids, array $dari, StatusTagihanEnum $ke): int;
 
     /**
      * Kontrak method rekapPerKelas.

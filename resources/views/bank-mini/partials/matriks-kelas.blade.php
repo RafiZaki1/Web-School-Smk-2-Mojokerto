@@ -108,7 +108,10 @@
                             @endforeach
                             <td class="px-3 py-3 text-right font-semibold text-emerald-700">{{ F::rupiah($row['tabungan']) }}</td>
                             @if ($bisaBayar)
-                                <td class="px-5 py-3 text-right">
+                                <td class="whitespace-nowrap px-5 py-3 text-right">
+                                    @if ($row['tabungan'] > 0)
+                                        <a href="{{ route('bank-mini.admin.pembayaran', ['status' => 'settlement', 'q' => $s->nisn]) }}" class="mr-1 inline-flex h-9 items-center rounded-lg px-2 text-xs font-semibold text-navy hover:underline" title="Lihat dan unduh kwitansi tiap pembayaran {{ $s->nama }}">Kwitansi</a>
+                                    @endif
                                     <button type="button" @click="buka({{ $s->id }})" @disabled($row['belum_dibayar']->isEmpty())
                                             class="inline-flex h-9 items-center gap-1.5 rounded-lg border border-navy-100 bg-navy-50 px-3 text-xs font-semibold text-navy hover:bg-navy-100 disabled:cursor-not-allowed disabled:border-garis disabled:bg-white disabled:text-slate-400">
                                         <x-bank-mini.icon name="cash" class="h-4 w-4" />{{ $row['belum_dibayar']->isEmpty() ? 'Lunas' : 'Bayar tunai' }}

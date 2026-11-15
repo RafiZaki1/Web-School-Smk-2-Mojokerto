@@ -9,9 +9,13 @@ enum StatusTransaksiEnum: string
     use HasValues;
 
     case PENDING = 'pending';
+
     case SETTLEMENT = 'settlement';
     case EXPIRED = 'expired';
     case FAILED = 'failed';
+
+    /** Dibatalkan admin: transaksi yang belum dibayar, atau pelunasan yang dicabut. */
+    case CANCELED = 'canceled';
 
     /**
      * Label status untuk antarmuka.
@@ -25,6 +29,7 @@ enum StatusTransaksiEnum: string
             self::SETTLEMENT => 'Berhasil',
             self::EXPIRED => 'Kedaluwarsa',
             self::FAILED => 'Gagal',
+            self::CANCELED => 'Dibatalkan',
         };
     }
 

@@ -16,10 +16,12 @@
                 <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white"><x-bank-mini.icon name="check-circle" /></span>
                 <p class="mt-4 text-base font-bold text-slate-900" x-text="hasil.pesan"></p>
                 <p class="mt-1 text-sm text-slate-500">Total diterima <span class="font-semibold text-slate-800" x-text="rp(hasil.total)"></span></p>
+                <p class="mt-1 text-xs text-slate-500">Kwitansi PDF diunduh otomatis. Bila tidak muncul, tekan Unduh kwitansi.</p>
                 <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
-                    <a :href="hasil.kwitansi" target="_blank" rel="noopener" class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-navy px-5 text-sm font-bold text-white hover:bg-navy-600">
-                        <x-bank-mini.icon name="printer" class="h-4 w-4" /> Cetak kwitansi
-                    </a>
+                    <button type="button" @click="bankMini.unduhKwitansi(hasil.kwitansi)" class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-navy px-5 text-sm font-bold text-white hover:bg-navy-600">
+                        <x-bank-mini.icon name="printer" class="h-4 w-4" /> Unduh kwitansi
+                    </button>
+                    <a :href="hasil.kwitansi" target="_blank" rel="noopener" class="inline-flex h-11 items-center justify-center rounded-xl border border-garis px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Lihat / cetak</a>
                     <button type="button" @click="window.location.reload()" class="h-11 rounded-xl border border-garis px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Selesai</button>
                 </div>
             </div>
@@ -94,6 +96,7 @@
                     try {
                         const res = await bankMini.kirim(url, { siswa_id: this.siswa.id, tagihan_ids: this.dipilih });
                         this.hasil = { pesan: res.meta.message, total: res.data.total_bayar, kwitansi: res.data.kwitansi_url };
+                        bankMini.unduhKwitansi(res.data.kwitansi_url);
                     } catch (e) {
                         this.pesan = bankMini.galatPertama(e.errors) || e.message;
                     } finally {

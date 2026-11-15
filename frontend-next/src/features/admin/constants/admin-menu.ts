@@ -14,6 +14,7 @@ import {
   PersonStanding,
   ScrollText,
   Trophy,
+  Wallet,
   type LucideIcon,
 } from "lucide-react";
 import { ROLES, type Role } from "@/shared/types/user.type";
@@ -54,6 +55,11 @@ export const ADMIN_MENU: AdminMenuGroup[] = [
     title: "Layanan Siswa",
     roles: ADMIN_ONLY,
     items: [{ label: "Kuis Jurusan", href: "/admin/kuis-jurusan", icon: ClipboardList, badgeKey: "major_quiz" }],
+  },
+  {
+    title: "Keuangan Siswa",
+    roles: ADMIN_ONLY,
+    items: [{ label: "Bank Mini & SPP", href: "/admin/bank-mini", icon: Wallet }],
   },
   {
     title: "Tata Usaha",

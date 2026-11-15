@@ -11,6 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 interface UserRepositoryInterface
 {
     /**
+     * Kontrak method findOrFail.
+     *
+     * @param  int|string  $id
+     * @return Model
+     */
+    public function findOrFail(int|string $id): Model;
+
+    /**
      * Kontrak method findByLogin.
      *
      * @param  string  $login

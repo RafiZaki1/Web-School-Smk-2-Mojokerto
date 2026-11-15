@@ -51,6 +51,8 @@ use App\Contracts\Interfaces\MapRepositoryInterface;
 use App\Contracts\Interfaces\MapRoutingServiceInterface;
 use App\Contracts\Interfaces\MapServiceInterface;
 use App\Contracts\Interfaces\MonitoringKelasServiceInterface;
+use App\Contracts\Interfaces\NotifikasiBankMiniRepositoryInterface;
+use App\Contracts\Interfaces\PembayaranMasukRepositoryInterface;
 use App\Contracts\Interfaces\PortalLinkRepositoryInterface;
 use App\Contracts\Interfaces\PortalLinkServiceInterface;
 use App\Contracts\Interfaces\PracticeUniformRepositoryInterface;
@@ -67,7 +69,6 @@ use App\Contracts\Interfaces\SchoolProfileRepositoryInterface;
 use App\Contracts\Interfaces\SchoolProfileServiceInterface;
 use App\Contracts\Interfaces\SchoolRuleRepositoryInterface;
 use App\Contracts\Interfaces\SchoolRuleServiceInterface;
-use App\Contracts\Interfaces\NotifikasiBankMiniRepositoryInterface;
 use App\Contracts\Interfaces\SiswaRepositoryInterface;
 use App\Contracts\Interfaces\SiteContentRepositoryInterface;
 use App\Contracts\Interfaces\SiteContentServiceInterface;
@@ -106,6 +107,8 @@ use App\Contracts\Repositories\LaporanKasRepository;
 use App\Contracts\Repositories\MajorQuizSubmissionRepository;
 use App\Contracts\Repositories\MajorRepository;
 use App\Contracts\Repositories\MapRepository;
+use App\Contracts\Repositories\NotifikasiBankMiniRepository;
+use App\Contracts\Repositories\PembayaranMasukRepository;
 use App\Contracts\Repositories\PortalLinkRepository;
 use App\Contracts\Repositories\PracticeUniformRepository;
 use App\Contracts\Repositories\PushSubscriptionRepository;
@@ -114,7 +117,6 @@ use App\Contracts\Repositories\RoomRepository;
 use App\Contracts\Repositories\SchoolEventRepository;
 use App\Contracts\Repositories\SchoolProfileRepository;
 use App\Contracts\Repositories\SchoolRuleRepository;
-use App\Contracts\Repositories\NotifikasiBankMiniRepository;
 use App\Contracts\Repositories\SiswaRepository;
 use App\Contracts\Repositories\SiteContentRepository;
 use App\Contracts\Repositories\StatisticRepository;
@@ -262,6 +264,7 @@ class AppServiceProvider extends ServiceProvider
         TransaksiBankMiniRepositoryInterface::class => TransaksiBankMiniRepository::class,
         TransaksiDetailBulanRepositoryInterface::class => TransaksiDetailBulanRepository::class,
         NotifikasiBankMiniRepositoryInterface::class => NotifikasiBankMiniRepository::class,
+        PembayaranMasukRepositoryInterface::class => PembayaranMasukRepository::class,
         LaporanKasRepositoryInterface::class => LaporanKasRepository::class,
         WaliKelasRepositoryInterface::class => WaliKelasRepository::class,
         WaliKelasAkunServiceInterface::class => WaliKelasAkunService::class,

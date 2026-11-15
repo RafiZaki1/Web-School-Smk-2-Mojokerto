@@ -28,7 +28,7 @@ class NotifikasiBankMiniResource extends JsonResource
             'pesan' => $this->pesan,
             'dibaca' => $this->dibaca_at !== null,
             'waktu' => BankMiniFormat::tanggal($this->created_at, true),
-            'url' => $orderId ? route('bank-mini.admin.kwitansi', $orderId) : null,
+            'url' => $orderId ? route('bank-mini.admin.pembayaran', ['q' => $orderId]) : null,
         ];
     }
 }

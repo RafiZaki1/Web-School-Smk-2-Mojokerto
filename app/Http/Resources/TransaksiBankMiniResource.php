@@ -39,6 +39,8 @@ class TransaksiBankMiniResource extends JsonResource
             'detail_url' => $this->when(! $request->routeIs('bank-mini.admin.*'), fn () => route('bank-mini.transaksi.show', $this->order_id)),
             'expires_at' => $this->expires_at?->toIso8601String(),
             'paid_at' => $this->paid_at?->toIso8601String(),
+            'catatan_verifikasi' => $this->catatan_verifikasi,
+            'diverifikasi_at' => $this->diverifikasi_at?->toIso8601String(),
             'bulan' => $this->whenLoaded('tagihan', fn () => $this->tagihan->map(fn (TagihanSpp $tagihan) => [
                 'id' => $tagihan->id,
                 'label' => $tagihan->labelBulan(),

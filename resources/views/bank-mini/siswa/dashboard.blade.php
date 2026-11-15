@@ -152,33 +152,65 @@
                             <div><dt class="text-xs text-slate-500">Total Bayar</dt><dd class="text-lg font-extrabold text-navy" x-text="rp(total)">Rp 0</dd></div>
                         </dl>
                         <div class="flex flex-col items-stretch gap-1.5 lg:items-end">
-                            <button type="button" @click="bukaChannel()" :disabled="jumlah === 0 || !gatewaySiap"
+                            <button type="button" @click="bukaChannel()" :disabled="jumlah === 0"
                                     class="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-bold text-white hover:bg-navy-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-300">
-                                <x-bank-mini.icon name="card" class="h-5 w-5" />
-                                Bayar via Payment Gateway
+                                <x-bank-mini.icon name="wallet" class="h-5 w-5" />
+                                Bayar
                             </button>
-                            @unless ($gatewaySiap && $channels->isNotEmpty())
-                                <p class="text-xs text-slate-500">Pembayaran online belum tersedia. Bayar tunai di loket Bank Mini.</p>
-                            @endunless
+                            <p class="text-xs text-slate-500" x-show="jumlah === 0">Centang bulan yang ingin dibayar dulu.</p>
                         </div>
                     </div>
                 </div>
             @endif
         @endif
 
-        {{-- Modal pilih channel Tripay --}}
+        {{-- Modal pilih metode: payment gateway (channel Tripay) atau tunai di loket --}}
         <div x-cloak x-show="modal" @keydown.escape.window="modal = false" class="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="judul-channel">
             <div class="absolute inset-0 bg-slate-900/50" x-show="modal" x-transition.opacity @click="modal = false"></div>
             <div x-show="modal" x-transition class="relative flex max-h-[90vh] w-full max-w-lg flex-col rounded-t-2xl border border-garis bg-white sm:rounded-2xl">
                 <div class="flex items-start justify-between gap-4 border-b border-garis px-6 py-4">
                     <div>
                         <h2 id="judul-channel" class="text-lg font-bold text-slate-900">Pilih metode pembayaran</h2>
-                        <p class="mt-0.5 text-sm text-slate-500"><span x-text="jumlah"></span> bulan · <span x-text="rp(total)"></span> + biaya admin channel</p>
+                        <p class="mt-0.5 text-sm text-slate-500"><span x-text="jumlah"></span> bulan · <span x-text="rp(total)"></span><span x-show="cara === 'gateway'"> + biaya admin channel</span></p>
                     </div>
                     <button type="button" @click="modal = false" class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600" aria-label="Tutup"><x-bank-mini.icon name="close" /></button>
                 </div>
                 <div class="flex-1 space-y-5 overflow-y-auto px-6 py-5">
-                    <template x-for="(items, grup) in channels" :key="grup">
+                    <fieldset>
+                        <legend class="sr-only">Cara bayar</legend>
+                        <div class="grid gap-2 sm:grid-cols-2">
+                            <label class="flex items-start gap-3 rounded-xl border px-3 py-3 transition-colors"
+                                   :class="[cara === 'gateway' ? 'border-navy bg-navy-50/60 ring-1 ring-navy' : 'border-garis', gatewaySiap ? 'cursor-pointer hover:bg-slate-50' : 'cursor-not-allowed opacity-60']">
+                                <input type="radio" name="cara" value="gateway" x-model="cara" :disabled="!gatewaySiap" class="sr-only">
+                                <x-bank-mini.icon name="card" class="mt-0.5 h-5 w-5 shrink-0 text-navy" />
+                                <span>
+                                    <span class="block text-sm font-bold text-slate-900">Payment Gateway</span>
+                                    <span class="mt-0.5 block text-xs text-slate-500" x-text="gatewaySiap ? 'Transfer bank, e-wallet, QRIS, atau minimarket' : 'Sedang tidak tersedia'"></span>
+                                </span>
+                            </label>
+                            <label class="flex cursor-pointer items-start gap-3 rounded-xl border px-3 py-3 transition-colors"
+                                   :class="cara === 'tunai' ? 'border-navy bg-navy-50/60 ring-1 ring-navy' : 'border-garis hover:bg-slate-50'">
+                                <input type="radio" name="cara" value="tunai" x-model="cara" class="sr-only">
+                                <x-bank-mini.icon name="cash" class="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                                <span>
+                                    <span class="block text-sm font-bold text-slate-900">Tunai</span>
+                                    <span class="mt-0.5 block text-xs text-slate-500">Bayar langsung di loket Bank Mini</span>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <div x-show="cara === 'tunai'" class="rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-4">
+                        <p class="text-sm font-bold text-slate-900">Cara bayar tunai</p>
+                        <ol class="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-slate-700">
+                            <li>Datang ke loket Bank Mini di sekolah.</li>
+                            <li>Sebutkan nama dan kelasmu, lalu bulan yang dibayar: <span class="font-semibold" x-text="terpilih.map(t => t.label).join(', ')"></span>.</li>
+                            <li>Serahkan uang <span class="font-semibold" x-text="rp(total)"></span> ke petugas, tanpa biaya admin.</li>
+                            <li>Petugas mencatat pembayaranmu dan bulan tersebut langsung lunas. Kwitansinya ada di menu Riwayat Transaksi.</li>
+                        </ol>
+                    </div>
+
+                    <template x-for="(items, grup) in (cara === 'gateway' ? channels : {})" :key="grup">
                         <fieldset>
                             <legend class="mb-2 text-xs font-semibold text-slate-500" x-text="grup"></legend>
                             <div class="space-y-2">
@@ -199,9 +231,14 @@
                             </div>
                         </fieldset>
                     </template>
-                    <p x-show="Object.keys(channels).length === 0" class="rounded-lg bg-slate-50 px-3 py-3 text-sm text-slate-600">Daftar metode pembayaran belum bisa dimuat. Coba muat ulang halaman, atau bayar tunai di loket Bank Mini.</p>
                 </div>
-                <div class="border-t border-garis px-6 py-4">
+                <div class="border-t border-garis px-6 py-4" x-show="cara === 'tunai'">
+                    <button type="button" @click="modal = false"
+                            class="flex h-12 w-full items-center justify-center rounded-xl bg-navy text-sm font-bold text-white hover:bg-navy-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2">
+                        Mengerti, bayar di loket
+                    </button>
+                </div>
+                <div class="border-t border-garis px-6 py-4" x-show="cara === 'gateway'">
                     <label for="email-invoice" class="block text-sm font-semibold text-slate-800">Email untuk invoice</label>
                     <input id="email-invoice" type="email" x-model.trim="email" autocomplete="email" inputmode="email" maxlength="100" required
                            placeholder="nama@gmail.com" aria-describedby="catatan-email"
@@ -237,6 +274,7 @@
                 proses: false,
                 pesan: '',
                 gatewaySiap: @js($gatewaySiap && $channels->isNotEmpty()),
+                cara: @js($gatewaySiap && $channels->isNotEmpty() ? '' : 'tunai'),
                 get terpilih() { return this.tagihan.filter(t => this.dipilih.includes(t.id)); },
                 get jumlah() { return this.terpilih.length; },
                 get totalSpp() { return this.terpilih.reduce((a, t) => a + t.spp, 0); },

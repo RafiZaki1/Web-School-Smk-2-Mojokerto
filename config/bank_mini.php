@@ -22,4 +22,13 @@ return [
         'customer_email' => env('BANK_MINI_CUSTOMER_EMAIL', 'tu@smkn2mojokerto.sch.id'),
     ],
 
+
+    /*
+     * Pengingat waktu sholat di halaman Bank Mini: koordinat sekolah untuk menghitung jadwal.
+     */
+    'sholat' => [
+        'kota' => 'Kota Mojokerto',
+        'lat' => -7.4722,
+        'lng' => 112.4338,
+    ],
 ];

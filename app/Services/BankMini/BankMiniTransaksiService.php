@@ -4,10 +4,12 @@ namespace App\Services\BankMini;
 
 use App\Contracts\Interfaces\BankMiniTransaksiServiceInterface;
 use App\Contracts\Interfaces\SppBillingServiceInterface;
+use App\Enums\BankMini\AksiVerifikasiEnum;
 use App\Enums\BankMini\MetodeBayarEnum;
 use App\Enums\BankMini\StatusTransaksiEnum;
 use App\Models\Siswa;
 use App\Models\TagihanSpp;
+use App\Models\TransaksiBankMini;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -101,7 +103,7 @@ class BankMiniTransaksiService implements BankMiniTransaksiServiceInterface
     }
 
     /**
-     * Kolom yang diperbarui saat status final diterima (callback atau transaction/detail).
+     * Kolom yang diperbarui saat status dari Tripay diterima (callback atau transaction/detail).
      *
      * @param  array<string, mixed>  $data
      * @param  bool  $settlement
@@ -115,6 +117,31 @@ class BankMiniTransaksiService implements BankMiniTransaksiServiceInterface
             'channel_nama' => $data['payment_name'] ?? $data['payment_method'] ?? null,
             'paid_at' => $settlement ? ($paidAt ? Carbon::createFromTimestamp((int) $paidAt) : now()) : null,
         ], fn ($value) => $value !== null);
+    }
+
+    /**
+     * Kolom jejak kendali manual petugas/admin. Persetujuan manual atas transaksi yang belum punya
+     * waktu bayar (belum ada kabar PAID dari Tripay) memakai waktu sekarang supaya masuk laporan kas.
+     *
+     * @param  TransaksiBankMini  $transaksi
+     * @param  AksiVerifikasiEnum  $aksi
+     * @param  int  $verifikatorId
+     * @param  ?string  $catatan
+     * @return array<string, mixed>
+     */
+    public function atributVerifikasi(TransaksiBankMini $transaksi, AksiVerifikasiEnum $aksi, int $verifikatorId, ?string $catatan): array
+    {
+        $atribut = [
+            'verifikator_id' => $verifikatorId,
+            'diverifikasi_at' => now(),
+            'catatan_verifikasi' => filled($catatan) ? trim((string) $catatan) : null,
+        ];
+
+        if ($aksi === AksiVerifikasiEnum::SETUJUI && $transaksi->paid_at === null) {
+            $atribut['paid_at'] = now();
+        }
+
+        return $atribut;
     }
 
     /**

@@ -20,6 +20,8 @@ use App\Http\Controllers\Admin\MajorController as AdminMajorController;
 use App\Http\Controllers\Admin\MajorQuizSubmissionController as AdminMajorQuizSubmissionController;
 use App\Http\Controllers\Admin\SchoolProfileController as AdminSchoolProfileController;
 use App\Http\Controllers\Admin\SiteContentController as AdminSiteContentController;
+use App\Http\Controllers\BankMini\AksesAdminController;
+use App\Http\Controllers\BankMini\TripayCallbackController;
 use App\Http\Controllers\LandingPage\AchievementPublicController;
 use App\Http\Controllers\LandingPage\AlumniPublicController;
 use App\Http\Controllers\LandingPage\ArticlePublicController;
@@ -36,7 +38,6 @@ use App\Http\Controllers\LandingPage\RoomPublicController;
 use App\Http\Controllers\LandingPage\SchoolProfilePublicController;
 use App\Http\Controllers\LandingPage\SiteContentPublicController;
 use App\Http\Controllers\LandingPage\StatisticController;
-use App\Http\Controllers\BankMini\TripayCallbackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,6 +103,9 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('admin')->middleware(['auth:sanctum', 'role:'.RoleEnum::ADMIN->value])->group(function () {
+        // Admin utama membuka panel Bank Mini tanpa login ulang (tautan bertanda tangan).
+        Route::post('/bank-mini/akses', [AksesAdminController::class, 'buatTautan'])->middleware('throttle:30,1');
+
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
         $contentRoutes = [

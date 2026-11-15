@@ -7,13 +7,16 @@
 <body class="min-h-screen bg-kanvas font-sans text-slate-800 antialiased">
     <div class="no-print mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 pt-6">
         <a href="{{ $kembali }}" class="inline-flex h-10 items-center gap-1.5 rounded-lg border border-garis bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50">Kembali</a>
-        <button type="button" onclick="window.print()" class="inline-flex h-10 items-center gap-2 rounded-lg bg-navy px-4 text-sm font-semibold text-white hover:bg-navy-600">
-            <x-bank-mini.icon name="printer" class="h-4 w-4" /> Cetak / simpan PDF
-        </button>
+        <span class="flex gap-2">
+            <button type="button" onclick="window.print()" class="inline-flex h-10 items-center gap-2 rounded-lg border border-garis bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                <x-bank-mini.icon name="printer" class="h-4 w-4" /> Cetak
+            </button>
+            <button type="button" id="tombol-unduh" onclick="unduhPdf()" class="inline-flex h-10 items-center gap-2 rounded-lg bg-navy px-4 text-sm font-semibold text-white hover:bg-navy-600">Unduh PDF</button>
+        </span>
     </div>
 
     <main class="mx-auto max-w-2xl px-4 py-6">
-        <article class="print-flat rounded-2xl border border-garis bg-white p-6 sm:p-10">
+        <article id="kwitansi" class="print-flat rounded-2xl border border-garis bg-white p-6 sm:p-10">
             <header class="flex items-start gap-4 border-b border-garis pb-6">
                 <img src="{{ asset('images/brand/emblem-smkn2.png') }}" alt="" width="52" height="52" class="h-12 w-12 object-contain">
                 <div class="flex-1">
@@ -68,5 +71,25 @@
             <p class="mt-8 text-xs text-slate-400">Kwitansi digital ini dibuat otomatis oleh sistem Bank Mini. Simpan sebagai bukti pembayaran yang sah.</p>
         </article>
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+    <script>
+        // Simpan kwitansi sebagai berkas PDF. Dengan ?unduh=1 (dipakai setelah bayar tunai dan tombol
+        // Unduh di daftar transaksi) unduhan berjalan sendiri begitu halaman selesai dimuat.
+        function unduhPdf() {
+            const tombol = document.getElementById('tombol-unduh');
+            if (typeof html2pdf === 'undefined') { window.print(); return; }
+            tombol.disabled = true;
+            html2pdf().set({
+                filename: @js('kwitansi-'.$transaksi->order_id.'.pdf'),
+                margin: 10,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            }).from(document.getElementById('kwitansi')).save().finally(() => { tombol.disabled = false; });
+        }
+        if (new URLSearchParams(location.search).has('unduh')) {
+            window.addEventListener('load', () => setTimeout(unduhPdf, 600));
+        }
+    </script>
 </body>
 </html>

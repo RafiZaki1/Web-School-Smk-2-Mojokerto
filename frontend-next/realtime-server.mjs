@@ -3,7 +3,11 @@ import { createHmac } from 'node:crypto';
 import { Server } from 'socket.io';
 
 const PORT = Number(process.env.PETA3D_SOCKET_PORT || 3001);
-const SECRET = process.env.PETA3D_SESSION_SECRET || 'smkn2-peta3d-dev-secret-2026';
+const SECRET = process.env.PETA3D_SESSION_SECRET || (process.env.NODE_ENV === 'production' ? null : 'peta3d-dev-only');
+if (!SECRET) {
+  console.error('PETA3D_SESSION_SECRET belum diisi. Server realtime tidak dijalankan.');
+  process.exit(1);
+}
 const IS_PROD = process.env.NODE_ENV === 'production';
 const ROOM_NAME = 'peta-3d:smkn2';
 const MAX_PLAYERS_PER_ROOM = 100;

@@ -1,7 +1,13 @@
 import { createHmac, randomInt } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
-const SECRET = process.env.PETA3D_SESSION_SECRET || 'smkn2-peta3d-dev-secret-2026';
+// Production wajib isi PETA3D_SESSION_SECRET; nilai cadangan hanya untuk development lokal
+function getSecret(): string {
+  const secret = process.env.PETA3D_SESSION_SECRET;
+  if (secret) return secret;
+  if (process.env.NODE_ENV === 'production') throw new Error('PETA3D_SESSION_SECRET belum diisi');
+  return 'peta3d-dev-only';
+}
 
 interface SessionPayload {
   playerId: string;
@@ -12,7 +18,7 @@ interface SessionPayload {
 
 function signPayload(payload: SessionPayload): string {
   const data = Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
-  const sig = createHmac('sha256', SECRET).update(data).digest('hex');
+  const sig = createHmac('sha256', getSecret()).update(data).digest('hex');
   return `${data}.${sig}`;
 }
 
@@ -20,7 +26,7 @@ function verifyToken(token: string): SessionPayload | null {
   const parts = token.split('.');
   if (parts.length !== 2) return null;
   const [data, sig] = parts;
-  const expected = createHmac('sha256', SECRET).update(data).digest('hex');
+  const expected = createHmac('sha256', getSecret()).update(data).digest('hex');
   if (sig !== expected) return null;
   try {
     return JSON.parse(Buffer.from(data, 'base64url').toString('utf8')) as SessionPayload;

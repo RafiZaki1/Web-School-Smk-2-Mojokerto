@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useMemo, useRef } from "react";
-import { AlertTriangle, MessageCircleQuestion } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, Box, MessageCircleQuestion } from "lucide-react";
 import SectionHeader from "@/shared/components/ui/SectionHeader";
 import { useNearViewport } from "@/shared/hooks/useNearViewport";
 import { roomKey } from "../constants/meta";
@@ -74,6 +75,20 @@ export default function DenahInteraktif() {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px]">
             {/* Kategori & pencarian di atas peta agar peta memakai seluruh lebar kartu */}
             <div className="min-w-0 space-y-3 rounded-2xl bg-card p-4 sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[var(--color-tint)] px-4 py-3">
+                <p className="flex items-center gap-2 text-sm text-ink">
+                  <Box size={16} className="shrink-0 text-navy-ink" aria-hidden="true" />
+                  {t("Coba jelajahi sekolah dalam tampilan 3D.")}
+                </p>
+                <Link
+                  href="/kota"
+                  className="flex shrink-0 items-center gap-1.5 rounded-xl bg-navy-ink px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                >
+                  {t("Buka Peta 3D")}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </Link>
+              </div>
+
               <CategoryFilter categories={denah.categories} active={denah.activeCategory} onChange={denah.setActiveCategory} />
               <div ref={mapRef} className="space-y-3">
                 <MapSearch onSearch={denah.search} onSelect={denah.pickRoom} />

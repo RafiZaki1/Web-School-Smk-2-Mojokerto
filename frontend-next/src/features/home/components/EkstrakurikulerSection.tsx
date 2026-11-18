@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useState, ViewTransition } from "react";
+import { useId, useState } from "react";
+import VisibleViewTransition from "@/shared/components/ui/VisibleViewTransition";
 import Image from "next/image";
 import type { Ekstrakurikuler } from "@/features/ekstrakurikuler";
 import { Flag, HandHeart, Music, Volleyball, type LucideIcon } from "lucide-react";
@@ -90,7 +91,7 @@ export default function EkstrakurikulerSection({ items = [] }: { items?: Ekstrak
           </div>
 
           {/* Pasangan morph dengan hero di halaman detail ekstrakurikuler */}
-          <ViewTransition name={`ekstra-${current.id}`} share="ekstra-morph" default="none">
+          <VisibleViewTransition name={`ekstra-${current.id}`} share="ekstra-morph" default="none">
             <div
               id={`${baseId}-panel`}
               role="tabpanel"
@@ -125,7 +126,7 @@ export default function EkstrakurikulerSection({ items = [] }: { items?: Ekstrak
                 </Button>
               </div>
             </div>
-          </ViewTransition>
+          </VisibleViewTransition>
         </div>
       </Reveal>
     </section>

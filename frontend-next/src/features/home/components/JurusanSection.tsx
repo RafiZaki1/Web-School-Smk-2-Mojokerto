@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, ViewTransition, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import VisibleViewTransition from "@/shared/components/ui/VisibleViewTransition";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -112,7 +113,7 @@ export default function JurusanSection({ items = [] }: { items?: Jurusan[] }) {
                     className="group flex w-full flex-col rounded-3xl bg-card p-4 text-center transition-[box-shadow,translate] duration-300 hover:shadow-[0_12px_28px_rgba(19,35,44,0.08)] motion-safe:hover:-translate-y-1.5 sm:p-5 lg:rounded-[36px] lg:p-[27px]"
                   >
                     {/* Pasangan morph dengan gambar hero di halaman detail jurusan */}
-                    <ViewTransition name={inView ? `jurusan-${item.id}` : undefined} share="jurusan-morph" default="none">
+                    <VisibleViewTransition name={inView ? `jurusan-${item.id}` : undefined} share="jurusan-morph" default="none">
                       <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-surface lg:rounded-3xl">
                         <span className="relative block h-full w-full">
                           <Image
@@ -124,7 +125,7 @@ export default function JurusanSection({ items = [] }: { items?: Jurusan[] }) {
                           />
                         </span>
                       </div>
-                    </ViewTransition>
+                    </VisibleViewTransition>
                     <h3 className="mt-5 font-sans text-2xl font-semibold text-ink transition-colors group-hover:text-primary lg:text-[28px]">
                       {item.code}
                     </h3>

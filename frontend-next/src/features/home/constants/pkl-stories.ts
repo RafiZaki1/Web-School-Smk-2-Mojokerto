@@ -32,7 +32,7 @@ export const PKL_STORIES: Record<PklTab, PklStory> = {
     perusahaan: "PT Sinar Digital Solusi",
     kutipan:
       "PKL di luar kota itu berat banget di awal—harus mandiri dan ngejar ritme industri. Tapi di sini mental dan skill saya bener-bener ditempa untuk siap kerja.",
-    foto: { src: "/images/pkl/rpl-utama.jpg", alt: "Aditya Pratama sedang fokus bekerja di depan layar pengembangan" },
+    foto: { src: "/images/fasilitas/rpl-1.jpg", alt: "Aditya Pratama sedang fokus bekerja di depan layar pengembangan" },
   },
 
   dkv: {
@@ -43,7 +43,7 @@ export const PKL_STORIES: Record<PklTab, PklStory> = {
     perusahaan: "CV Kreasi Ruang Visual",
     kutipan:
       "Briefing klien pertama saya langsung minta revisi tiga kali. Dari situ saya belajar bahwa ide bagus saja tidak cukup, harus bisa dipertanggungjawabkan.",
-    foto: { src: "/images/pkl/dkv-utama.jpg", alt: "Nadia Kusuma sedang menata layout di meja desain" },
+    foto: { src: "/images/fasilitas/dkv-2.jpg", alt: "Nadia Kusuma sedang menata layout di meja desain" },
   },
 
   kuliner: {
@@ -54,7 +54,7 @@ export const PKL_STORIES: Record<PklTab, PklStory> = {
     perusahaan: "Restoran Taman Rasa",
     kutipan:
       "Dapur profesional ritmenya cepat banget. Minggu pertama saya cuma bisa mengiris bawang, tapi lama-lama saya dipercaya memegang station sendiri.",
-    foto: { src: "/images/pkl/kuliner-utama.jpg", alt: "Salsabila Rahma sedang menyiapkan hidangan di dapur restoran" },
+    foto: { src: "/images/fasilitas/tb-1.jpg", alt: "Salsabila Rahma sedang menyiapkan hidangan di dapur restoran" },
   },
 
   perbankan: {
@@ -65,7 +65,7 @@ export const PKL_STORIES: Record<PklTab, PklStory> = {
     perusahaan: "BPR Sumber Makmur",
     kutipan:
       "Berhadapan langsung dengan nasabah ternyata beda banget sama teori di kelas. Saya belajar sabar, teliti, dan menjaga kepercayaan orang.",
-    foto: { src: "/images/pkl/perbankan-utama.jpg", alt: "Rizky Ramadhan sedang melayani nasabah di meja teller" },
+    foto: { src: "/images/fasilitas/lps-2.jpg", alt: "Rizky Ramadhan sedang melayani nasabah di meja teller" },
   },
 
   aphp: {
@@ -76,6 +76,6 @@ export const PKL_STORIES: Record<PklTab, PklStory> = {
     perusahaan: "PT Agro Lestari Nusantara",
     kutipan:
       "Di pabrik olahan, standar kebersihan dan kualitas itu harga mati. Dari situ saya paham bahwa satu tahap kecil saja bisa menentukan mutu produk.",
-    foto: { src: "/images/pkl/aphp-utama.jpg", alt: "Dewi Anggraini sedang memeriksa bahan baku di lini produksi" },
+    foto: { src: "/images/fasilitas/aphp-1.jpg", alt: "Dewi Anggraini sedang memeriksa bahan baku di lini produksi" },
   },
 };

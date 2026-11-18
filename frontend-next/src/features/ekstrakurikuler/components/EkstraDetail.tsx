@@ -1,4 +1,5 @@
-import { ViewTransition, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
+import VisibleViewTransition from "@/shared/components/ui/VisibleViewTransition";
 import Image from "next/image";
 import { CalendarDays, MapPin, Medal, Quote, Trophy, UsersRound, type LucideIcon } from "lucide-react";
 import Button from "@/shared/components/ui/Button";
@@ -15,7 +16,7 @@ export async function EkstraHero({ ekstra }: { ekstra: Ekstrakurikuler }) {
   const t = await getTranslator();
   // Pasangan morph dengan panel ekstrakurikuler di beranda
   return (
-    <ViewTransition name={`ekstra-${ekstra.id}`} share="ekstra-morph" default="none">
+    <VisibleViewTransition name={`ekstra-${ekstra.id}`} share="ekstra-morph" default="none">
       <section className="relative overflow-hidden rounded-3xl bg-navy-deep text-white lg:rounded-[32px]">
         <span className="enter-ken-burns absolute inset-0 block" aria-hidden="true">
           <Image src={ekstra.image} alt="" fill sizes="100vw" className="object-cover" />
@@ -34,7 +35,7 @@ export async function EkstraHero({ ekstra }: { ekstra: Ekstrakurikuler }) {
           </p>
         </div>
       </section>
-    </ViewTransition>
+    </VisibleViewTransition>
   );
 }
 

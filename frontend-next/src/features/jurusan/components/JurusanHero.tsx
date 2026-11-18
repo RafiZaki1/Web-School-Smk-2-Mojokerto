@@ -1,4 +1,5 @@
-import { ViewTransition, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
+import VisibleViewTransition from "@/shared/components/ui/VisibleViewTransition";
 import Image from "next/image";
 import type { Jurusan } from "../types/jurusan.type";
 import { OrnamentBurst } from "@/shared/components/ui/Ornaments";
@@ -22,11 +23,11 @@ export default async function JurusanHero({ jurusan }: { jurusan: Jurusan }) {
 
       <div className="relative">
         {/* Pasangan morph dengan kartu jurusan di beranda */}
-        <ViewTransition name={`jurusan-${jurusan.id}`} share="jurusan-morph" default="none">
+        <VisibleViewTransition name={`jurusan-${jurusan.id}`} share="jurusan-morph" default="none">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-surface shadow-[0_8px_20px_rgba(19,35,44,0.1)] lg:rounded-[36px]">
             <Image src={jurusan.image} alt={t("Siswa jurusan {nama}", { nama: t(jurusan.fullName) })} fill sizes="(min-width: 1024px) 620px, 100vw" className="object-cover object-top" />
           </div>
-        </ViewTransition>
+        </VisibleViewTransition>
         {/* Ikon khas jurusan menempel di sudut foto */}
         <span className="absolute -top-5 -left-4 z-10 flex h-14 w-14 -rotate-12 items-center justify-center rounded-2xl bg-sun text-sun-ink shadow-[0_8px_20px_rgba(19,35,44,0.15)] sm:-top-7 sm:-left-7 sm:h-[72px] sm:w-[72px]">
           <MainIcon className="w-7 sm:w-9" />
